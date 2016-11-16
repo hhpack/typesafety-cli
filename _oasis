@@ -5,24 +5,30 @@ Synopsis:    Type check wrapper for Hack
 Authors:     Noritka Horio <holy.shared.design@gmail.com>
 License:     MIT
 Plugins:     META (0.4), DevFiles (0.4)
+BuildTools:  ocamlbuild
 PreBuildCommand: atdgen -t src/typechecker_check.atd && atdgen -j src/typechecker_check.atd
 
+Library "typesafety"
+  Path: src
+  Modules: Typesafety, Typesafety_reporter, Typechecker_check_t, Typechecker_check_j
+  BuildDepends: core, atdgen, yojson, threads
+  FindlibName: typesafety
+
 Executable typesafety
-  BuildTools: ocamlbuild
   Path:       src
   MainIs:     typesafety.ml
   CompiledObject: native
   BuildDepends:
-    core, threads
+    core, atdgen, yojson, threads, typesafety
 
 Executable test
-  BuildTools: ocamlbuild
   Path: tests
-  MainIs: typesafety_reporter.ml
+  MainIs: typesafety_reporter_test.ml
   Build$: flag(tests)
   CompiledObject: native
   Install: false
-  BuildDepends: oUnit, core, threads
+  BuildDepends:
+    core, atdgen, yojson, threads, typesafety, oUnit
 
 Test test
   Run$:               flag(tests)

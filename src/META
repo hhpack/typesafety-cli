@@ -1,0 +1,12 @@
+# OASIS_START
+# DO NOT EDIT (digest: d6682ddc078e29d0518d4bde02125b51)
+version = "0.1.0"
+description = "Type check wrapper for Hack"
+requires = "core atdgen yojson threads"
+archive(byte) = "typesafety.cma"
+archive(byte, plugin) = "typesafety.cma"
+archive(native) = "typesafety.cmxa"
+archive(native, plugin) = "typesafety.cmxs"
+exists_if = "typesafety.cma"
+# OASIS_STOP
+

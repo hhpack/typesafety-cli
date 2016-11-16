@@ -1,18 +1,18 @@
 type error_detail = {
-  desc: string;
+  descr: string;
   path: string;
   line: int;
   start: int;
   end: int;
-  code: int
-}
+  code: int;
+} <ocaml field_prefix="source_">
 
 type error = {
-  message: error_detail list
-}
+  messages <json name="message">: error_detail list;
+} <ocaml field_prefix="error_">
 
 type result = {
   passed: bool;
   errors: error list;
-  version: string
+  version: string;
 }

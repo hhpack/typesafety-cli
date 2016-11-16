@@ -2,15 +2,17 @@
 
 
 type error_detail = Typechecker_check_t.error_detail = {
-  desc: string;
-  path: string;
-  line: int;
-  start: int;
-  end: int;
-  code: int
+  source_descr (*atd descr *): string;
+  source_path (*atd path *): string;
+  source_line (*atd line *): int;
+  source_start (*atd start *): int;
+  source_end (*atd end *): int;
+  source_code (*atd code *): int
 }
 
-type error = Typechecker_check_t.error = { message: error_detail list }
+type error = Typechecker_check_t.error = {
+  error_messages (*atd messages *): error_detail list
+}
 
 type result = Typechecker_check_t.result = {
   passed: bool;
@@ -26,11 +28,11 @@ let write_error_detail : _ -> error_detail -> _ = (
       is_first := false
     else
       Bi_outbuf.add_char ob ',';
-    Bi_outbuf.add_string ob "\"desc\":";
+    Bi_outbuf.add_string ob "\"descr\":";
     (
       Yojson.Safe.write_string
     )
-      ob x.desc;
+      ob x.source_descr;
     if !is_first then
       is_first := false
     else
@@ -39,7 +41,7 @@ let write_error_detail : _ -> error_detail -> _ = (
     (
       Yojson.Safe.write_string
     )
-      ob x.path;
+      ob x.source_path;
     if !is_first then
       is_first := false
     else
@@ -48,7 +50,7 @@ let write_error_detail : _ -> error_detail -> _ = (
     (
       Yojson.Safe.write_int
     )
-      ob x.line;
+      ob x.source_line;
     if !is_first then
       is_first := false
     else
@@ -57,7 +59,7 @@ let write_error_detail : _ -> error_detail -> _ = (
     (
       Yojson.Safe.write_int
     )
-      ob x.start;
+      ob x.source_start;
     if !is_first then
       is_first := false
     else
@@ -66,7 +68,7 @@ let write_error_detail : _ -> error_detail -> _ = (
     (
       Yojson.Safe.write_int
     )
-      ob x.end;
+      ob x.source_end;
     if !is_first then
       is_first := false
     else
@@ -75,7 +77,7 @@ let write_error_detail : _ -> error_detail -> _ = (
     (
       Yojson.Safe.write_int
     )
-      ob x.code;
+      ob x.source_code;
     Bi_outbuf.add_char ob '}';
 )
 let string_of_error_detail ?(len = 1024) x =
@@ -86,12 +88,12 @@ let read_error_detail = (
   fun p lb ->
     Yojson.Safe.read_space p lb;
     Yojson.Safe.read_lcurl p lb;
-    let field_desc = ref (Obj.magic (Sys.opaque_identity 0.0)) in
-    let field_path = ref (Obj.magic (Sys.opaque_identity 0.0)) in
-    let field_line = ref (Obj.magic (Sys.opaque_identity 0.0)) in
-    let field_start = ref (Obj.magic (Sys.opaque_identity 0.0)) in
-    let field_end = ref (Obj.magic (Sys.opaque_identity 0.0)) in
-    let field_code = ref (Obj.magic (Sys.opaque_identity 0.0)) in
+    let field_source_descr = ref (Obj.magic (Sys.opaque_identity 0.0)) in
+    let field_source_path = ref (Obj.magic (Sys.opaque_identity 0.0)) in
+    let field_source_line = ref (Obj.magic (Sys.opaque_identity 0.0)) in
+    let field_source_start = ref (Obj.magic (Sys.opaque_identity 0.0)) in
+    let field_source_end = ref (Obj.magic (Sys.opaque_identity 0.0)) in
+    let field_source_code = ref (Obj.magic (Sys.opaque_identity 0.0)) in
     let bits0 = ref 0 in
     try
       Yojson.Safe.read_space p lb;
@@ -120,14 +122,6 @@ let read_error_detail = (
                         -1
                       )
                     )
-                  | 'd' -> (
-                      if String.unsafe_get s (pos+1) = 'e' && String.unsafe_get s (pos+2) = 's' && String.unsafe_get s (pos+3) = 'c' then (
-                        0
-                      )
-                      else (
-                        -1
-                      )
-                    )
                   | 'l' -> (
                       if String.unsafe_get s (pos+1) = 'i' && String.unsafe_get s (pos+2) = 'n' && String.unsafe_get s (pos+3) = 'e' then (
                         2
@@ -149,12 +143,26 @@ let read_error_detail = (
                     )
               )
             | 5 -> (
-                if String.unsafe_get s pos = 's' && String.unsafe_get s (pos+1) = 't' && String.unsafe_get s (pos+2) = 'a' && String.unsafe_get s (pos+3) = 'r' && String.unsafe_get s (pos+4) = 't' then (
-                  3
-                )
-                else (
-                  -1
-                )
+                match String.unsafe_get s pos with
+                  | 'd' -> (
+                      if String.unsafe_get s (pos+1) = 'e' && String.unsafe_get s (pos+2) = 's' && String.unsafe_get s (pos+3) = 'c' && String.unsafe_get s (pos+4) = 'r' then (
+                        0
+                      )
+                      else (
+                        -1
+                      )
+                    )
+                  | 's' -> (
+                      if String.unsafe_get s (pos+1) = 't' && String.unsafe_get s (pos+2) = 'a' && String.unsafe_get s (pos+3) = 'r' && String.unsafe_get s (pos+4) = 't' then (
+                        3
+                      )
+                      else (
+                        -1
+                      )
+                    )
+                  | _ -> (
+                      -1
+                    )
               )
             | _ -> (
                 -1
@@ -165,42 +173,42 @@ let read_error_detail = (
       (
         match i with
           | 0 ->
-            field_desc := (
+            field_source_descr := (
               (
                 Ag_oj_run.read_string
               ) p lb
             );
             bits0 := !bits0 lor 0x1;
           | 1 ->
-            field_path := (
+            field_source_path := (
               (
                 Ag_oj_run.read_string
               ) p lb
             );
             bits0 := !bits0 lor 0x2;
           | 2 ->
-            field_line := (
+            field_source_line := (
               (
                 Ag_oj_run.read_int
               ) p lb
             );
             bits0 := !bits0 lor 0x4;
           | 3 ->
-            field_start := (
+            field_source_start := (
               (
                 Ag_oj_run.read_int
               ) p lb
             );
             bits0 := !bits0 lor 0x8;
           | 4 ->
-            field_end := (
+            field_source_end := (
               (
                 Ag_oj_run.read_int
               ) p lb
             );
             bits0 := !bits0 lor 0x10;
           | 5 ->
-            field_code := (
+            field_source_code := (
               (
                 Ag_oj_run.read_int
               ) p lb
@@ -237,14 +245,6 @@ let read_error_detail = (
                           -1
                         )
                       )
-                    | 'd' -> (
-                        if String.unsafe_get s (pos+1) = 'e' && String.unsafe_get s (pos+2) = 's' && String.unsafe_get s (pos+3) = 'c' then (
-                          0
-                        )
-                        else (
-                          -1
-                        )
-                      )
                     | 'l' -> (
                         if String.unsafe_get s (pos+1) = 'i' && String.unsafe_get s (pos+2) = 'n' && String.unsafe_get s (pos+3) = 'e' then (
                           2
@@ -266,12 +266,26 @@ let read_error_detail = (
                       )
                 )
               | 5 -> (
-                  if String.unsafe_get s pos = 's' && String.unsafe_get s (pos+1) = 't' && String.unsafe_get s (pos+2) = 'a' && String.unsafe_get s (pos+3) = 'r' && String.unsafe_get s (pos+4) = 't' then (
-                    3
-                  )
-                  else (
-                    -1
-                  )
+                  match String.unsafe_get s pos with
+                    | 'd' -> (
+                        if String.unsafe_get s (pos+1) = 'e' && String.unsafe_get s (pos+2) = 's' && String.unsafe_get s (pos+3) = 'c' && String.unsafe_get s (pos+4) = 'r' then (
+                          0
+                        )
+                        else (
+                          -1
+                        )
+                      )
+                    | 's' -> (
+                        if String.unsafe_get s (pos+1) = 't' && String.unsafe_get s (pos+2) = 'a' && String.unsafe_get s (pos+3) = 'r' && String.unsafe_get s (pos+4) = 't' then (
+                          3
+                        )
+                        else (
+                          -1
+                        )
+                      )
+                    | _ -> (
+                        -1
+                      )
                 )
               | _ -> (
                   -1
@@ -282,42 +296,42 @@ let read_error_detail = (
         (
           match i with
             | 0 ->
-              field_desc := (
+              field_source_descr := (
                 (
                   Ag_oj_run.read_string
                 ) p lb
               );
               bits0 := !bits0 lor 0x1;
             | 1 ->
-              field_path := (
+              field_source_path := (
                 (
                   Ag_oj_run.read_string
                 ) p lb
               );
               bits0 := !bits0 lor 0x2;
             | 2 ->
-              field_line := (
+              field_source_line := (
                 (
                   Ag_oj_run.read_int
                 ) p lb
               );
               bits0 := !bits0 lor 0x4;
             | 3 ->
-              field_start := (
+              field_source_start := (
                 (
                   Ag_oj_run.read_int
                 ) p lb
               );
               bits0 := !bits0 lor 0x8;
             | 4 ->
-              field_end := (
+              field_source_end := (
                 (
                   Ag_oj_run.read_int
                 ) p lb
               );
               bits0 := !bits0 lor 0x10;
             | 5 ->
-              field_code := (
+              field_source_code := (
                 (
                   Ag_oj_run.read_int
                 ) p lb
@@ -330,15 +344,15 @@ let read_error_detail = (
       done;
       assert false;
     with Yojson.End_of_object -> (
-        if !bits0 <> 0x3f then Ag_oj_run.missing_fields p [| !bits0 |] [| "desc"; "path"; "line"; "start"; "end"; "code" |];
+        if !bits0 <> 0x3f then Ag_oj_run.missing_fields p [| !bits0 |] [| "descr"; "path"; "line"; "start"; "end"; "code" |];
         (
           {
-            desc = !field_desc;
-            path = !field_path;
-            line = !field_line;
-            start = !field_start;
-            end = !field_end;
-            code = !field_code;
+            source_descr = !field_source_descr;
+            source_path = !field_source_path;
+            source_line = !field_source_line;
+            source_start = !field_source_start;
+            source_end = !field_source_end;
+            source_code = !field_source_code;
           }
          : error_detail)
       )
@@ -373,7 +387,7 @@ let write_error : _ -> error -> _ = (
     (
       write__1
     )
-      ob x.message;
+      ob x.error_messages;
     Bi_outbuf.add_char ob '}';
 )
 let string_of_error ?(len = 1024) x =
@@ -384,7 +398,7 @@ let read_error = (
   fun p lb ->
     Yojson.Safe.read_space p lb;
     Yojson.Safe.read_lcurl p lb;
-    let field_message = ref (Obj.magic (Sys.opaque_identity 0.0)) in
+    let field_error_messages = ref (Obj.magic (Sys.opaque_identity 0.0)) in
     let bits0 = ref 0 in
     try
       Yojson.Safe.read_space p lb;
@@ -406,7 +420,7 @@ let read_error = (
       (
         match i with
           | 0 ->
-            field_message := (
+            field_error_messages := (
               (
                 read__1
               ) p lb
@@ -436,7 +450,7 @@ let read_error = (
         (
           match i with
             | 0 ->
-              field_message := (
+              field_error_messages := (
                 (
                   read__1
                 ) p lb
@@ -449,10 +463,10 @@ let read_error = (
       done;
       assert false;
     with Yojson.End_of_object -> (
-        if !bits0 <> 0x1 then Ag_oj_run.missing_fields p [| !bits0 |] [| "message" |];
+        if !bits0 <> 0x1 then Ag_oj_run.missing_fields p [| !bits0 |] [| "messages" |];
         (
           {
-            message = !field_message;
+            error_messages = !field_error_messages;
           }
          : error)
       )
