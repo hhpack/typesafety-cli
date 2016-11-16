@@ -1,0 +1,12 @@
+language: c
+sudo: required
+install:
+  - bash -ex .travis-ci-install.sh
+os:
+  - linux
+  - osx
+before_script:
+  - eval $(opam config env)
+  - make configure CONFIGUREFLAGS=--enable-tests
+script:
+  - make test
