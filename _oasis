@@ -10,8 +10,18 @@ PreBuildCommand: atdgen -t src/typechecker_check.atd && atdgen -j src/typechecke
 
 Library "typesafety"
   Path: src
-  Modules: Typesafety, Typesafety_reporter, Typechecker_check_t, Typechecker_check_j
-  BuildDepends: core, atdgen, yojson, threads
+  Modules:
+    Typesafety,
+    Typesafety_reporter,
+    Typechecker_check_t,
+    Typechecker_check_j,
+    File,
+    Source_file,
+    Lines,
+    Color,
+    Cache
+
+  BuildDepends: atdgen, threads
   FindlibName: typesafety
 
 Executable typesafety
@@ -19,16 +29,16 @@ Executable typesafety
   MainIs:     typesafety.ml
   CompiledObject: native
   BuildDepends:
-    core, atdgen, yojson, threads, typesafety
+    atdgen, threads, typesafety
 
 Executable test
   Path: tests
-  MainIs: typesafety_reporter_test.ml
+  MainIs: test.ml
   Build$: flag(tests)
   CompiledObject: native
   Install: false
   BuildDepends:
-    core, atdgen, yojson, threads, typesafety, oUnit
+    str, atdgen, threads, typesafety, oUnit
 
 Test test
   Run$:               flag(tests)
