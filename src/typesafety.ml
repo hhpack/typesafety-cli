@@ -1,8 +1,2 @@
-open Core.Std
-
-let print_result file =
-  let json = In_channel.read_all file in
-  print_endline json;;
-
 let () =
-  print_result "output.json";;
+  Typesafety_reporter.print_result_file "output.json";;

@@ -17,4 +17,4 @@ case $TRAVIS_OS_NAME in
 esac
 
 opam init
-opam install oasis core core_extended ocamlfind atdgen oUnit
+opam install oasis ocamlfind atdgen oUnit
