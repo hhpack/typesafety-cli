@@ -21,7 +21,7 @@ Library "typesafety"
     Color,
     Cache
 
-  BuildDepends: atdgen, threads
+  BuildDepends: atdgen, threads, cmdliner
   FindlibName: typesafety
 
 Executable typesafety
@@ -29,7 +29,7 @@ Executable typesafety
   MainIs:     typesafety.ml
   CompiledObject: native
   BuildDepends:
-    atdgen, threads, typesafety
+    atdgen, threads, cmdliner, typesafety
 
 Executable test
   Path: tests
@@ -38,7 +38,7 @@ Executable test
   CompiledObject: native
   Install: false
   BuildDepends:
-    str, atdgen, threads, typesafety, oUnit
+    str, atdgen, threads, cmdliner, typesafety, oUnit
 
 Test test
   Run$:               flag(tests)
