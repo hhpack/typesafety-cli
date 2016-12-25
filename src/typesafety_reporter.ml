@@ -29,12 +29,12 @@ let lines_of_source file cache =
     | File lines -> lines
     | Cache lines -> lines
 
-let print_error_message cache =
+let print_error_message cache seq =
   fun message ->
     let lines_of_source = lines_of_source message.source_path cache in
     let hint_description = hint_message message.source_start message.source_end in
     let messages = [
-      (Color.red "%s" message.source_path);
+      (Color.red "Error: %d - %s" seq message.source_path);
       "";
       (indent_with message.source_descr);
       "";
@@ -45,12 +45,12 @@ let print_error_message cache =
     List.iter print_endline messages
 
 let print_error cache =
-  fun err -> List.iter (print_error_message cache) err.error_messages
+  fun seq err -> List.iter (print_error_message cache (seq + 1)) err.error_messages
 
 let print_json json =
   let cache = Cache.create 1024 in
   let result = Typechecker_check_j.result_of_string json in
-  List.iter (print_error cache) result.errors
+  List.iteri (print_error cache) result.errors
 
 let print_result_file file =
   let json = File.read_all file in
