@@ -1,6 +1,8 @@
 open Typechecker_check_t
 open Source_file
 
+let line_number_length = 5
+
 let padding_char n c = String.make n c
 let spaces n = padding_char n ' '
 let columns n = padding_char n '^'
@@ -8,7 +10,7 @@ let hint_placeholder start_column end_column = columns ((end_column + 1) - start
 let split_ln s = Str.split (Str.regexp "\n") s
 
 let hint_message start_column end_column =
-  let space_string = spaces (start_column - 1) in
+  let space_string = spaces (start_column + line_number_length) in
   let hint_text = hint_placeholder start_column end_column in
   space_string ^ hint_text
 
@@ -22,7 +24,10 @@ let indent_with ?(n = 1) s =
   String.concat "\n" indent_lines
 
 let source_code lines line =
-  Lines.find line lines
+  let line_code = Lines.find line lines in
+  let string_of_line = (string_of_int line) in
+  let lpad_length = line_number_length - String.length string_of_line in
+  (spaces lpad_length) ^ string_of_line ^ ":" ^ line_code
 
 let lines_of_source file cache =
   match Source_file.read_all file cache with
