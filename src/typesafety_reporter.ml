@@ -28,24 +28,36 @@ let lines_of_source file cache =
   match Source_file.read_all file cache with
     | File lines -> lines
     | Cache lines -> lines
+    
+let formatter msg_seq =
+  if msg_seq == 0 then Color.error else Color.info
 
-let print_error_message cache seq =
-  fun message ->
+
+let header_message err_seq msg_seq message =
+  let color_formatter = formatter msg_seq in
+  color_formatter "Error: %d - %s\n\n" err_seq message.source_path
+
+let description_message msg_seq message lines_of_source =
+  let color_formatter = formatter msg_seq in
+  let hint_description = hint_message message.source_start message.source_end in
+  let messages = [
+    color_formatter "%s\n\n" (indent_with message.source_descr);
+    color_formatter "%s\n" (indent_with (source_code lines_of_source message.source_line));
+    color_formatter "%s\n\n" (indent_with hint_description)
+  ] in
+  String.concat "" messages
+
+let print_error_message cache err_seq =
+  fun msg_seq message ->
     let lines_of_source = lines_of_source message.source_path cache in
-    let hint_description = hint_message message.source_start message.source_end in
-    let messages = [
-      (Color.red "Error: %d - %s" seq message.source_path);
-      "";
-      (indent_with message.source_descr);
-      "";
-      (indent_with (source_code lines_of_source message.source_line));
-      (indent_with hint_description);
-      ""
-    ] in
-    List.iter print_endline messages
+    let head_message = header_message err_seq msg_seq message in
+    let desc_message = description_message msg_seq message lines_of_source in
+    let default_messages = [ desc_message ] in
+    let messages = if msg_seq == 0 then head_message :: default_messages else default_messages in
+    List.iter print_string messages
 
 let print_error cache =
-  fun seq err -> List.iter (print_error_message cache (seq + 1)) err.error_messages
+  fun err_seq err -> List.iteri (print_error_message cache (err_seq + 1)) err.error_messages
 
 let print_json json =
   let cache = Cache.create 1024 in
