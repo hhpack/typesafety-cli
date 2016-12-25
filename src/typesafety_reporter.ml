@@ -13,11 +13,11 @@ let hint_message start_column end_column =
   space_string ^ hint_text
 
 (* Indent a specified number *)
-let indent n = spaces (n * 2)
+let indent ?(n = 1) () = spaces (n * 2)
 
 (* Returns a string with an indent *)
-let indent_with s n =
-  let indent s = (indent n) ^ s in
+let indent_with ?(n = 1) s =
+  let indent s = (indent ~n ()) ^ s in
   let indent_lines = List.map indent (split_ln s) in
   String.concat "\n" indent_lines
 
@@ -36,10 +36,10 @@ let print_error_message cache =
     let messages = [
       (Color.red "%s" message.source_path);
       "";
-      (indent_with message.source_descr 1);
+      (indent_with message.source_descr);
       "";
-      (indent_with (source_code lines_of_source message.source_line) 1);
-      (indent_with hint_description 1);
+      (indent_with (source_code lines_of_source message.source_line));
+      (indent_with hint_description);
       ""
     ] in
     List.iter print_endline messages
