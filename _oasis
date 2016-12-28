@@ -12,6 +12,7 @@ Library "typesafety"
   Path: src
   Modules:
     Typesafety,
+    Typesafety_check,
     Typesafety_reporter,
     Typechecker_check_t,
     Typechecker_check_j,
