@@ -13,6 +13,7 @@ Library "typesafety"
   Modules:
     Typesafety,
     Typesafety_check,
+    Typesafety_middleware,
     Typesafety_reporter,
     Typechecker_check_t,
     Typechecker_check_j,
@@ -22,7 +23,7 @@ Library "typesafety"
     Color,
     Cache
 
-  BuildDepends: atdgen, threads, cmdliner, process
+  BuildDepends: str, atdgen, threads, cmdliner, process
   FindlibName: typesafety
 
 Executable typesafety
@@ -30,7 +31,7 @@ Executable typesafety
   MainIs:     typesafety.ml
   CompiledObject: native
   BuildDepends:
-    atdgen, threads, cmdliner, process, typesafety
+    str, atdgen, threads, cmdliner, process, typesafety
 
 Executable test
   Path: tests

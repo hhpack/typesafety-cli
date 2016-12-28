@@ -1,7 +1,8 @@
 # OASIS_START
-# DO NOT EDIT (digest: 7d1e6b048e90a2ef8893bd61731d6737)
+# DO NOT EDIT (digest: 539c3aff5c56827f36a96bdb50e9bac7)
 Typesafety
 Typesafety_check
+Typesafety_middleware
 Typesafety_reporter
 Typechecker_check_t
 Typechecker_check_j
