@@ -23,9 +23,10 @@ module HHVM_version = struct
 
   let parse_hhvm_version output =
     let regexp = Str.regexp "HipHop VM \\(.+\\)\nCompiler: \\(.+\\)\nRepo schema: \\(.+\\)" in
-    let version s = Str.matched_group 1 s in
-    let compiler s = Str.matched_group 2 s in
-    let repo_schema s = Str.matched_group 3 s in
+    let group n s = Str.matched_group n s in
+    let version s = group 1 s in
+    let compiler s = group 2 s in
+    let repo_schema s = group 3 s in
     if Str.string_match regexp output 0 then
       Some {
         version=(version output);
