@@ -46,7 +46,7 @@ let check_hhvm_installed = HHVM_version.check_hhvm_installed
 
 module HHConfg = struct
   let config_file = ".hhconfig"
-  let config_path dir = dir ^ config_file
+  let config_path dir = (File.dirname dir) ^ "/" ^ config_file
 
   let hhconfg_exists dir =
     Sys.file_exists (config_path dir)

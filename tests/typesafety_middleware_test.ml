@@ -22,11 +22,11 @@ module HHConfigTest = struct
   open HHConfg
 
   let temp_dir = Filename.get_temp_dir_name ()
-  let temp_config_file = temp_dir ^ ".hhconfig"
+  let temp_config_file = (File.dirname temp_dir) ^ "/" ^ ".hhconfig"
 
   let unlink_config dir =
     try
-      Sys.remove (dir ^ config_file)
+      Sys.remove ((File.dirname dir) ^ "/" ^ config_file)
     with Sys_error _ -> ()
 
   let assert_hhconfg =
