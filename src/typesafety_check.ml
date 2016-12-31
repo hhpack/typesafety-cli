@@ -1,9 +1,13 @@
 open Cmdliner
 
-let check () =
-  Typesafety_reporter.print_result_file "output.json"
+let no_hhconfig =
+  let doc = "When hhconfig does not exist, do not generate files automatically" in
+  Arg.(value & flag & info ["no-hhconfig"] ~doc)
 
-let check_t = Term.(const check)
+let check no_hhconfig =
+  true
+
+let check_t = Term.(const check $ no_hhconfig)
 
 let info =
   let doc = "Typechecker wrapper for Hack" in
