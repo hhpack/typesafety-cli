@@ -18,40 +18,10 @@ let rec middleware_exec middlewares =
         | Done _ -> middleware_exec remain_middlewares
         | Error err -> Error err
 
-module HHVM_version = struct
-  type hhvm_version = {
-    version: string;
-    compiler: string;
-    repo_schema: string;
-  }
-
-  let check_hhvm_version () =
-    try
-      Ok (String.concat "\n" (Process.read_stdout "hhvm" [|"--version"|]))
-    with _ -> Error "hhvm not installed"
-
-  let parse_hhvm_version output =
-    let regexp = Str.regexp "HipHop VM \\(.+\\)\nCompiler: \\(.+\\)\nRepo schema: \\(.+\\)" in
-    let group n s = Str.matched_group n s in
-    let version s = group 1 s in
-    let compiler s = group 2 s in
-    let repo_schema s = group 3 s in
-    if Str.string_match regexp output 0 then
-      Some {
-        version=(version output);
-        compiler=(compiler output);
-        repo_schema=(repo_schema output);
-      }
-    else
-      None
-
-  let check_hhvm_installed () =
-    match check_hhvm_version () with
-      | Ok v -> Next (parse_hhvm_version v)
-      | Error e -> Error (1, e)
-end
-
-let check_hhvm_installed = HHVM_version.check_hhvm_installed
+let check_hhvm_installed () =
+  match Hhvm_version.check_hhvm_version () with
+    | Ok v -> Next (Hhvm_version.parse_hhvm_version v)
+    | Error e -> Error (1, e)
 
 module HHConfg = struct
   let config_file = ".hhconfig"
