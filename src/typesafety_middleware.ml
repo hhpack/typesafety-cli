@@ -99,4 +99,24 @@ module HHClient = struct
       | Exit _ -> Ok (hhclient_stderr result)
       | Kill signal -> Error (hhclient_error signal result)
       | Stop signal -> Error (hhclient_error signal result)
+
+  let to_success output =
+    print_string output;
+    Next ()
+
+  let restart () =
+    match hhclient_restart () with
+      | Ok output -> to_success output
+      | Error err -> Error (4, err)
+
+  let check () =
+    match hhclient_check () with
+      | Ok output -> to_success output
+      | Error err -> Error (4, err)
+
+  let typecheck () =
+    match restart () with
+      | Next _ -> check ()
+      | Done _ -> check ()
+      | Error err -> Error err
 end
