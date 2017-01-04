@@ -23,34 +23,10 @@ let check_hhvm_installed () =
     | Ok v -> Next (Hhvm_version.parse_hhvm_version v)
     | Error e -> Error (1, e)
 
-module HHConfg = struct
-  let config_file = ".hhconfig"
-  let config_path dir = (File.dirname dir) ^ "/" ^ config_file
-
-  let hhconfg_exists dir =
-    Sys.file_exists (config_path dir)
-
-  let touch_hhconfig dir =
-    let absolute_path = config_path dir in
-    try
-      close_out (open_out absolute_path);
-      Ok absolute_path
-    with Sys_error e -> Error e
-
-  let create_hhconfg_if_not_exists dir =
-    let absolute_path = config_path dir in
-    if hhconfg_exists dir then
-      Ok absolute_path
-    else
-      touch_hhconfig dir
-
-  let check_hhconfg () =
-    match create_hhconfg_if_not_exists (Sys.getcwd ()) with
-      | Ok v -> Next v
-      | Error e -> Error (2, e)
-end
-
-let check_hhconfg = HHConfg.check_hhconfg
+let check_hhconfg () =
+  match Hhconfig.create_hhconfg_if_not_exists (Sys.getcwd ()) with
+    | Ok v -> Next v
+    | Error e -> Error (2, e)
 
 module HHClient = struct
   let to_success output =
