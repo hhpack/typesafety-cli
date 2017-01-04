@@ -1,13 +1,16 @@
 # OASIS_START
-# DO NOT EDIT (digest: 539c3aff5c56827f36a96bdb50e9bac7)
+# DO NOT EDIT (digest: d9fc5396581baed3e9a71406d0dd49f3)
 Typesafety
-Typesafety_check
-Typesafety_middleware
-Typesafety_reporter
-Typechecker_check_t
-Typechecker_check_j
+TypesafetyCheck
+TypecheckerCheck_t
+TypecheckerCheck_j
+TypesafetyMiddleware
+TypesafetyReporter
+HHConfig
+HHClient
+HHVMVersion
 File
-Source_file
+SourceFile
 Lines
 Color
 Cache

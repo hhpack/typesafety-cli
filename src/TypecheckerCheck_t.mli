@@ -1,4 +1,4 @@
-(* Auto-generated from "typechecker_check.atd" *)
+(* Auto-generated from "TypecheckerCheck.atd" *)
 
 
 type error_detail = {

@@ -19,12 +19,12 @@ let rec middleware_exec middlewares =
         | Error err -> Error err
 
 let check_hhvm_installed () =
-  match Hhvm_version.check_hhvm_version () with
-    | Ok v -> Next (Hhvm_version.parse_hhvm_version v)
+  match HHVMVersion.check_hhvm_version () with
+    | Ok v -> Next (HHVMVersion.parse_hhvm_version v)
     | Error e -> Error (1, e)
 
 let check_hhconfg () =
-  match Hhconfig.create_hhconfg_if_not_exists (Sys.getcwd ()) with
+  match HHConfig.create_hhconfg_if_not_exists (Sys.getcwd ()) with
     | Ok v -> Next v
     | Error e -> Error (2, e)
 
@@ -34,12 +34,12 @@ module HHClient = struct
     Next ()
 
   let restart () =
-    match Hhclient.restart () with
+    match HHClient.restart () with
       | Ok output -> to_success output
       | Error err -> Error (4, err)
 
   let check () =
-    match Hhclient.check () with
+    match HHClient.check () with
       | Ok output -> to_success output
       | Error err -> Error (4, err)
 
