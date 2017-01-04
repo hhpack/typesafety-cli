@@ -7,7 +7,7 @@ type ('b, 'c) middleware_result =
   | Done of 'c
   | Error of middleware_error
 
-type ('a, 'b, 'c) a_middleware = unit -> ('b, 'c) middleware_result
+type ('a, 'b, 'c) middleware = unit -> ('b, 'c) middleware_result
 
 module HHVM_version = struct
   type hhvm_version = {
