@@ -94,3 +94,5 @@ module HHClient = struct
       | Done _ -> check ()
       | Error err -> Error err
 end
+
+let typecheck = HHClient.typecheck
