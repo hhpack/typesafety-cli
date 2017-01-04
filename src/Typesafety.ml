@@ -5,4 +5,4 @@ let program_terminate = function
   | _ -> exit 0
 
 let () =
-  program_terminate (Term.eval (Typesafety_check.check_t, Typesafety_check.info))
+  program_terminate (Term.eval (TypesafetyCheck.check_t, TypesafetyCheck.info))

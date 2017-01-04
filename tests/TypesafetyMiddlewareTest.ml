@@ -1,10 +1,10 @@
 open OUnit2
-open Typesafety_middleware
+open TypesafetyMiddleware
 
 let test_parse_hhvm_version =
   "parse_hhvm_version" >:: (
     fun _ ->
-      let open HHVM_version in
+      let open HHVMVersion in
       let hhvm_version = "HipHop VM 3.17.0 (rel)\n" in
       let hhvm_compiler = "Compiler: tags/HHVM-3.17.0-0-ga34af693b558ed98ffafc3f5127e00959e145e4f\n" in
       let hhvm_repo_schema = "Repo schema: 8eda451fe80742a18e0e2e8917aa4053c2c1afe7\n" in
@@ -19,7 +19,7 @@ let test_parse_hhvm_version =
     )
 
 module HHConfigTest = struct
-  open HHConfg
+  open HHConfig
 
   let temp_dir = Filename.get_temp_dir_name ()
   let temp_config_file = (File.dirname temp_dir) ^ "/" ^ ".hhconfig"
