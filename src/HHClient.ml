@@ -24,14 +24,27 @@ let check () =
     | Kill signal -> Error (hhclient_error signal result)
     | Stop signal -> Error (hhclient_error signal result)
 
-let restart_with_check () =
-  match restart () with
-    | Ok v ->
-      print_string v;
-      check ()
+let restart_server () = restart ()
+
+let typecheck o =
+  match o with
+    | Ok _ -> check ()
     | Error e -> Error e
 
-let typecheck_json () =
-  match restart_with_check () with
+let parse_json o =
+  match o with
     | Ok v -> Ok v
     | Error e -> Error e
+
+let verbose = function
+  | Ok v ->
+    print_string v;
+    Ok v
+  | Error e -> Error e
+
+let typecheck_json () =
+  restart_server ()
+    |> verbose
+    |> typecheck
+    |> verbose
+    |> parse_json
