@@ -27,27 +27,3 @@ let check_hhconfg () =
   match HHConfig.create_hhconfg_if_not_exists (Sys.getcwd ()) with
     | Ok v -> Next v
     | Error e -> Error (2, e)
-
-module HHClient = struct
-  let to_success output =
-    print_string output;
-    Next ()
-
-  let restart () =
-    match HHClient.restart () with
-      | Ok output -> to_success output
-      | Error err -> Error (4, err)
-
-  let check () =
-    match HHClient.check () with
-      | Ok output -> to_success output
-      | Error err -> Error (4, err)
-
-  let typecheck () =
-    match restart () with
-      | Next _ -> check ()
-      | Done _ -> check ()
-      | Error err -> Error err
-end
-
-let typecheck = HHClient.typecheck
