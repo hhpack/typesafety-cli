@@ -15,7 +15,6 @@ Library "typesafety"
     TypesafetyCheck,
     TypecheckerCheck_t,
     TypecheckerCheck_j,
-    TypesafetyMiddleware,
     TypesafetyReporter,
     HHConfig,
     HHClient,
