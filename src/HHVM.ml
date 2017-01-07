@@ -1,15 +1,15 @@
-type hhvm_version = {
+type version = {
   version: string;
   compiler: string;
   repo_schema: string;
 }
 
-let check_hhvm_version () =
+let check_version () =
   try
     Ok (String.concat "\n" (Process.read_stdout "hhvm" [|"--version"|]))
   with _ -> Error "hhvm not installed"
 
-let parse_hhvm_version output =
+let parse_version output =
   let regexp = Str.regexp "HipHop VM \\(.+\\)\nCompiler: \\(.+\\)\nRepo schema: \\(.+\\)" in
   let group n s = Str.matched_group n s in
   let version s = group 1 s in

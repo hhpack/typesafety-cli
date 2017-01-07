@@ -1,8 +1,8 @@
 open Cmdliner
 
 let check_hhvm_installed () =
-  match HHVMVersion.check_hhvm_version () with
-    | Ok v -> Ok (HHVMVersion.parse_hhvm_version v)
+  match HHVM.check_version () with
+    | Ok v -> Ok (HHVM.parse_version v)
     | Error e -> Error e
 
 let check_hhconfg () =

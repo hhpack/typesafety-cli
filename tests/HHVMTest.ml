@@ -1,5 +1,5 @@
 open OUnit2
-open HHVMVersion
+open HHVM
 
 let test_parse_hhvm_version =
   "parse_hhvm_version" >:: (
@@ -8,7 +8,7 @@ let test_parse_hhvm_version =
       let hhvm_compiler = "Compiler: tags/HHVM-3.17.0-0-ga34af693b558ed98ffafc3f5127e00959e145e4f\n" in
       let hhvm_repo_schema = "Repo schema: 8eda451fe80742a18e0e2e8917aa4053c2c1afe7\n" in
       let hhvm_version_output = hhvm_version ^ hhvm_compiler ^ hhvm_repo_schema in
-      let result = match parse_hhvm_version hhvm_version_output with
+      let result = match parse_version hhvm_version_output with
         | Some v -> v
         | None -> { version=""; compiler=""; repo_schema=""; } in
 

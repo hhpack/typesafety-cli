@@ -18,7 +18,7 @@ Library "typesafety"
     TypesafetyReporter,
     HHConfig,
     HHClient,
-    HHVMVersion,
+    HHVM,
     File,
     SourceFile,
     Lines,

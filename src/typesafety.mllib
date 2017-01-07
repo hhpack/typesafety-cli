@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: e92d4f68351be3f5ba943aa5d903be9d)
+# DO NOT EDIT (digest: e8a61c55b4a7c3fe38733e4cc27ecb7a)
 Typesafety
 TypesafetyCheck
 TypecheckerCheck_t
@@ -7,7 +7,7 @@ TypecheckerCheck_j
 TypesafetyReporter
 HHConfig
 HHClient
-HHVMVersion
+HHVM
 File
 SourceFile
 Lines
