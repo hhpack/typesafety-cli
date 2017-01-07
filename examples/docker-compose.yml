@@ -1,0 +1,6 @@
+version: "2"
+services:
+  typesafety:
+    image: holyshared/typesafey:latest
+    container_name: 'typesafety_example'
+    command: /home/ocaml/examples/build

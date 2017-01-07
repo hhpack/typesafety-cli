@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+#sudo opam init
+#eval `opam config env`
+opam list
