@@ -10,21 +10,21 @@ let unlink_config dir =
   with Sys_error _ -> ()
 
 let assert_hhconfg =
-  match create_hhconfg_if_not_exists temp_dir with
+  match create_if_not_exists temp_dir with
     | Ok v -> assert_equal v temp_config_file
     | Error e -> assert_failure e
 
 let test_hhconfg_not_exists _ =
   unlink_config temp_dir;
-  if hhconfg_exists temp_dir then assert_failure "File prerequisite is invalid";
+  if exists temp_dir then assert_failure "File prerequisite is invalid";
 
-  match create_hhconfg_if_not_exists temp_dir with
+  match create_if_not_exists temp_dir with
     | Ok v -> assert_equal v temp_config_file
     | Error e -> assert_failure e
 
 let test_hhconfg_exists _ =
-  if hhconfg_exists temp_dir then unlink_config temp_dir;
-  match touch_hhconfig temp_dir with
+  if exists temp_dir then unlink_config temp_dir;
+  match touch temp_dir with
     | Ok v -> assert_hhconfg
     | Error e -> assert_failure e
 

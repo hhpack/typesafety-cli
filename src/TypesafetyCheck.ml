@@ -6,7 +6,7 @@ let check_hhvm_installed () =
     | Error e -> Error e
 
 let check_hhconfg () =
-  HHConfig.create_hhconfg_if_not_exists (Sys.getcwd ())
+  HHConfig.create_if_not_exists (Sys.getcwd ())
 
 let check_env () =
   match check_hhvm_installed () with
