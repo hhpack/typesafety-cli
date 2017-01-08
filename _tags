@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 211256b41ddea25ba907cf2b4bf4daf2)
+# DO NOT EDIT (digest: 5835ef2cad1846d91a54516608460e8e)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -17,12 +17,12 @@ true: annot, bin_annot
 # Library typesafety
 "src/typesafety.cmxs": use_typesafety
 # Executable typesafety
-"src/Typesafety.native": pkg_atdgen
-"src/Typesafety.native": pkg_cmdliner
-"src/Typesafety.native": pkg_process
-"src/Typesafety.native": pkg_str
-"src/Typesafety.native": pkg_threads
-"src/Typesafety.native": use_typesafety
+"src/typesafety.native": pkg_atdgen
+"src/typesafety.native": pkg_cmdliner
+"src/typesafety.native": pkg_process
+"src/typesafety.native": pkg_str
+"src/typesafety.native": pkg_threads
+"src/typesafety.native": use_typesafety
 <src/*.ml{,i,y}>: pkg_atdgen
 <src/*.ml{,i,y}>: pkg_cmdliner
 <src/*.ml{,i,y}>: pkg_process
@@ -30,13 +30,13 @@ true: annot, bin_annot
 <src/*.ml{,i,y}>: pkg_threads
 <src/*.ml{,i,y}>: use_typesafety
 # Executable test
-"tests/Test.native": pkg_atdgen
-"tests/Test.native": pkg_cmdliner
-"tests/Test.native": pkg_oUnit
-"tests/Test.native": pkg_process
-"tests/Test.native": pkg_str
-"tests/Test.native": pkg_threads
-"tests/Test.native": use_typesafety
+"tests/test.native": pkg_atdgen
+"tests/test.native": pkg_cmdliner
+"tests/test.native": pkg_oUnit
+"tests/test.native": pkg_process
+"tests/test.native": pkg_str
+"tests/test.native": pkg_threads
+"tests/test.native": use_typesafety
 <tests/*.ml{,i,y}>: pkg_atdgen
 <tests/*.ml{,i,y}>: pkg_cmdliner
 <tests/*.ml{,i,y}>: pkg_oUnit

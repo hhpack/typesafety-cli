@@ -30,14 +30,14 @@ Library "typesafety"
 
 Executable typesafety
   Path:       src
-  MainIs:     Typesafety.ml
+  MainIs:     typesafety.ml
   CompiledObject: native
   BuildDepends:
     str, atdgen, threads, cmdliner, process, typesafety
 
 Executable test
   Path: tests
-  MainIs: Test.ml
+  MainIs: test.ml
   Build$: flag(tests)
   CompiledObject: native
   Install: false
