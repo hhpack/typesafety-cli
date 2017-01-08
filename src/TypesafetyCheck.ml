@@ -8,13 +8,24 @@ let check_hhvm_installed () =
 let check_hhconfg () =
   HHConfig.create_if_not_exists (Sys.getcwd ())
 
+let installed_version v =
+  let open HHVM in
+  match v with
+    | Some v -> print_endline v.version
+    | None -> print_string "oops!!"
+
 let check_env () =
   match check_hhvm_installed () with
-    | Ok _ -> check_hhconfg ()
+    | Ok v -> installed_version v; check_hhconfg ()
+    | Error e -> Error e
+
+let typecheck () = 
+  match check_env () with
+    | Ok _ -> HHClient.typecheck_json ()
     | Error e -> Error e
 
 let check no_hhconfig =
-  match check_env () with
+  match typecheck () with
     | Ok v -> TypesafetyReporter.print_json v; Ok ()
     | Error e -> Error e
 
