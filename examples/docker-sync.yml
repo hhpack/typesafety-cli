@@ -3,9 +3,23 @@ options:
 
 syncs:
   typesafety-sync:
-    src: '../'
-    dest: '/home/ocaml'
+    notify_terminal: true
+    src: '..'
+    dest: '/home/typesafety/projects'
+    sync_user: typesafety
+    sync_group: typesafety
     sync_strategy: 'rsync'
-    sync_host_ip: 127.0.0.1
     sync_host_port: 10871
-    sync_excludes: ['Test.native','Typesafety.native']
+    sync_excludes_type: Path
+    sync_excludes:
+      - _build
+      - .git
+      - examples/docker-compose-dev.yml
+      - examples/docker-compose.yml
+      - examples/docker-sync.yml
+      - examples/Dockerfile
+      - examples/typesafetysudo
+      - setup.data
+      - setup.log
+      - test.native
+      - typesafety.native
