@@ -5,11 +5,12 @@
  * with this source code in the file LICENSE.
  *)
 
-open Cmdliner
+module SourceFileName = struct
+  type t = string
+  let equal = (=)
+  let hash = Hashtbl.hash
+end
 
-let program_terminate = function
-  | `Error _ -> exit 1
-  | _ -> exit 0
+module Cache = Hashtbl.Make(SourceFileName)
 
-let () =
-  program_terminate (Term.eval (TypesafetyCheck.check_t, TypesafetyCheck.info))
+include Cache

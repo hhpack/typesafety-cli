@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+source .profile
+
+cd projects
+oasis setup-clean
+oasis setup
+make clean
+make build
+./typesafety.native

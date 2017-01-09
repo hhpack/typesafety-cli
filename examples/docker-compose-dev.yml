@@ -1,0 +1,9 @@
+version: "2"
+services:
+  typesafety:
+    volumes_from:
+      - container:typesafety-sync:rw
+
+volumes:
+  typesafety-sync:
+    external: true

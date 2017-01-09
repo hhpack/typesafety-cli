@@ -5,11 +5,11 @@
  * with this source code in the file LICENSE.
  *)
 
-open Cmdliner
+module LineNumber = struct
+  type t = int
+  let compare = compare
+end
 
-let program_terminate = function
-  | `Error _ -> exit 1
-  | _ -> exit 0
+module Lines = Map.Make(LineNumber)
 
-let () =
-  program_terminate (Term.eval (TypesafetyCheck.check_t, TypesafetyCheck.info))
+include Lines

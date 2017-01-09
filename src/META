@@ -1,0 +1,12 @@
+# OASIS_START
+# DO NOT EDIT (digest: 98357f3808e33f303f1bbc5483f3d857)
+version = "0.1.0"
+description = "Type check wrapper for Hack"
+requires = "str atdgen threads cmdliner process"
+archive(byte) = "typesafety.cma"
+archive(byte, plugin) = "typesafety.cma"
+archive(native) = "typesafety.cmxa"
+archive(native, plugin) = "typesafety.cmxs"
+exists_if = "typesafety.cma"
+# OASIS_STOP
+

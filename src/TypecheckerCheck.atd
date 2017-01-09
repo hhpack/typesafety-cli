@@ -1,0 +1,25 @@
+(**
+ * Copyright 2016 Noritaka Horio <holy.shared.design@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ *)
+
+type error_detail = {
+  descr: string;
+  path: string;
+  line: int;
+  start: int;
+  end: int;
+  code: int;
+} <ocaml field_prefix="source_">
+
+type error = {
+  messages <json name="message">: error_detail list;
+} <ocaml field_prefix="error_">
+
+type result = {
+  passed: bool;
+  errors: error list;
+  version: string;
+}
