@@ -6,22 +6,26 @@ Authors:     Noritka Horio <holy.shared.design@gmail.com>
 License:     MIT
 Plugins:     META (0.4), DevFiles (0.4)
 BuildTools:  ocamlbuild
-PreBuildCommand: atdgen -t src/typechecker_check.atd && atdgen -j src/typechecker_check.atd
+PreBuildCommand: atdgen -t src/TypecheckerCheck.atd -o src/TypecheckerCheck && atdgen -j src/TypecheckerCheck.atd -o src/TypecheckerCheck
 
 Library "typesafety"
   Path: src
   Modules:
     Typesafety,
-    Typesafety_reporter,
-    Typechecker_check_t,
-    Typechecker_check_j,
+    TypesafetyCheck,
+    TypecheckerCheck_t,
+    TypecheckerCheck_j,
+    TypesafetyReporter,
+    HHConfig,
+    HHClient,
+    HHVM,
     File,
-    Source_file,
+    SourceFile,
     Lines,
     Color,
     Cache
 
-  BuildDepends: atdgen, threads
+  BuildDepends: str, atdgen, threads, cmdliner, process
   FindlibName: typesafety
 
 Executable typesafety
@@ -29,7 +33,7 @@ Executable typesafety
   MainIs:     typesafety.ml
   CompiledObject: native
   BuildDepends:
-    atdgen, threads, typesafety
+    str, atdgen, threads, cmdliner, process, typesafety
 
 Executable test
   Path: tests
@@ -38,7 +42,7 @@ Executable test
   CompiledObject: native
   Install: false
   BuildDepends:
-    str, atdgen, threads, typesafety, oUnit
+    str, atdgen, threads, cmdliner, process, typesafety, oUnit
 
 Test test
   Run$:               flag(tests)

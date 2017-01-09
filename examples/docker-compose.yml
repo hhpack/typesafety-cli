@@ -1,0 +1,6 @@
+version: "2"
+services:
+  typesafety:
+    image: holyshared/typesafety:latest
+    container_name: 'typesafety_example'
+    command: bash -c /home/typesafety/projects/examples/build

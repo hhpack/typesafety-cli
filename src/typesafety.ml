@@ -1,2 +1,8 @@
+open Cmdliner
+
+let program_terminate = function
+  | `Error _ -> exit 1
+  | _ -> exit 0
+
 let () =
-  Typesafety_reporter.print_result_file "output.json";;
+  program_terminate (Term.eval (TypesafetyCheck.check_t, TypesafetyCheck.info))
