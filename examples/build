@@ -7,4 +7,4 @@ oasis setup-clean
 oasis setup
 make clean
 make build
-./typesafety.native
+./typesafety.native --verbose

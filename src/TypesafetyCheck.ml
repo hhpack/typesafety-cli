@@ -24,22 +24,18 @@ let noop v = Ok ()
 let verbose v f =
   if v then f else noop
 
-let version_printer ctx =
-  let print_version v = Ok (HHVM.print_version ctx.stdout v) in
-  verbose ctx.verbose print_version
-
-let start_message_printer ctx =
-  let start_message _ = Ok (output_string ctx.stdout (Color.debug "Checking the version of hhvm installed.")) in
-  verbose ctx.verbose start_message
+let stdout_writer ctx =
+  let print_message s = Ok (output_string ctx.stdout s) in
+  verbose ctx.verbose print_message
 
 let check_hhvm_installed ctx =
-  let version_printer = version_printer ctx in
-  let start = start_message_printer ctx in  
-
-  (* let start = Ok (print_endline (Color.debug "Checking the version of hhvm installed.")) in *)
+  let open HHVM in
+  let write_stdout = stdout_writer ctx in
+  let print_version v = write_stdout (Color.debug "Installed hhvm version: %s.\n" v.version) in
+  let start = write_stdout (Color.debug "Checking the version of hhvm installed.\n") in  
   let check_version _ = HHVM.check_version () in
   let parse_version o = next o HHVM.parse_version in
-  let print_installed_version o = next o version_printer in
+  let print_installed_version o = next o print_version in
   start |> check_version |> parse_version |> print_installed_version
 
 let check_hhconfg ctx =
