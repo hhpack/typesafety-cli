@@ -14,23 +14,28 @@ type context = {
   stderr: out_channel;
 }
 
-let check_hhvm_installed ctx =
-  match HHVM.check_version () with
-    | Ok v -> Ok (HHVM.parse_version v)
+let next o f =
+  match o with
+    | Ok v -> f v
     | Error e -> Error e
+
+let print_installed_version v =
+  let open HHVM in
+  Ok (print_endline (Color.info "Installed hhvm version: %s." v.version))
+
+let check_hhvm_installed ctx =
+  let start = Ok (print_endline (Color.info "Checking the version of hhvm installed.")) in
+  let check_version _ = HHVM.check_version () in
+  let parse_version o = next o HHVM.parse_version in
+  let print_installed_version o = next o print_installed_version in
+  start |> check_version |> parse_version |> print_installed_version
 
 let check_hhconfg ctx =
   HHConfig.create_if_not_exists (Sys.getcwd ())
 
-let installed_version v =
-  let open HHVM in
-  match v with
-    | Ok v -> print_endline v.version
-    | Error e -> print_string e
-
 let check_env ctx =
   match check_hhvm_installed ctx with
-    | Ok v -> installed_version v; check_hhconfg ctx
+    | Ok _ -> check_hhconfg ctx
     | Error e -> Error e
 
 let typecheck ctx = 
