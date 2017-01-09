@@ -23,10 +23,10 @@ let parse_version output =
   let compiler s = group 2 s in
   let repo_schema s = group 3 s in
   if Str.string_match regexp output 0 then
-    Some {
+    Ok {
       version=(version output);
       compiler=(compiler output);
       repo_schema=(repo_schema output);
     }
   else
-    None
+    Error "hhvm not installed"

@@ -25,8 +25,8 @@ let check_hhconfg ctx =
 let installed_version v =
   let open HHVM in
   match v with
-    | Some v -> print_endline v.version
-    | None -> print_string "oops!!"
+    | Ok v -> print_endline v.version
+    | Error e -> print_string e
 
 let check_env ctx =
   match check_hhvm_installed ctx with
