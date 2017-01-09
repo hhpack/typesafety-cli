@@ -10,6 +10,8 @@ open Cmdliner
 type context = {
   no_hhconfig: bool;
   verbose: bool;
+  stdout: out_channel;
+  stderr: out_channel;
 }
 
 let check_hhvm_installed ctx =
@@ -39,9 +41,10 @@ let typecheck ctx =
 let check no_hhconfig verbose =
   let ctx = {
     no_hhconfig=no_hhconfig;
-    verbose=verbose
+    verbose=verbose;
+    stdout=stdout;
+    stderr=stderr;
   } in
-
   match typecheck ctx with
     | Ok v -> TypesafetyReporter.print_json v; Ok ()
     | Error e -> Error e
