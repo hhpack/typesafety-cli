@@ -4,28 +4,34 @@ open HHConfig
 let temp_dir = Filename.get_temp_dir_name ()
 let temp_config_file = (File.dirname temp_dir) ^ "/" ^ ".hhconfig"
 
-let unlink_config dir =
-  try
-    Sys.remove ((File.dirname dir) ^ "/" ^ config_file)
-  with Sys_error _ -> ()
-
-let assert_hhconfg =
-  match create_if_not_exists temp_dir with
-    | Ok v -> assert_equal v temp_config_file
-    | Error e -> assert_failure e
+let unlink_config file =
+  if Sys.file_exists file then
+    try
+      Sys.remove file
+    with Sys_error _ -> ()
+  else
+    ()
 
 let test_hhconfg_not_exists _ =
-  unlink_config temp_dir;
-  if exists temp_dir then assert_failure "File prerequisite is invalid";
-
+  let created = FileCreated temp_config_file in
+  unlink_config temp_config_file;
   match create_if_not_exists temp_dir with
-    | Ok v -> assert_equal v temp_config_file
+    | Ok v -> assert_equal v created
     | Error e -> assert_failure e
 
 let test_hhconfg_exists _ =
-  if exists temp_dir then unlink_config temp_dir;
-  match touch temp_dir with
-    | Ok v -> assert_hhconfg
+  let already_exists = AlreadyExists temp_config_file in
+  let create_hhconfig () =
+    if not (exists temp_config_file) then
+      match touch temp_config_file with
+        | Ok _ -> ()
+        | Error e -> assert_failure e
+    else
+      () in
+  create_hhconfig ();
+
+  match create_if_not_exists temp_dir with
+    | Ok v -> assert_equal v already_exists
     | Error e -> assert_failure e
 
 let all_test_hhconfg =

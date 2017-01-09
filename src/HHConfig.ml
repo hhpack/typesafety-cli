@@ -5,22 +5,28 @@
  * with this source code in the file LICENSE.
  *)
 
+type absolute_path = string
+
+type hhconfig_result =
+  | AlreadyExists of absolute_path
+  | FileCreated of absolute_path
+
 let config_file = ".hhconfig"
 let config_path dir = (File.dirname dir) ^ "/" ^ config_file
 
-let exists dir =
-  Sys.file_exists (config_path dir)
+let exists file = Sys.file_exists file
 
-let touch dir =
-  let absolute_path = config_path dir in
+let touch file =
+  let created = (FileCreated file) in
   try
-    close_out (open_out absolute_path);
-    Ok absolute_path
+    close_out (open_out file);
+    Ok created
   with Sys_error e -> Error e
 
 let create_if_not_exists dir =
-  let absolute_path = config_path dir in
-  if exists dir then
-    Ok absolute_path
+  let file = config_path dir in
+  let already_exists = AlreadyExists file in
+  if exists file then
+    Ok already_exists
   else
-    touch dir
+    touch file
