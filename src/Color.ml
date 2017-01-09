@@ -30,6 +30,7 @@ let red fmt = sprintf (color_format Red fmt)
 let cyan fmt = sprintf (color_format Cyan fmt)
 let white fmt = sprintf (color_format White fmt)
 
+let debug fmt = sprintf (color_format White fmt)
 let info fmt = sprintf (color_format Cyan fmt)
 let error fmt = sprintf (color_format Red fmt)
 let warn fmt = sprintf (color_format Yellow fmt)

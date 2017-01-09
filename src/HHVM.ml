@@ -30,3 +30,7 @@ let parse_version output =
     }
   else
     Error "hhvm not installed"
+
+let print_version o v =
+  let message v = Color.debug "Installed hhvm version: %s." v.version in
+  output_string o (message v)
