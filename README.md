@@ -2,8 +2,16 @@
 
 [![Build Status](https://travis-ci.org/hhpack/typesafety-cli.svg?branch=master)](https://travis-ci.org/hhpack/typesafety-cli)
 
-
 ## Environment
+
+The following environment is necessary to build.
+
+* OCaml >= 4.04.0
+* Opam >= 1.2.2
+
+### Dependent packages
+
+You can install dependent packages with the following command.
 
 	opam switch 4.04.0
 	opam install oasis ocamlfind atdgen cmdliner process oUnit
