@@ -19,15 +19,21 @@ let next o f =
     | Ok v -> f v
     | Error e -> Error e
 
-let print_installed_version v =
-  let open HHVM in
-  Ok (print_endline (Color.info "Installed hhvm version: %s." v.version))
+let noop v = Ok ()
+
+let verbose v f =
+  if v then f else noop
+
+let version_printer ctx =
+  let print_version v = Ok (HHVM.print_version ctx.stdout v) in
+  verbose ctx.verbose print_version
 
 let check_hhvm_installed ctx =
-  let start = Ok (print_endline (Color.info "Checking the version of hhvm installed.")) in
+  let version_printer = version_printer ctx in
+  let start = Ok (print_endline (Color.debug "Checking the version of hhvm installed.")) in
   let check_version _ = HHVM.check_version () in
   let parse_version o = next o HHVM.parse_version in
-  let print_installed_version o = next o print_installed_version in
+  let print_installed_version o = next o version_printer in
   start |> check_version |> parse_version |> print_installed_version
 
 let check_hhconfg ctx =
