@@ -28,9 +28,15 @@ let version_printer ctx =
   let print_version v = Ok (HHVM.print_version ctx.stdout v) in
   verbose ctx.verbose print_version
 
+let start_message_printer ctx =
+  let start_message _ = Ok (output_string ctx.stdout (Color.debug "Checking the version of hhvm installed.")) in
+  verbose ctx.verbose start_message
+
 let check_hhvm_installed ctx =
   let version_printer = version_printer ctx in
-  let start = Ok (print_endline (Color.debug "Checking the version of hhvm installed.")) in
+  let start = start_message_printer ctx in  
+
+  (* let start = Ok (print_endline (Color.debug "Checking the version of hhvm installed.")) in *)
   let check_version _ = HHVM.check_version () in
   let parse_version o = next o HHVM.parse_version in
   let print_installed_version o = next o version_printer in
