@@ -14,6 +14,10 @@ type hhconfig_result =
 let file_created file = FileCreated file
 let already_exists file = AlreadyExists file
 
+let string_of_result = function
+  | AlreadyExists v -> v
+  | FileCreated v -> v
+
 let config_file = ".hhconfig"
 let config_path ?(dir = Sys.getcwd ()) () = (File.dirname dir) ^ "/" ^ config_file
 
