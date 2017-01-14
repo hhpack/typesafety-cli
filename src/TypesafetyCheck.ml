@@ -47,7 +47,11 @@ let check_hhconfg ctx =
   let config_file = HHConfig.config_path () in
   let exists = HHConfig.exists config_file in
   let not_exists_error = Error (config_file ^ " is not found") in
-  HHConfig.create_if (not exists) not_exists_error
+  let no_hhconfig_create = not ctx.no_hhconfig in
+  if not exists then
+    HHConfig.create_if no_hhconfig_create not_exists_error
+  else
+    Ok (HHConfig.already_exists config_file)
 
 let typecheck ctx = 
   let check_hhvm_installed = check_hhvm_installed ctx in

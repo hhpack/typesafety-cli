@@ -11,13 +11,16 @@ type hhconfig_result =
   | AlreadyExists of absolute_path
   | FileCreated of absolute_path
 
+let file_created file = FileCreated file
+let already_exists file = AlreadyExists file
+
 let config_file = ".hhconfig"
 let config_path ?(dir = Sys.getcwd ()) () = (File.dirname dir) ^ "/" ^ config_file
 
 let exists file = Sys.file_exists file
 
 let touch file =
-  let created = (FileCreated file) in
+  let created = (file_created file) in
   try
     close_out (open_out file);
     Ok created
