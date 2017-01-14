@@ -45,7 +45,7 @@ let check_hhvm_installed ctx =
 
 let check_hhconfg ctx =
   let write_stdout = stdout_writer ctx in
-  let auto_config_generate _ = HHConfig.create_if_auto_generate (not ctx.no_hhconfig) in
+  let auto_config_generate _ = HHConfig.create_if_auto_generate ctx.no_hhconfig in
   let start = write_stdout (Color.debug "Checking configuration file.\n") in
   start |> auto_config_generate
 
