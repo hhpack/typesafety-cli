@@ -14,9 +14,14 @@ type context = {
   stderr: out_channel;
 }
 
-let next o f =
+let next_with_result o f =
   match o with
     | Ok v -> f v
+    | Error e -> Error e
+
+let next_with_context o ctx f =
+  match o with
+    | Ok _ -> f ctx
     | Error e -> Error e
 
 let noop v = Ok ()
@@ -34,8 +39,8 @@ let check_hhvm_installed ctx =
   let print_version v = write_stdout (Color.debug "Installed hhvm version: %s.\n" v.version) in
   let start = write_stdout (Color.debug "Checking the version of hhvm installed.\n") in  
   let check_version _ = HHVM.check_version () in
-  let parse_version o = next o HHVM.parse_version in
-  let print_installed_version o = next o print_version in
+  let parse_version o = next_with_result o HHVM.parse_version in
+  let print_installed_version o = next_with_result o print_version in
   start |> check_version |> parse_version |> print_installed_version
 
 let check_hhconfg ctx =
@@ -44,15 +49,12 @@ let check_hhconfg ctx =
   let not_exists_error = Error (config_file ^ " is not found") in
   HHConfig.create_if (not exists) not_exists_error
 
-let check_env ctx =
-  match check_hhvm_installed ctx with
-    | Ok _ -> check_hhconfg ctx
-    | Error e -> Error e
-
 let typecheck ctx = 
-  match check_env ctx with
-    | Ok _ -> HHClient.typecheck_json ()
-    | Error e -> Error e
+  let check_hhvm_installed = check_hhvm_installed ctx in
+  let check_hhconfg o = next_with_context o ctx check_hhconfg in
+  let typecheck_json _ = HHClient.typecheck_json () in
+  let typecheck o = next_with_context o ctx typecheck_json in
+  check_hhvm_installed |> check_hhconfg |> typecheck
 
 let check no_hhconfig verbose =
   let ctx = {
