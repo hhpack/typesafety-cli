@@ -12,7 +12,7 @@ type hhconfig_result =
   | FileCreated of absolute_path
 
 let config_file = ".hhconfig"
-let config_path dir = (File.dirname dir) ^ "/" ^ config_file
+let config_path ?(dir = Sys.getcwd ()) () = (File.dirname dir) ^ "/" ^ config_file
 
 let exists file = Sys.file_exists file
 
@@ -23,10 +23,16 @@ let touch file =
     Ok created
   with Sys_error e -> Error e
 
-let create_if_not_exists dir =
-  let file = config_path dir in
-  let already_exists = AlreadyExists file in
-  if exists file then
-    Ok already_exists
+let create_if ?(dir = Sys.getcwd ()) v default =
+  if v then
+    touch (config_path ~dir ())
   else
-    touch file
+    default
+
+(* unused? *)
+let create_if_not_exists dir =
+  let file = config_path ~dir () in
+  let already_exists = AlreadyExists file in
+  let file_not_exists = not (exists file) in
+  let file_already_exists = Ok already_exists in
+  create_if file_not_exists file_already_exists

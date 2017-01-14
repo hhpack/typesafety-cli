@@ -39,7 +39,10 @@ let check_hhvm_installed ctx =
   start |> check_version |> parse_version |> print_installed_version
 
 let check_hhconfg ctx =
-  HHConfig.create_if_not_exists (Sys.getcwd ())
+  let config_file = HHConfig.config_path () in
+  let exists = HHConfig.exists config_file in
+  let not_exists_error = Error (config_file ^ " is not found") in
+  HHConfig.create_if (not exists) not_exists_error
 
 let check_env ctx =
   match check_hhvm_installed ctx with
