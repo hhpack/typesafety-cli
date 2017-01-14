@@ -37,6 +37,13 @@ let test_hhconfg_exists _ =
     | Ok v -> assert_equal v already_exists
     | Error e -> assert_failure e
 
+let test_auto_generate _ =
+  let _ = unlink_config temp_config_file in
+  let created = FileCreated temp_config_file in
+  match create_if_auto_generate ~dir:temp_dir false with
+    | Ok v -> assert_equal v created
+    | Error e -> assert_failure e
+
 let all_test_hhconfg =
   "create_if" >::: [
     ("exists" >:: test_hhconfg_exists);
@@ -45,4 +52,5 @@ let all_test_hhconfg =
 
 let tests = "all_tests" >::: [
   all_test_hhconfg;
+  ("test_auto_generate" >:: test_auto_generate);
 ]

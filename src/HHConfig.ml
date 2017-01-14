@@ -38,6 +38,6 @@ let create_if_auto_generate ?(dir = Sys.getcwd ()) no_hhconfig =
   let not_exists_error = Error (config_file ^ " is not found") in
   let no_hhconfig_create = not no_hhconfig in
   if not_exists then
-    create_if no_hhconfig_create not_exists_error
+    create_if ~dir no_hhconfig_create not_exists_error
   else
     Ok (already_exists config_file)
