@@ -5,22 +5,43 @@
  * with this source code in the file LICENSE.
  *)
 
+type absolute_path = string
+
+type hhconfig_result =
+  | AlreadyExists of absolute_path
+  | FileCreated of absolute_path
+
+let file_created file = FileCreated file
+let already_exists file = AlreadyExists file
+
+let string_of_result = function
+  | AlreadyExists v -> Printf.sprintf "File %s is already exists." v
+  | FileCreated v -> Printf.sprintf "File %s created." v
+
 let config_file = ".hhconfig"
-let config_path dir = (File.dirname dir) ^ "/" ^ config_file
+let config_path ?(dir = Sys.getcwd ()) () = (File.dirname dir) ^ "/" ^ config_file
 
-let exists dir =
-  Sys.file_exists (config_path dir)
+let exists file = Sys.file_exists file
 
-let touch dir =
-  let absolute_path = config_path dir in
+let touch file =
+  let created = (file_created file) in
   try
-    close_out (open_out absolute_path);
-    Ok absolute_path
+    close_out (open_out file);
+    Ok created
   with Sys_error e -> Error e
 
-let create_if_not_exists dir =
-  let absolute_path = config_path dir in
-  if exists dir then
-    Ok absolute_path
+let create_if ?(dir = Sys.getcwd ()) v default =
+  if v then
+    touch (config_path ~dir ())
   else
-    touch dir
+    default
+
+let create_if_auto_generate ?(dir = Sys.getcwd ()) no_hhconfig =
+  let config_file = config_path ~dir () in
+  let not_exists = not (exists config_file) in
+  let not_exists_error = Error (config_file ^ " is not found") in
+  let no_hhconfig_create = not no_hhconfig in
+  if not_exists then
+    create_if ~dir no_hhconfig_create not_exists_error
+  else
+    Ok (already_exists config_file)
