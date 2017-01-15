@@ -15,8 +15,8 @@ let file_created file = FileCreated file
 let already_exists file = AlreadyExists file
 
 let string_of_result = function
-  | AlreadyExists v -> "already exists: " ^ v
-  | FileCreated v -> "file created: " ^ v
+  | AlreadyExists v -> Printf.sprintf "File %s is already exists." v
+  | FileCreated v -> Printf.sprintf "File %s created." v
 
 let config_file = ".hhconfig"
 let config_path ?(dir = Sys.getcwd ()) () = (File.dirname dir) ^ "/" ^ config_file
