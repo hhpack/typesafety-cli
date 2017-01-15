@@ -4,6 +4,9 @@
 
 ![Screen Shot](https://github.com/hhpack/typesafety-cli/blob/master/screenshot.png?raw=true)
 
+Typesafety is a type checker wrapper for [Hack](http://hacklang.org/).  
+Detailed report at type check, automatic generation of .hhconfig, etc.
+
 ## Environment
 
 The following environment is necessary to build.
