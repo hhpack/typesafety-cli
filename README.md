@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/hhpack/typesafety-cli.svg?branch=master)](https://travis-ci.org/hhpack/typesafety-cli)
 
+![Screen Shot](https://github.com/hhpack/typesafety-cli/blob/master/screenshot.png?raw=true)
+
 ## Environment
 
 The following environment is necessary to build.
