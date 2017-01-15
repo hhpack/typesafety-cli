@@ -11,22 +11,37 @@ type hhconfig_result =
   | AlreadyExists of absolute_path
   | FileCreated of absolute_path
 
+let file_created file = FileCreated file
+let already_exists file = AlreadyExists file
+
+let string_of_result = function
+  | AlreadyExists v -> Printf.sprintf "File %s is already exists." v
+  | FileCreated v -> Printf.sprintf "File %s created." v
+
 let config_file = ".hhconfig"
-let config_path dir = (File.dirname dir) ^ "/" ^ config_file
+let config_path ?(dir = Sys.getcwd ()) () = (File.dirname dir) ^ "/" ^ config_file
 
 let exists file = Sys.file_exists file
 
 let touch file =
-  let created = (FileCreated file) in
+  let created = (file_created file) in
   try
     close_out (open_out file);
     Ok created
   with Sys_error e -> Error e
 
-let create_if_not_exists dir =
-  let file = config_path dir in
-  let already_exists = AlreadyExists file in
-  if exists file then
-    Ok already_exists
+let create_if ?(dir = Sys.getcwd ()) v default =
+  if v then
+    touch (config_path ~dir ())
   else
-    touch file
+    default
+
+let create_if_auto_generate ?(dir = Sys.getcwd ()) no_hhconfig =
+  let config_file = config_path ~dir () in
+  let not_exists = not (exists config_file) in
+  let not_exists_error = Error (config_file ^ " is not found") in
+  let no_hhconfig_create = not no_hhconfig in
+  if not_exists then
+    create_if ~dir no_hhconfig_create not_exists_error
+  else
+    Ok (already_exists config_file)
