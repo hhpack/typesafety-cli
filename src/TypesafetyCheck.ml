@@ -6,12 +6,11 @@
  *)
 
 open Cmdliner
+open Log
 
 type context = {
   no_hhconfig: bool;
   verbose: bool;
-  stdout: out_channel;
-  stderr: out_channel;
 }
 
 let next_with_result o f =
@@ -29,27 +28,21 @@ let noop v = Ok ()
 let verbose v f =
   if v then f else noop
 
-let stdout_writer ctx =
-  let print_message s = Ok (output_string ctx.stdout s) in
-  verbose ctx.verbose print_message
-
 let check_hhvm_installed ctx =
   let open HHVM in
-  let write_stdout = stdout_writer ctx in
-  let print_version v = write_stdout (Color.debug "Installed hhvm version: %s.\n" v.version) in
-  let start = write_stdout (Color.debug "Checking the version of hhvm installed.\n") in  
+  let print_version v = Ok (debug "Installed hhvm version: %s.\n" v.version) in
+  let start = Ok (debug "Checking the version of hhvm installed.\n") in
   let check_version _ = HHVM.check_version () in
   let parse_version o = next_with_result o HHVM.parse_version in
   let print_installed_version o = next_with_result o print_version in
   start |> check_version |> parse_version |> print_installed_version
 
 let check_hhconfg ctx =
-  let write_stdout = stdout_writer ctx in
   let auto_config_generate _ = HHConfig.create_if_auto_generate ctx.no_hhconfig in
-  let start = write_stdout (Color.debug "Checking configuration file.\n") in
+  let start v = Ok (debug "Checking configuration file.\n") in
   let generated o =
     match o with
-      | Ok v -> write_stdout (Color.debug "%s\n" (HHConfig.string_of_result v))
+      | Ok v -> Ok (debug "%s\n" (HHConfig.string_of_result v))
       | Error e -> Error e in
   start |> auto_config_generate |> generated
 
@@ -64,9 +57,8 @@ let check no_hhconfig verbose =
   let ctx = {
     no_hhconfig=no_hhconfig;
     verbose=verbose;
-    stdout=stdout;
-    stderr=stderr;
   } in
+  set_verbose verbose;
   match typecheck ctx with
     | Ok v -> TypesafetyReporter.print_json v; Ok ()
     | Error e -> Error e
