@@ -1,11 +1,10 @@
 module ColorFormatter = struct
   open Color
-  let end_format = end_format ()
-  let debug fmt = (start_format White) ^^ fmt ^^ end_format
-  let info fmt = (start_format Cyan) ^^ fmt ^^ end_format
-  let warn fmt = (start_format Yellow) ^^ fmt ^^ end_format
-  let success fmt = (start_format Green) ^^ fmt ^^ end_format
-  let error fmt = (start_format Red) ^^ fmt ^^ end_format
+  let debug fmt = color_format White fmt
+  let info fmt = color_format Cyan fmt
+  let warn fmt = color_format Yellow fmt
+  let success fmt = color_format Green fmt
+  let error fmt = color_format Red fmt
 end
 
 let verbose = ref false

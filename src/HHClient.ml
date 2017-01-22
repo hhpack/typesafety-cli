@@ -8,6 +8,7 @@
 open Process
 open Process.Exit
 open Process.Output
+open Log
 
 let hhclient_command ?(args=[||]) cmd =
   let exec_args = Array.append [|cmd|] args in
@@ -39,9 +40,7 @@ let typecheck = function
   | Error e -> Error e
 
 let verbose = function
-  | Ok v ->
-    print_endline v;
-    Ok v
+  | Ok v -> debug "[hh_client]: %s" v; Ok v
   | Error e -> Error e
 
 let typecheck_json () =

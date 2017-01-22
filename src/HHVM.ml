@@ -5,6 +5,8 @@
  * with this source code in the file LICENSE.
  *)
 
+open Log
+
 type version = {
   version: string;
   compiler: string;
@@ -31,6 +33,5 @@ let parse_version output =
   else
     Error "hhvm not installed"
 
-let print_version o v =
-  let message v = Color.debug "Installed hhvm version: %s." v.version in
-  output_string o (message v)
+let print_version v =
+  info "Installed hhvm version: %s." v.version
