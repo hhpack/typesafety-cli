@@ -1,12 +1,39 @@
 language: c
 sudo: required
+before_install:
+  - gem install package_cloud
 install:
-  - bash -ex .travis-ci-install.sh
-os:
-  - linux
-  - osx
+  - bash -ex .travis-ci-install
+env:
+  global:
+    - PRODUCT=typesafety
+matrix:
+  include:
+    - os: linux
+      env: OCAML_VERSION=4.04.0 OS=ubuntu DIST=xenial
+    - os: linux
+      env: OCAML_VERSION=4.04.0 OS=ubuntu DIST=yakkety
+    - os: osx
+      env: OCAML_VERSION=4.04.0
 before_script:
   - eval $(opam config env)
   - make configure CONFIGUREFLAGS=--enable-tests
 script:
   - make test
+after_success:
+  - make clean configure
+  - make build
+  - bash -ex .artifacts
+addons:
+  artifacts:
+    s3_region: ap-northeast-1
+    paths:
+      - dist
+deploy:
+  provider: packagecloud
+  username: holyshared
+  repository: ${PRODUCT}
+  dist: ${OS}/${DIST}
+  token:
+    secure: Zw8xqNQlD+iOZ6wNcwv9mi2NmzBQI1lWZEdjzmtoW4CHZYBe6XPuM5wFAlx3DzNPDcJjQUTbeUwChgeva3vJbI5TVnFdVNQ4bbW22lLOzHiblKQMhonFDbPD1zqOe0h+z65ovOmShI6VOv78OqlNY9JSPrT127MjdVmb5pNAMqn6LGX4GE6LLXsMQrQGQCUITL626Rf2JdEMwSyc451H+utVcQXCG7m/iox2HcQY68W2PgZNMoW++COoKD5IPtBEhgQ30dbqX0Bi0QNbFN7Q8o1MdPmrjvV9v+/0POPwjukPkd0Z3OEjjLFOSbMkUGWY+dXmH7U16ojBugJPqRo/0g8C2iHal417/TYz3MznreZ+e6k+DtYDFloCjRvVWLRMeoEeBFQQGO8HHthTUAkkWe+YFO1U/nTpZGUOcuJr91rmZl6OW4u1glFzWKH3pslDqRKlWVgxydmkq/814yOCgOgqL/PA6+GsmOZrJp3q3ypAGr+/16ZoeHRcdyeFbOdKWNBPaap4Hj0w3TPZz1ciuPzh/RWktmO1jUQ+DwkmwN9Xbpob7EheqydEjwUHmkb/63ty0B57TxvP0nQlvmrsMulcfqthKb98Nz19RlRa1VVlS9agK2I+ne8thK+H/rPIQ237XOfWXFPbghVI/H0PVjrWualbqfi8zezIrjyMZOM=
+  package_glob: dist/*.{deb}

@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+# Create a artifacts directory
+mkdir dist
+
+UNAME=$(uname)
+MACHINE_ARCH=$(uname -m)
+
+# ------------------------------------------
+# Create a debian package
+# ------------------------------------------
+create_debian_artifacts() {
+  echo "Create a debian package"
+  if [ "${MACHINE_ARCH}" = "x86_64" ] ; then
+    PLATFORM="linux_amd64"
+  elif [ "${MACHINE_ARCH}" = "i686" ] ; then
+    PLATFORM="linux_386"
+  else
+    return
+  fi
+
+  mkdir -p package/deb/usr/bin
+  cp _build/src/typesafety.native package/deb/usr/bin/typesafety
+  fakeroot dpkg-deb --build ./package/deb .
+
+  cp *.deb dist
+  cp _build/src/typesafety.native dist/typesafety_$PLATFORM
+}
+
+create_macos_artifacts() {
+  echo "Create a macos package"
+  if [ "${MACHINE_ARCH}" = "x86_64" ] ; then
+    PLATFORM="darwin_amd64"
+  return
+  fi
+  cp _build/src/typesafety.native dist/typesafety_$PLATFORM
+}
+
+case $TRAVIS_OS_NAME in
+  osx) create_macos_artifacts ;;
+  linux) create_debian_artifacts ;;
+esac
+
+ls -l dist

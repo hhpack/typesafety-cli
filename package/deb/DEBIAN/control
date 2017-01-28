@@ -1,0 +1,5 @@
+Package: typesafety
+Maintainer: Noritaka Horio <holy.shared.design@gmail.com>
+Architecture: amd64
+Version: 0.4.0
+Description: Typecheck wrapper for Hack

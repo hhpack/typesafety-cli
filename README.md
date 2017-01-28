@@ -7,7 +7,24 @@
 Typesafety is a type checker wrapper for [Hack](http://hacklang.org/).  
 Detailed report at type check, automatic generation of .hhconfig, etc.
 
-## Environment
+
+## Basic usage
+
+Execute the following command in the directory where typecheck is to be performed.
+
+	typesafety
+
+If you want to know detailed specification method, execute the following command.
+
+	typesafety --help
+
+## Build
+
+You can build with the following command.
+
+	make build
+
+### Environment
 
 The following environment is necessary to build.
 
@@ -20,12 +37,6 @@ You can install dependent packages with the following command.
 
 	opam switch 4.04.0
 	opam install oasis ocamlfind atdgen cmdliner process oUnit
-
-## Build
-
-You can build with the following command.
-
-	make build
 
 ## Test
 
