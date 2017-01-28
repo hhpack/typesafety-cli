@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: e8a61c55b4a7c3fe38733e4cc27ecb7a)
+# DO NOT EDIT (digest: 70dde9edc7eaf14432c7fab2e231e3a9)
 Typesafety
 TypesafetyCheck
 TypecheckerCheck_t
@@ -13,4 +13,5 @@ SourceFile
 Lines
 Color
 Cache
+Log
 # OASIS_STOP

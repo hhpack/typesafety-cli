@@ -23,7 +23,8 @@ Library "typesafety"
     SourceFile,
     Lines,
     Color,
-    Cache
+    Cache,
+    Log
 
   BuildDepends: str, atdgen, threads, cmdliner, process
   FindlibName: typesafety

@@ -7,6 +7,7 @@
 
 open TypecheckerCheck_t
 open SourceFile
+open Log
 
 let line_number_length = 5
 
@@ -40,33 +41,26 @@ let lines_of_source file cache =
   match SourceFile.read_all file cache with
     | File lines -> lines
     | Cache lines -> lines
-    
-let formatter msg_seq =
-  if msg_seq == 0 then Color.error else Color.info
 
+let printer msg_seq =
+  if msg_seq == 0 then error else info
 
-let header_message err_seq msg_seq message =
-  let color_formatter = formatter msg_seq in
-  color_formatter "Error: %d - %s\n\n" err_seq message.source_path
+let print_header_message err_seq msg_seq message =
+  let log = printer msg_seq in
+  log "Error: %d - %s\n\n" err_seq message.source_path
 
-let description_message msg_seq message lines_of_source =
-  let color_formatter = formatter msg_seq in
+let print_description_message msg_seq message lines_of_source =
+  let log = printer msg_seq in
   let hint_description = hint_message message.source_start message.source_end in
-  let messages = [
-    color_formatter "%s\n\n" (indent_with message.source_descr);
-    color_formatter "%s\n" (indent_with (source_code lines_of_source message.source_line));
-    color_formatter "%s\n\n" (indent_with hint_description)
-  ] in
-  String.concat "" messages
+  log "%s\n\n" (indent_with message.source_descr);
+  log "%s\n" (indent_with (source_code lines_of_source message.source_line));
+  log "%s\n\n" (indent_with hint_description)
 
 let print_error_message cache err_seq =
   fun msg_seq message ->
     let lines_of_source = lines_of_source message.source_path cache in
-    let head_message = header_message err_seq msg_seq message in
-    let desc_message = description_message msg_seq message lines_of_source in
-    let default_messages = [ desc_message ] in
-    let messages = if msg_seq == 0 then head_message :: default_messages else default_messages in
-    List.iter print_string messages
+    if msg_seq == 0 then print_header_message err_seq msg_seq message;
+    print_description_message msg_seq message lines_of_source
 
 let print_error cache =
   fun err_seq err -> List.iteri (print_error_message cache (err_seq + 1)) err.error_messages
