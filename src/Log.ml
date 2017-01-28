@@ -14,8 +14,12 @@ let set_verbose verbose = if verbose then verbose_on () else verbose_off ()
 
 let output s = output_string stdout s
 let output_error s = output_string stderr s
+let quit s = ()
 
-let debug fmt = Printf.ksprintf output (ColorFormatter.debug fmt)
+let debug fmt =
+  let output = if !verbose then output else quit in
+  Printf.ksprintf output (ColorFormatter.debug fmt)
+
 let info fmt = Printf.ksprintf output (ColorFormatter.info fmt)
 let warn fmt = Printf.ksprintf output (ColorFormatter.warn fmt)
 let error fmt = Printf.ksprintf output_error (ColorFormatter.error fmt)
