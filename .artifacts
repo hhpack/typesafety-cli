@@ -2,6 +2,7 @@
 
 # Create a artifacts directory
 mkdir dist
+DIST_DIR="${PWD}/dist"
 
 UNAME=$(uname)
 MACHINE_ARCH=$(uname -m)
@@ -23,20 +24,9 @@ create_debian_artifacts() {
   cp _build/src/typesafety.native package/deb/usr/bin/typesafety
   fakeroot dpkg-deb --build ./package/deb .
 
-  cp *.deb dist
+  cp *.deb $DIST_DIR
 
-  # FIXME: Remove after checking
-  if [ "${TRAVIS_TAG}" = "" ] ; then
-    TRAVIS_TAG="0.4.0"
-  fi
-
-  ZIP_NAME=${PRODUCT}_${TRAVIS_TAG}_${PLATFORM}.zip
-  ZIP_DIRECTORY=/tmp/$PRODUCT/$PRODUCT_$PLATFORM
-
-  mkdir -p /tmp/$PRODUCT/$PLATFORM
-  cp _build/src/typesafety.native $ZIP_DIRECTORY/$PRODUCT
-  zip -rD $ZIP_NAME $ZIP_DIRECTORY
-  cp $ZIP_NAME dist
+  platform_archive $PLATFORM
 }
 
 create_macos_artifacts() {
@@ -45,19 +35,25 @@ create_macos_artifacts() {
     PLATFORM="darwin_amd64"
   return
   fi
+  platform_archive $PLATFORM
+}
 
+platform_archive() {
   # FIXME: Remove after checking
   if [ "${TRAVIS_TAG}" = "" ] ; then
     TRAVIS_TAG="0.4.0"
   fi
-
+  PLATFORM=$1
   ZIP_NAME=${PRODUCT}_${TRAVIS_TAG}_${PLATFORM}.zip
-  ZIP_DIRECTORY=/tmp/$PRODUCT/$PRODUCT_$PLATFORM
+  ZIP_DIRECTORY=/tmp/$PRODUCT
+  ZIP_TARGET_DIRECTORY=$ZIP_DIRECTORY/${PRODUCT}_${PLATFORM}
 
-  mkdir -p /tmp/$PRODUCT/$PLATFORM
-  cp _build/src/typesafety.native $ZIP_DIRECTORY/$PRODUCT
-  zip -rD $ZIP_NAME $ZIP_DIRECTORY
-  cp $ZIP_NAME dist
+  mkdir -p $ZIP_TARGET_DIRECTORY
+  cp _build/src/typesafety.native $ZIP_TARGET_DIRECTORY/$PRODUCT
+
+  cd $ZIP_DIRECTORY
+  zip -rD $ZIP_NAME ${PRODUCT}_${PLATFORM}
+  cp $ZIP_NAME $DIST_DIR
 }
 
 case $TRAVIS_OS_NAME in
@@ -65,4 +61,4 @@ case $TRAVIS_OS_NAME in
   linux) create_debian_artifacts ;;
 esac
 
-ls -l dist
+ls -l $DIST_DIR
