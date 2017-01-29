@@ -24,7 +24,19 @@ create_debian_artifacts() {
   fakeroot dpkg-deb --build ./package/deb .
 
   cp *.deb dist
-  cp _build/src/typesafety.native dist/typesafety_$PLATFORM
+
+  # FIXME: Remove after checking
+  if [ "${TRAVIS_TAG}" = "" ] ; then
+    TRAVIS_TAG="0.4.0"
+  fi
+
+  ZIP_NAME=${PRODUCT}_${TRAVIS_TAG}_${PLATFORM}.zip
+  ZIP_DIRECTORY=/tmp/$PRODUCT/$PRODUCT_$PLATFORM
+
+  mkdir -p /tmp/$PRODUCT/$PLATFORM
+  cp _build/src/typesafety.native $ZIP_DIRECTORY/$PRODUCT
+  zip -rD $ZIP_NAME $ZIP_DIRECTORY
+  cp $ZIP_NAME dist
 }
 
 create_macos_artifacts() {
@@ -33,7 +45,19 @@ create_macos_artifacts() {
     PLATFORM="darwin_amd64"
   return
   fi
-  cp _build/src/typesafety.native dist/typesafety_$PLATFORM
+
+  # FIXME: Remove after checking
+  if [ "${TRAVIS_TAG}" = "" ] ; then
+    TRAVIS_TAG="0.4.0"
+  fi
+
+  ZIP_NAME=${PRODUCT}_${TRAVIS_TAG}_${PLATFORM}.zip
+  ZIP_DIRECTORY=/tmp/$PRODUCT/$PRODUCT_$PLATFORM
+
+  mkdir -p /tmp/$PRODUCT/$PLATFORM
+  cp _build/src/typesafety.native $ZIP_DIRECTORY/$PRODUCT
+  zip -rD $ZIP_NAME $ZIP_DIRECTORY
+  cp $ZIP_NAME dist
 }
 
 case $TRAVIS_OS_NAME in

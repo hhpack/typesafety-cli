@@ -30,10 +30,17 @@ addons:
     paths:
       - dist
 deploy:
-  provider: packagecloud
-  username: holyshared
-  repository: ${PRODUCT}
-  dist: ${OS}/${DIST}
-  token:
-    secure: Zw8xqNQlD+iOZ6wNcwv9mi2NmzBQI1lWZEdjzmtoW4CHZYBe6XPuM5wFAlx3DzNPDcJjQUTbeUwChgeva3vJbI5TVnFdVNQ4bbW22lLOzHiblKQMhonFDbPD1zqOe0h+z65ovOmShI6VOv78OqlNY9JSPrT127MjdVmb5pNAMqn6LGX4GE6LLXsMQrQGQCUITL626Rf2JdEMwSyc451H+utVcQXCG7m/iox2HcQY68W2PgZNMoW++COoKD5IPtBEhgQ30dbqX0Bi0QNbFN7Q8o1MdPmrjvV9v+/0POPwjukPkd0Z3OEjjLFOSbMkUGWY+dXmH7U16ojBugJPqRo/0g8C2iHal417/TYz3MznreZ+e6k+DtYDFloCjRvVWLRMeoEeBFQQGO8HHthTUAkkWe+YFO1U/nTpZGUOcuJr91rmZl6OW4u1glFzWKH3pslDqRKlWVgxydmkq/814yOCgOgqL/PA6+GsmOZrJp3q3ypAGr+/16ZoeHRcdyeFbOdKWNBPaap4Hj0w3TPZz1ciuPzh/RWktmO1jUQ+DwkmwN9Xbpob7EheqydEjwUHmkb/63ty0B57TxvP0nQlvmrsMulcfqthKb98Nz19RlRa1VVlS9agK2I+ne8thK+H/rPIQ237XOfWXFPbghVI/H0PVjrWualbqfi8zezIrjyMZOM=
-  package_glob: dist/*.{deb}
+  - provider: packagecloud
+    username: holyshared
+    repository: ${PRODUCT}
+    dist: ${OS}/${DIST}
+    token:
+      secure: Zw8xqNQlD+iOZ6wNcwv9mi2NmzBQI1lWZEdjzmtoW4CHZYBe6XPuM5wFAlx3DzNPDcJjQUTbeUwChgeva3vJbI5TVnFdVNQ4bbW22lLOzHiblKQMhonFDbPD1zqOe0h+z65ovOmShI6VOv78OqlNY9JSPrT127MjdVmb5pNAMqn6LGX4GE6LLXsMQrQGQCUITL626Rf2JdEMwSyc451H+utVcQXCG7m/iox2HcQY68W2PgZNMoW++COoKD5IPtBEhgQ30dbqX0Bi0QNbFN7Q8o1MdPmrjvV9v+/0POPwjukPkd0Z3OEjjLFOSbMkUGWY+dXmH7U16ojBugJPqRo/0g8C2iHal417/TYz3MznreZ+e6k+DtYDFloCjRvVWLRMeoEeBFQQGO8HHthTUAkkWe+YFO1U/nTpZGUOcuJr91rmZl6OW4u1glFzWKH3pslDqRKlWVgxydmkq/814yOCgOgqL/PA6+GsmOZrJp3q3ypAGr+/16ZoeHRcdyeFbOdKWNBPaap4Hj0w3TPZz1ciuPzh/RWktmO1jUQ+DwkmwN9Xbpob7EheqydEjwUHmkb/63ty0B57TxvP0nQlvmrsMulcfqthKb98Nz19RlRa1VVlS9agK2I+ne8thK+H/rPIQ237XOfWXFPbghVI/H0PVjrWualbqfi8zezIrjyMZOM=
+    package_glob: dist/*.{deb}
+  - provider: releases
+    api_key:
+      secure: wGtzI+JlWwR7JHs5UHh2Ty3tcIfrcakXrTUESF1Z4AJ7bVa/f4HgAbU2jZye3LTOn0bFy2YOnYw6VgD9+AM3bE7mICdITHvoABzIqF4n3Jub5ZVz0I0j/Mpmm6sCCFmck1+jCyIe3LwKEiR0QG3b6tiFD/97WmURsDhODiDZj8Q5qjYc/7Jst5PDyTkSIiSDHhM0RN9C6r83lJ0e4jn5Sp6dVdoU8cX5JP05cz8A7N1ExPmR9QIA8LwBMlW2X+vaNSt0flZmw01DHmx5uZGPMSo5XkXHazFWwuZPQr7fhkeeAvWWRP+VD9whXgYa2vb4LjpOilTdqAjZMJvUu4l0G70mEfKC292GQy2wj6z4h3HiHJIK3CkKq5jaCkUWGHuFOv+vtzrPtmM3qBHYNXX+n4R675UfH1iBFpjQGeuIOmgB7YNA2udfrRb05Xz4EDwmrXOSsNbvxC0DJwDAgHxmUXvLowb3mJEs7pZMdLJJ/1WW4bSitp9S0+XHyZQdOCZ4lDbK9qM5AIyMuK4fWd6QwdOK0TMzt5ysQTZEsBxImb1K4LSVnGd71a1cAq/ACkIcx8VyWNQWnb3c9aNPUeSV/7Oo65Rt2jTIc4SImaz0XOsSu7vCe3cdYcv8gOXpRaMUdE3zr40MGxHz8/jwUXuBjY04Z/kpGxaNUa+ZesWX1G0=
+    file_glob: true
+    file: 'dist/*.{tar.gz,zip}'
+    on:
+      tags: true
