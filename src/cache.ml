@@ -5,12 +5,12 @@
  * with this source code in the file LICENSE.
  *)
 
-module SourceFileName = struct
+module Source_name = struct
   type t = string
   let equal = (=)
   let hash = Hashtbl.hash
 end
 
-module Cache = Hashtbl.Make(SourceFileName)
+module Cache = Hashtbl.Make(Source_name)
 
 include Cache

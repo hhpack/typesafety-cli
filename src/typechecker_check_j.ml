@@ -1,7 +1,7 @@
-(* Auto-generated from "TypecheckerCheck.atd" *)
+(* Auto-generated from "typechecker_check.atd" *)
 
 
-type error_detail = TypecheckerCheck_t.error_detail = {
+type error_detail = Typechecker_check_t.error_detail = {
   source_descr (*atd descr *): string;
   source_path (*atd path *): string;
   source_line (*atd line *): int;
@@ -10,11 +10,11 @@ type error_detail = TypecheckerCheck_t.error_detail = {
   source_code (*atd code *): int
 }
 
-type error = TypecheckerCheck_t.error = {
+type error = Typechecker_check_t.error = {
   error_messages (*atd messages *): error_detail list
 }
 
-type result = TypecheckerCheck_t.result = {
+type result = Typechecker_check_t.result = {
   passed: bool;
   errors: error list;
   version: string

@@ -29,27 +29,27 @@ let verbose v f =
   if v then f else noop
 
 let check_hhvm_installed ctx =
-  let open HHVM in
+  let open Hhvm in
   let print_version v = Ok (debug "Installed hhvm version: %s.\n" v.version) in
   let start = Ok (debug "Checking the version of hhvm installed.\n") in
-  let check_version _ = HHVM.check_version () in
-  let parse_version o = next_with_result o HHVM.parse_version in
+  let check_version _ = Hhvm.check_version () in
+  let parse_version o = next_with_result o Hhvm.parse_version in
   let print_installed_version o = next_with_result o print_version in
   start |> check_version |> parse_version |> print_installed_version
 
 let check_hhconfg ctx =
-  let auto_config_generate _ = HHConfig.create_if_auto_generate ctx.no_hhconfig in
+  let auto_config_generate _ = Hh_config.create_if_auto_generate ctx.no_hhconfig in
   let start v = Ok (debug "Checking configuration file.\n") in
   let generated o =
     match o with
-      | Ok v -> Ok (debug "%s\n" (HHConfig.string_of_result v))
+      | Ok v -> Ok (debug "%s\n" (Hh_config.string_of_result v))
       | Error e -> Error e in
   start |> auto_config_generate |> generated
 
 let typecheck ctx = 
   let check_hhvm_installed = check_hhvm_installed ctx in
   let check_hhconfg o = next_with_context o ctx check_hhconfg in
-  let typecheck_json _ = HHClient.typecheck_json () in
+  let typecheck_json _ = Hh_client.typecheck_json () in
   let typecheck o = next_with_context o ctx typecheck_json in
   check_hhvm_installed |> check_hhconfg |> typecheck
 
@@ -60,7 +60,7 @@ let check no_hhconfig verbose =
   } in
   set_verbose verbose;
   match typecheck ctx with
-    | Ok v -> TypesafetyReporter.print_json v; Ok ()
+    | Ok v -> Typesafety_reporter.print_json v; Ok ()
     | Error e -> Error e
 
 let no_hhconfig =
