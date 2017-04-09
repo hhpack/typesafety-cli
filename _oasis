@@ -6,21 +6,21 @@ Authors:     Noritka Horio <holy.shared.design@gmail.com>
 License:     MIT
 Plugins:     META (0.4), DevFiles (0.4)
 BuildTools:  ocamlbuild
-PreBuildCommand: atdgen -t src/TypecheckerCheck.atd -o src/TypecheckerCheck && atdgen -j src/TypecheckerCheck.atd -o src/TypecheckerCheck
+PreBuildCommand: atdgen -t src/typechecker_check.atd && atdgen -j src/typechecker_check.atd
 
 Library "typesafety"
   Path: src
   Modules:
     Typesafety,
-    TypesafetyCheck,
-    TypecheckerCheck_t,
-    TypecheckerCheck_j,
-    TypesafetyReporter,
-    HHConfig,
-    HHClient,
-    HHVM,
+    Typesafety_check,
+    Typesafety_reporter,
+    Typechecker_check_t,
+    Typechecker_check_j,
+    Hh_config,
+    Hh_client,
+    Hhvm,
     File,
-    SourceFile,
+    Source_file,
     Lines,
     Color,
     Cache,

@@ -1,5 +1,5 @@
 open OUnit2
-open HHConfig
+open Hh_config
 
 let temp_dir = Filename.get_temp_dir_name ()
 let temp_config_file = (File.dirname temp_dir) ^ "/" ^ ".hhconfig"

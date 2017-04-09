@@ -5,8 +5,8 @@
  * with this source code in the file LICENSE.
  *)
 
-open TypecheckerCheck_t
-open SourceFile
+open Typechecker_check_t
+open Source_file
 open Log
 
 let line_number_length = 5
@@ -38,7 +38,7 @@ let source_code lines line =
   (spaces lpad_length) ^ string_of_line ^ ":" ^ line_code
 
 let lines_of_source file cache =
-  match SourceFile.read_all file cache with
+  match Source_file.read_all file cache with
     | File lines -> lines
     | Cache lines -> lines
 
@@ -67,7 +67,7 @@ let print_error cache =
 
 let print_json json =
   let cache = Cache.create 1024 in
-  let result = TypecheckerCheck_j.result_of_string json in
+  let result = Typechecker_check_j.result_of_string json in
   List.iteri (print_error cache) result.errors
 
 let print_result_file file =
