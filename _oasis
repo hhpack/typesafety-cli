@@ -16,6 +16,7 @@ Library "typesafety"
     Typesafety_reporter,
     Typechecker_check_t,
     Typechecker_check_j,
+    Review_comment,
     Hh_config,
     Hh_client,
     Hhvm,

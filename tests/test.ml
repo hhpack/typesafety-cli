@@ -5,5 +5,6 @@ let () =
     Hh_config_test.tests;
     Hhvm_test.tests;
     Typesafety_reporter_test.tests;
-    Source_file_test.tests
+    Source_file_test.tests;
+    Review_comment_test.tests
   ])

@@ -1,10 +1,11 @@
 # OASIS_START
-# DO NOT EDIT (digest: 5f18c6e1c7a05344d85f898c7100ed6b)
+# DO NOT EDIT (digest: 1bdb73140a04090fb76574fa60ffc144)
 Typesafety
 Typesafety_check
 Typesafety_reporter
 Typechecker_check_t
 Typechecker_check_j
+Review_comment
 Hh_config
 Hh_client
 Hhvm
