@@ -12,7 +12,4 @@ let read_all file =
   close_in ch;
   file
 
-let dirname path =
-  let omit_last_char path = String.sub path 0 ((String.length path) - 1) in
-  let last_char path = String.sub path ((String.length path) - 1) 1 in
-  if (last_char path) = "/" then omit_last_char path else path
+let dirname path = Filename.dirname path
