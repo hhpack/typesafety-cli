@@ -1,5 +1,31 @@
 open Typechecker_check_t
 
+module Comment_buffer = struct
+  type t = Buffer.t
+
+  let create ?(size=1024) () =
+    Buffer.create size
+
+  let write t ~s =
+    Buffer.add_string t s; t
+
+  let write_ntimes t ~s ~n =
+    let rec add_s t ~s ~n =
+      if n > 1 then
+        (write t ~s) |> add_s ~s ~n:(n - 1)
+      else
+        write t ~s in
+    add_s t ~s ~n
+
+  let writeln ?s ?(n=1) t =
+    match s with
+      | Some s -> (write t s) |> write_ntimes ~s:"\n" ~n
+      | None -> write_ntimes t ~s:"\n" ~n
+
+  let contents t =
+    Buffer.contents t
+end
+
 module Message = struct
   type t = error_detail
 
@@ -20,13 +46,10 @@ type t = {
 let init ?(root=Sys.getcwd ()) ~user ~repo ~branch () =
   { user; repo; branch; root }
 
-let title_of_source ?(level = 2) ~message =
-  let rec h_level n =
-    if n <= 0 then
-      ""
-    else
-      h_level (n - 1) ^ "#" in
-  (h_level level) ^ " File: " ^ message.source_path
+let title_of_source ?(level = 2) ~buf ~msg () =
+  Comment_buffer.write_ntimes buf ~s:"#" ~n:level |>
+  Comment_buffer.write ~s:" File: " |>
+  Comment_buffer.write ~s:msg.source_path
 
 let uri_of_branch t =
   let uri_of_user user = "https://github.com/" ^ user in
@@ -36,16 +59,13 @@ let uri_of_branch t =
 let uri_of_message t ~msg =
   (uri_of_branch t) ^ "/" ^ (Message.uri_of msg ~root:t.root)
 
-(** Review_comment.of_messages t messages *)
-let of_messages t ~messages =
-  let write_message msg =
-    let buf = Buffer.create 1024 in
-    Buffer.add_string buf msg.source_descr;
-    Buffer.add_string buf "\n\n";
-    Buffer.add_string buf (uri_of_message t ~msg);
-    buf in
-  let write ~buf ~msg = Buffer.add_buffer buf (write_message msg); buf in
-  let write_with_crlf ~buf ~msg = Buffer.add_string (write ~buf ~msg) "\n\n"; buf in
+let comment_of_messages t ~buf ~messages =
+  let write_message buf ~msg =
+    Comment_buffer.writeln buf ~s:msg.source_descr ~n:2 |>
+    Comment_buffer.write ~s:(uri_of_message t ~msg) in
+  let write ~buf ~msg = write_message buf ~msg in
+  let write_with_crlf ~buf ~msg =
+    (write ~buf ~msg) |> Comment_buffer.writeln ~n:2 in
   let write_messages ~buf ~messages =
     let rec write_messages ~buf ~messages =
       match messages with
@@ -53,27 +73,38 @@ let of_messages t ~messages =
         | msg::[] -> write ~buf ~msg
         | msg::remain -> write_messages ~buf:(write_with_crlf ~buf ~msg:msg) ~messages:remain in
     write_messages ~buf ~messages in
-  Buffer.contents (write_messages ~buf:(Buffer.create 1024) ~messages)
+  write_messages ~buf ~messages
 
-let of_error t ~error =
-  let title_of messages = title_of_source (List.hd messages) in
-  let content_of messages = of_messages t ~messages in
-  (title_of error.error_messages) ^ "\n\n" ^ (content_of error.error_messages)
+let comment_of_error t ~buf ~error =
+  let title_of buf ~error =
+    title_of_source ~buf ~msg:(List.hd error.error_messages) () |>
+    Comment_buffer.writeln ~n:2 in
+  let content_of buf ~error =
+    comment_of_messages t ~buf ~messages:error.error_messages in
+  title_of buf ~error |> content_of ~error
 
 let create ?(root=Sys.getcwd ()) ~user ~repo ~branch ~json () =
   let t = init ~user ~repo ~branch ~root () in
-  let add_title_to ~buf ~title = Buffer.add_string buf title; buf in
-  let add_error_to ~buf ~error = (Buffer.add_string buf (of_error t error)); buf in
-  let add_error_with_crlf_to ~buf ~error = (Buffer.add_string buf ((of_error t error) ^ "\n\n")); buf in
-  let add_all_error_to ~buf ~errors =
-    let rec add_all_error_to ~buf ~errors =
+  let add_title buf ~s =
+    Comment_buffer.writeln buf ~s ~n:2 in
+  let add_error buf ~error =
+    comment_of_error t ~buf ~error in
+  let add_error_with_crlf buf ~error =
+    comment_of_error t ~buf ~error |> Comment_buffer.writeln ~n:2 in
+  let add_all_error buf ~errors =
+    let rec add_all buf ~errors =
       match errors with
         | [] -> buf
-        | [error] -> add_error_to ~buf ~error
-        | error::remain_errors -> add_all_error_to ~buf:(add_error_with_crlf_to ~buf ~error) ~errors:remain_errors in
-    add_all_error_to ~buf ~errors in
-  let comment ~buf ~errors =
-    add_all_error_to ~buf:(add_title_to ~buf ~title:"# Type checking errors\n\n") ~errors in
-  (Buffer.contents (comment ~buf:(Buffer.create 1024) ~errors:json.errors)) ^ "\n"
+        | [error] -> add_error buf ~error
+        | error::remain_errors ->
+          add_error_with_crlf buf ~error |>
+          add_all ~errors:remain_errors in
+    add_all buf ~errors |>
+    Comment_buffer.writeln in
+
+    Comment_buffer.create () |>
+    add_title ~s:"# Type checking errors" |>
+    add_all_error ~errors:json.errors |>
+    Comment_buffer.contents
 
 let branch_for ~user ~repo ~branch = create ~user ~repo ~branch

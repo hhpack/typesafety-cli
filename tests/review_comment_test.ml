@@ -21,31 +21,6 @@ let test_uri_of_message _ =
   let expect = "https://github.com/holyshared/typesafety/blob/master/src/example.text#L2" in
   assert_equal actual expect
 
-let test_of_messages _ =
-  let actual = Review_comment.of_messages (init ()) [error_detail; error_detail] in
-  let expect = "error of example.txt
-
-https://github.com/holyshared/typesafety/blob/master/src/example.text#L2
-
-error of example.txt
-
-https://github.com/holyshared/typesafety/blob/master/src/example.text#L2" in
-  assert_equal expect actual
-
-let test_of_error _ =
-  let error = { error_messages=[error_detail; error_detail] } in
-  let actual = Review_comment.of_error (init ()) error in
-  let expect = "## File: src/example.text
-
-error of example.txt
-
-https://github.com/holyshared/typesafety/blob/master/src/example.text#L2
-
-error of example.txt
-
-https://github.com/holyshared/typesafety/blob/master/src/example.text#L2" in
-  assert_equal expect actual
-
 let test_create_review_comment _ =
   let user = "holyshared" in
   let repo = "typesafety" in
@@ -54,13 +29,10 @@ let test_create_review_comment _ =
   let expect = Template.read_template ~file:"../tests/fixtures/review_comment.txt" () in
   let json = Template.json_from ~file:"../tests/fixtures/output.json" ~f:result_of_string () in
   let actual = review_comment ~json:json in
-  print_endline actual;
   assert_equal expect actual
 
 let tests =
   "all_tests" >::: [
     ("test_uri_of_message" >:: test_uri_of_message);
-    ("test_of_messages" >:: test_of_messages);
-    ("test_of_error" >:: test_of_error);
     ("create review comment" >:: test_create_review_comment);
   ]
