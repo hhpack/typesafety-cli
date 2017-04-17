@@ -19,29 +19,25 @@ let string_of_result = function
   | FileCreated v -> Printf.sprintf "File %s created." v
 
 let config_file = ".hhconfig"
-let config_path ?(dir = Sys.getcwd ()) () = (File.dirname dir) ^ "/" ^ config_file
+let config_path ?(dir = Sys.getcwd ()) () =
+  Filename.concat dir config_file
 
 let exists file = Sys.file_exists file
 
 let touch file =
-  let created = (file_created file) in
   try
     close_out (open_out file);
-    Ok created
+    Ok (file_created file)
   with Sys_error e -> Error e
 
-let create_if ?(dir = Sys.getcwd ()) v default =
-  if v then
-    touch (config_path ~dir ())
-  else
-    default
-
-let create_if_auto_generate ?(dir = Sys.getcwd ()) no_hhconfig =
+let create_if ?(dir = Sys.getcwd ()) ~no_hhconfig () =
   let config_file = config_path ~dir () in
   let not_exists = not (exists config_file) in
   let not_exists_error = Error (config_file ^ " is not found") in
-  let no_hhconfig_create = not no_hhconfig in
   if not_exists then
-    create_if ~dir no_hhconfig_create not_exists_error
+    if not no_hhconfig then
+      touch config_file
+    else
+      not_exists_error
   else
     Ok (already_exists config_file)
