@@ -3,8 +3,8 @@ open OUnit2
 let read_all =
   "read from file/cache" >:: (fun _ ->
     let cache = Cache.create 1024 in
-    let readed_file1 = Source_file.read_all "../tests/fixtures/example1.ml" cache in
-    let readed_file2 = Source_file.read_all "../tests/fixtures/example1.ml" cache in
+    let readed_file1 = Source_file.read_all "../tests/fixtures/example1.ml" ~cache in
+    let readed_file2 = Source_file.read_all "../tests/fixtures/example1.ml" ~cache in
     let is_from_file = match readed_file1 with
       | Source_file.Cache _ -> false
       | Source_file.File _ -> true in

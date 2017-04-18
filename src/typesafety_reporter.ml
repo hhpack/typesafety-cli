@@ -37,8 +37,8 @@ let source_code lines line =
   let lpad_length = line_number_length - String.length string_of_line in
   (spaces lpad_length) ^ string_of_line ^ ":" ^ line_code
 
-let lines_of_source file cache =
-  match Source_file.read_all file cache with
+let lines_of_source ~file ~cache =
+  match Source_file.read_all ~cache file with
     | File lines -> lines
     | Cache lines -> lines
 
@@ -56,19 +56,18 @@ let print_description_message msg_seq message lines_of_source =
   log "%s\n" (indent_with (source_code lines_of_source message.source_line));
   log "%s\n\n" (indent_with hint_description)
 
-let print_error_message cache err_seq =
+let print_error_message err_seq ~cache =
   fun msg_seq message ->
-    let lines_of_source = lines_of_source message.source_path cache in
+    let lines_of_source = lines_of_source ~file:message.source_path ~cache in
     if msg_seq == 0 then print_header_message err_seq msg_seq message;
     print_description_message msg_seq message lines_of_source
 
 let print_error cache =
-  fun err_seq err -> List.iteri (print_error_message cache (err_seq + 1)) err.error_messages
+  fun err_seq err -> List.iteri (print_error_message ~cache (err_seq + 1)) err.error_messages
 
 let print_json json =
-  let cache = Cache.create 1024 in
   let result = Typechecker_check_j.result_of_string json in
-  List.iteri (print_error cache) result.errors
+  List.iteri (print_error (Cache.create 1024)) result.errors
 
 let print_result_file file =
   let json = File.read_all file in
