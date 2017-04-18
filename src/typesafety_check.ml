@@ -38,15 +38,18 @@ let check_hhvm_installed ctx =
   start |> check_version |> parse_version |> print_installed_version
 
 let check_hhconfg ctx =
-  let auto_config_generate _ = Hh_config.create_if_auto_generate ctx.no_hhconfig in
-  let start v = Ok (debug "Checking configuration file.\n") in
+  let auto_config_generate o =
+    match o with
+      | Ok _ -> Hh_config.create_if ~no_hhconfig:ctx.no_hhconfig ()
+      | Error e -> Error e in
+  let start = Ok (debug "Checking configuration file.\n") in
   let generated o =
     match o with
       | Ok v -> Ok (debug "%s\n" (Hh_config.string_of_result v))
       | Error e -> Error e in
   start |> auto_config_generate |> generated
 
-let typecheck ctx = 
+let typecheck ctx =
   let check_hhvm_installed = check_hhvm_installed ctx in
   let check_hhconfg o = next_with_context o ctx check_hhconfg in
   let typecheck_json _ = Hh_client.typecheck_json () in

@@ -1,56 +1,51 @@
 open OUnit2
 open Hh_config
 
-let temp_dir = Filename.get_temp_dir_name ()
-let temp_config_file = (File.dirname temp_dir) ^ "/" ^ ".hhconfig"
+let failed e ~prefix =
+  Error (prefix ^ e)
 
-let unlink_config file =
-  if Sys.file_exists file then
-    try
-      Sys.remove file
-    with Sys_error _ -> ()
+let unlink_config f =
+  if not (Sys.file_exists f) then
+    Ok (Printf.printf "not found: %s\n" f)
   else
-    ()
+    try
+      Sys.remove f;
+      Ok (Printf.printf "unlink: %s\n" f)
+    with Sys_error e ->
+      Ok (Printf.printf "Sys_error: %s\n" e)
 
-let test_hhconfg_not_exists _ =
-  let _ = unlink_config temp_config_file in
-  let created = FileCreated temp_config_file in
-  let not_exists = not (exists temp_config_file) in
-  let exists_error = Error "already exists" in
+let touch_config f =
+  let to_result v =
+    Ok (Printf.printf "touch_config: %s\n" (string_of_result v)) in
+  let touch_temp_config f = match touch f with
+    | Ok v -> to_result v
+    | Error e -> failed ~prefix:"touch_temp_config: " e in
+  match unlink_config f with
+    | Ok _ -> touch_temp_config f
+    | Error e -> failed ~prefix:"unlink_config: " e
 
-  match create_if ~dir:temp_dir not_exists exists_error with
-    | Ok v -> assert_equal v created
+let test_auto_generate_exists ctx =
+  let temp_dir = bracket_tmpdir ctx in
+  let temp_file = (Filename.concat temp_dir ".hhconfig") in
+  match touch_config temp_file with
     | Error e -> assert_failure e
-
-let test_hhconfg_exists _ =
-  let _ =
-    if not (exists temp_config_file) then
-      match touch temp_config_file with
-        | Ok _ -> ()
+    | Ok _ ->
+      let already_exists = AlreadyExists temp_file in
+      match create_if ~dir:temp_dir ~no_hhconfig:true () with
+        | Ok v -> assert_equal ~msg:"when exists" already_exists v
         | Error e -> assert_failure e
-    else
-      () in
-  let already_exists = AlreadyExists temp_config_file in
-  let not_exists = not (exists temp_config_file) in
 
-  match create_if not_exists (Ok already_exists) with
-    | Ok v -> assert_equal v already_exists
+let test_auto_generate_not_exists ctx =
+  let temp_dir = bracket_tmpdir ctx in
+  let temp_file = (Filename.concat temp_dir ".hhconfig") in
+  let created = FileCreated temp_file in
+  match create_if ~dir:temp_dir ~no_hhconfig:false () with
+    | Ok v -> assert_equal ~msg:"when not_exists" created v
     | Error e -> assert_failure e
-
-let test_auto_generate _ =
-  let _ = unlink_config temp_config_file in
-  let created = FileCreated temp_config_file in
-  match create_if_auto_generate ~dir:temp_dir false with
-    | Ok v -> assert_equal v created
-    | Error e -> assert_failure e
-
-let all_test_hhconfg =
-  "create_if" >::: [
-    ("exists" >:: test_hhconfg_exists);
-    ("not_exists" >:: test_hhconfg_not_exists);
-  ]
 
 let tests = "all_tests" >::: [
-  all_test_hhconfg;
-  ("test_auto_generate" >:: test_auto_generate);
+  "create_if" >::: [
+    ("exists && no_hhconfig = true" >:: test_auto_generate_exists);
+    ("not_exists && no_hhconfig = false" >:: test_auto_generate_not_exists);
+  ]
 ]
