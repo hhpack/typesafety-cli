@@ -10,6 +10,6 @@ module LineNumber = struct
   let compare = compare
 end
 
-module Lines = Map.Make(LineNumber)
+module Lines = MoreLabels.Map.Make(LineNumber)
 
 include Lines
