@@ -5,11 +5,54 @@
  * with this source code in the file LICENSE.
  *)
 
-module LineNumber = struct
+type line = (int * string)
+type line_range = (int * int)
+
+module Line_number = struct
   type t = int
   let compare = compare
+  let prev ?(n = 1) ~from ~min =
+    let prev = from - n in
+    if prev > min then prev else min
+  let next ?(n = 1) ~from ~max =
+    let next = from + n in
+    if next > max then max else next
 end
 
-module Lines = MoreLabels.Map.Make(LineNumber)
+module Line_range = struct
+  type t = line_range
+  let create ~first ~last = (first, last)
+  let map t ~f =
+    let first, last = t in
+    let rec inner_map ~first ~last ~out =
+      let process ~first =
+        inner_map ~first:(first + 1) ~last ~out:((f first)::out) in
+      if first <= last then
+        process ~first
+      else
+        List.rev out in
+    inner_map ~first ~last ~out:[]
+end
+
+module Lines = MoreLabels.Map.Make(Line_number)
 
 include Lines
+
+let find_of_line m ~line =
+  try
+    Some (Lines.find line m)
+  with Not_found -> None
+
+let range ?(width = 1) m ~line =
+  let sl = Line_number.prev ~n:width ~from:line ~min:1 in
+  let el = Line_number.next ~n:width ~from:line ~max:(cardinal m) in
+  (sl, el)
+
+let range_map ?(width = 1) m ~line =
+  let line_range = range m ~width ~line in
+  Line_range.map line_range (
+    fun line ->
+      match find_of_line m ~line with
+        | Some v -> (line, v)
+        | None -> (line, "")
+  )
