@@ -1,5 +1,6 @@
 S src/**
 B _build/*
+B _build/tests/*
 PKG cmdliner
 PKG oUnit
 PKG atdgen

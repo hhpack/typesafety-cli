@@ -8,5 +8,8 @@ let assert_equal ?ctxt ?msg expect actual =
 let assert_bool s v =
   OUnit2.assert_bool s v
 
+let assert_failure e =
+  OUnit2.assert_failure e
+
 let (>::) = OUnit2.(>::)
 let (>:::) = OUnit2.(>:::)

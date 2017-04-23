@@ -41,3 +41,10 @@ let read_all ?(cache=Cache.create 1024) file =
   match read_from_cache file ~cache with
     | Some v -> Cache v
     | None -> File (read_from_file_and_cache file ~cache)
+
+let read_range ?(cache=Cache.create 1024) ?(width = 1) ~line file =
+  let range_lines ?(width = 1) m =
+    Lines.range_lines ~width ~line m in
+  match read_all ~cache file with
+    | File m -> range_lines ~width m
+    | Cache m -> range_lines ~width m

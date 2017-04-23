@@ -48,11 +48,12 @@ let range ?(width = 1) m ~line =
   let el = Line_number.next ~n:width ~from:line ~max:(cardinal m) in
   (sl, el)
 
-let range_map ?(width = 1) m ~line =
+let range_map ?(width = 1) m ~line ~f =
   let line_range = range m ~width ~line in
-  Line_range.map line_range (
-    fun line ->
-      match find_of_line m ~line with
-        | Some v -> (line, v)
-        | None -> (line, "")
-  )
+  Line_range.map line_range f
+
+let range_lines ?(width = 1) m ~line =
+  let to_line line = match find_of_line m ~line with
+    | Some v -> (line, v)
+    | None -> (line, "") in
+  range_map ~width ~line ~f:to_line m
