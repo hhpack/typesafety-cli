@@ -59,6 +59,20 @@ let uri_of_branch t =
 let uri_of_message t ~msg =
   (uri_of_branch t) ^ "/" ^ (Message.uri_of msg ~root:t.root)
 
+let source_of_message ~msg =
+  let quotation buf = Comment_buffer.writeln ~s:"```" buf in
+  let lines_of f = Source_file.read_range ~line:msg.source_line f in
+  let write_line line buf =
+    let line_number, line_source = line in
+    Comment_buffer.write buf ((string_of_int line_number) ^ ":" ^ line_source) in
+  let write_lines_of ~msg buf = List.fold_right write_line (lines_of msg.source_path) buf in
+
+  Comment_buffer.create () |>
+  quotation |>
+  write_lines_of ~msg |>
+  quotation |>
+  Comment_buffer.contents
+
 let comment_of_messages t ~buf ~messages =
   let write_message buf ~msg =
     Comment_buffer.writeln buf ~s:msg.source_descr ~n:2 |>
