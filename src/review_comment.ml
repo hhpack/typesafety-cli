@@ -11,10 +11,10 @@ module Comment_buffer = struct
 
   let write_ntimes t ~s ~n =
     let rec add_s t ~s ~n =
-      if n > 1 then
+      if n > 0 then
         (write t ~s) |> add_s ~s ~n:(n - 1)
       else
-        write t ~s in
+        t in
     add_s t ~s ~n
 
   let writeln ?s ?(n=1) t =
@@ -58,6 +58,15 @@ let uri_of_branch t =
 
 let uri_of_message t ~msg =
   (uri_of_branch t) ^ "/" ^ (Message.uri_of msg ~root:t.root)
+
+let hint_of_message t ~msg =
+  let scol = msg.source_start in
+  let ecol = msg.source_end in
+  Comment_buffer.(
+    t |>
+    write_ntimes ~s:" " ~n:(scol - 1) |>
+    write_ntimes ~s:"^" ~n:(ecol - scol + 1)
+  )
 
 let source_of_message ~msg =
   let quotation buf = Comment_buffer.writeln ~s:"```" buf in

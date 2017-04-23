@@ -1,4 +1,4 @@
-open OUnit2
+open Test_helper
 open Typechecker_check_j
 
 let user = "holyshared"
@@ -21,6 +21,16 @@ let test_uri_of_message _ =
   let expect = "https://github.com/holyshared/typesafety/blob/master/src/example.text#L2" in
   assert_equal actual expect
 
+let test_hint_of_message _ =
+  let hint_line = Review_comment.(
+    Comment_buffer.(
+      create () |>
+      hint_of_message ~msg:error_detail |>
+      contents
+    )
+  ) in
+  assert_equal "^^^^^" hint_line
+
 let test_create_review_comment _ =
   let user = "holyshared" in
   let repo = "typesafety" in
@@ -34,5 +44,6 @@ let test_create_review_comment _ =
 let tests =
   "all_tests" >::: [
     ("test_uri_of_message" >:: test_uri_of_message);
+    ("test_hint_of_message" >:: test_hint_of_message);
     ("create review comment" >:: test_create_review_comment);
   ]
