@@ -50,9 +50,11 @@ let init ?(root=Sys.getcwd ()) ~user ~repo ~branch () =
   { user; repo; branch; root }
 
 let title_of_source ?(level = 2) ~buf ~msg () =
-  Comment_buffer.write_ntimes buf ~s:"#" ~n:level |>
-  Comment_buffer.write ~s:" File: " |>
-  Comment_buffer.write ~s:msg.source_path
+  Comment_buffer.(
+    write_ntimes buf ~s:"#" ~n:level |>
+    write ~s:" File: " |>
+    write ~s:msg.source_path
+  )
 
 let uri_of_branch t =
   let uri_of_user user = "https://github.com/" ^ user in
@@ -156,12 +158,14 @@ let create ?(root=Sys.getcwd ()) ~user ~repo ~branch ~json () =
         | error::remain_errors ->
           add_error_with_crlf buf ~error |>
           add_all ~errors:remain_errors in
-    add_all buf ~errors |>
-    Comment_buffer.writeln in
+    add_all buf ~errors
+      |> Comment_buffer.writeln in
 
-    Comment_buffer.create () |>
+  Comment_buffer.(
+    create () |>
     add_title ~s:"# Type checking errors" |>
     add_all_error ~errors:json.errors |>
-    Comment_buffer.contents
+    contents
+  )
 
 let branch_for ~user ~repo ~branch = create ~user ~repo ~branch
