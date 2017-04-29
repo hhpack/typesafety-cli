@@ -29,7 +29,7 @@ let test_hint_of_message _ =
       contents
     )
   ) in
-  assert_equal "^^^^^" hint_line
+  assert_equal "^^^^^\n" hint_line
 
 let test_create_review_comment _ =
   let user = "holyshared" in

@@ -68,17 +68,18 @@ let hint_of_message t ~msg =
   Comment_buffer.(
     t |>
     write_ntimes ~s:" " ~n:(scol - 1) |>
-    write_ntimes ~s:"^" ~n:(ecol - scol + 1)
+    write_ntimes ~s:"^" ~n:(ecol - scol + 1) |>
+    writeln
   )
 
-let source_of_message ~msg =
+let source_of_message ~msg buf =
   let quotation buf = Comment_buffer.writeln ~s:"```" buf in
   let write_line ~llen ~line buf =
     let line_number, line_source = line in
     let indent = llen - (StringLabels.length (string_of_int line_number)) in
     Comment_buffer.(
       write_space buf ~n:indent |>
-      write ~s:((string_of_int line_number) ^ ":" ^ line_source)
+      writeln ~s:((string_of_int line_number) ^ ":" ^ line_source)
     ) in
   let write_lines_of ~msg buf =
     let rec max_line_length ?(max=0) lines =
@@ -93,26 +94,32 @@ let source_of_message ~msg =
     let write_if_error_line ~line buf =
       let line_num, _ = line in
       if msg.source_line = line_num then
-        hint_of_message ~msg buf
+        let current_line_len = (StringLabels.length (string_of_int line_num)) in
+        let indent = (line_length - current_line_len) + current_line_len + 1 in
+        buf |>
+        Comment_buffer.write_space ~n:indent |>
+        hint_of_message ~msg
       else
         buf in
-    let write_line_of line buf =
+    let write_line_of buf line =
       write_line ~line:line ~llen:line_length buf |>
       write_if_error_line ~line:line in
-    ListLabels.fold_right ~f:write_line_of ~init:buf lines in
+    ListLabels.fold_left ~f:write_line_of ~init:buf lines in
 
   Comment_buffer.(
-    create () |>
-    quotation |>
+    quotation buf |>
     write_lines_of ~msg |>
-    quotation |>
-    contents
+    quotation
   )
 
 let comment_of_messages t ~buf ~messages =
   let write_message buf ~msg =
-    Comment_buffer.writeln buf ~s:msg.source_descr ~n:2 |>
-    Comment_buffer.write ~s:(uri_of_message t ~msg) in
+    Comment_buffer.(
+      writeln buf ~s:msg.source_descr ~n:2 |>
+      source_of_message ~msg |>
+      writeln |>
+      write ~s:(uri_of_message t ~msg)
+    ) in
   let write ~buf ~msg = write_message buf ~msg in
   let write_with_crlf ~buf ~msg =
     (write ~buf ~msg) |> Comment_buffer.writeln ~n:2 in
