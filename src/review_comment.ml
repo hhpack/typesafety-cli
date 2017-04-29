@@ -17,6 +17,9 @@ module Comment_buffer = struct
         t in
     add_s t ~s ~n
 
+  let write_space t ~n =
+    write_ntimes t ~s:" " ~n
+
   let writeln ?s ?(n=1) t =
     match s with
       | Some s -> (write t s) |> write_ntimes ~s:"\n" ~n
@@ -70,17 +73,41 @@ let hint_of_message t ~msg =
 
 let source_of_message ~msg =
   let quotation buf = Comment_buffer.writeln ~s:"```" buf in
-  let lines_of f = Source_file.read_range ~line:msg.source_line f in
-  let write_line line buf =
+  let write_line ~llen ~line buf =
     let line_number, line_source = line in
-    Comment_buffer.write buf ((string_of_int line_number) ^ ":" ^ line_source) in
-  let write_lines_of ~msg buf = List.fold_right write_line (lines_of msg.source_path) buf in
+    let indent = llen - (StringLabels.length (string_of_int line_number)) in
+    Comment_buffer.(
+      write_space buf ~n:indent |>
+      write ~s:((string_of_int line_number) ^ ":" ^ line_source)
+    ) in
+  let write_lines_of ~msg buf =
+    let rec max_line_length ?(max=0) lines =
+      match lines with
+        | [] -> max
+        | hd::tail ->
+          let l, _ = hd in
+          let line_number_length = StringLabels.length (string_of_int l) in
+          max_line_length ~max:(Pervasives.max line_number_length max) tail in
+    let lines = Source_file.read_range ~line:msg.source_line msg.source_path in
+    let line_length = max_line_length lines in
+    let write_if_error_line ~line buf =
+      let line_num, _ = line in
+      if msg.source_line = line_num then
+        hint_of_message ~msg buf
+      else
+        buf in
+    let write_line_of line buf =
+      write_line ~line:line ~llen:line_length buf |>
+      write_if_error_line ~line:line in
+    ListLabels.fold_right ~f:write_line_of ~init:buf lines in
 
-  Comment_buffer.create () |>
-  quotation |>
-  write_lines_of ~msg |>
-  quotation |>
-  Comment_buffer.contents
+  Comment_buffer.(
+    create () |>
+    quotation |>
+    write_lines_of ~msg |>
+    quotation |>
+    contents
+  )
 
 let comment_of_messages t ~buf ~messages =
   let write_message buf ~msg =
@@ -100,7 +127,7 @@ let comment_of_messages t ~buf ~messages =
 
 let comment_of_error t ~buf ~error =
   let title_of buf ~error =
-    title_of_source ~buf ~msg:(List.hd error.error_messages) () |>
+    title_of_source ~buf ~msg:(ListLabels.hd error.error_messages) () |>
     Comment_buffer.writeln ~n:2 in
   let content_of buf ~error =
     comment_of_messages t ~buf ~messages:error.error_messages in
