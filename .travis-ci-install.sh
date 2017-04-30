@@ -17,5 +17,5 @@ case $TRAVIS_OS_NAME in
 esac
 
 opam init
-opam switch 4.04.0
+opam switch 4.04.1
 opam install oasis ocamlfind atdgen cmdliner process oUnit
