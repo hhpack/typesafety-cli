@@ -49,4 +49,16 @@ module Travis = struct
         | Error e -> Error e
     let branch () = E.require "TRAVIS_PULL_REQUEST_BRANCH"
   end
+  include Make(Env.Sys_env)
 end
+
+let supports =
+  [(module Travis:S)]
+
+let detect () =
+  let detect_env env =
+    let module E = (val env: S) in
+    E.is_current () in
+  try
+    Ok (ListLabels.find ~f:detect_env supports)
+  with Not_found -> Error "Sorry, this is an environment not support"
