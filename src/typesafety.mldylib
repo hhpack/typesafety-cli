@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 1bdb73140a04090fb76574fa60ffc144)
+# DO NOT EDIT (digest: b9087ae9df423f8bbf51f4f43b68b709)
 Typesafety
 Typesafety_check
 Typesafety_reporter
@@ -15,4 +15,6 @@ Lines
 Color
 Cache
 Log
+Env
+Ci_env
 # OASIS_STOP
