@@ -1,0 +1,52 @@
+type branch_name = string
+
+module Slug = struct
+  type t = (string * string)
+  let of_string s =
+    let slug_len = String.length s in
+    let slug_sp_index = String.index s '/' in
+    let user = String.sub s 0 slug_sp_index in
+    let repo_len = (slug_len - (String.length user) - 1) in
+    let repo = String.sub s (slug_sp_index + 1) repo_len in
+    (user, repo)
+  let to_string t =
+    let user, repo = t in
+    user ^ "/" ^ repo
+end
+
+module type S = sig
+  val is_current: unit -> bool
+  val is_pull_request: unit -> bool
+  val slug: unit -> (Slug.t, string) result
+  val branch: unit -> (branch_name, string) result
+end
+
+module Make(CI: S) = struct
+  (** Return true for current environment *)
+  let is_current () = CI.is_current ()
+  (** It checks whether it is a pull request and returns true if it is a pull request *)
+  let is_pull_request () = CI.is_pull_request ()
+  (** Return user name and repository slug *)
+  let slug () = CI.slug ()
+  (** Return branch name *)
+  let branch () = CI.branch ()
+end
+
+module Travis = struct
+  module Make(Env_s: Env.S): S = struct
+    module E = Env.Make(Env_s)
+    let is_current () =
+      match E.get "TRAVIS" with
+        | Some v -> bool_of_string v
+        | None -> false
+    let is_pull_request () =
+      match E.get "TRAVIS_PULL_REQUEST" with
+        | Some v -> bool_of_string v
+        | None -> false
+    let slug () =
+      match E.require "TRAVIS_PULL_REQUEST_SLUG" with
+        | Ok v -> Ok (Slug.of_string v)
+        | Error e -> Error e
+    let branch () = E.require "TRAVIS_PULL_REQUEST_BRANCH"
+  end
+end

@@ -4,7 +4,8 @@ end
 
 module Make(S: S) = struct
   let require_failed key = Error (key ^ " is required")
-  let get key ~default =
+  let get key = S.get key
+  let get_with_default key ~default =
     match S.get key with
       | Some v -> v
       | None -> default

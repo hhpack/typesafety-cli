@@ -26,7 +26,8 @@ Library "typesafety"
     Color,
     Cache,
     Log,
-    Env
+    Env,
+    Ci_env
 
   BuildDepends: str, atdgen, threads, cmdliner, process
   FindlibName: typesafety
