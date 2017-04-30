@@ -4,7 +4,7 @@ open Typesafety_reporter
 let test_print_result =
   "print_result" >:: (
     fun _ ->
-      let json = Template.read_template "../tests/fixtures/output.json" in
+      let json = Template.read_template "../tests/fixtures/output.json" () in
       Typesafety_reporter.print_json json;
       assert_bool "always true" true
   )
