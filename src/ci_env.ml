@@ -17,6 +17,7 @@ end
 module type S = sig
   val is_current: unit -> bool
   val is_pull_request: unit -> bool
+  val pull_request_number: unit -> (int, string) result
   val slug: unit -> (Slug.t, string) result
   val branch: unit -> (branch_name, string) result
 end
@@ -26,6 +27,8 @@ module Make(CI: S) = struct
   let is_current () = CI.is_current ()
   (** It checks whether it is a pull request and returns true if it is a pull request *)
   let is_pull_request () = CI.is_pull_request ()
+  (** Return pull request number of github *)
+  let pull_request_number () = CI.pull_request_number ()
   (** Return user name and repository slug *)
   let slug () = CI.slug ()
   (** Return branch name *)
@@ -41,8 +44,12 @@ module Travis = struct
         | None -> false
     let is_pull_request () =
       match E.get "TRAVIS_PULL_REQUEST" with
-        | Some v -> bool_of_string v
+        | Some v -> true
         | None -> false
+    let pull_request_number () =
+      match E.require "TRAVIS_PULL_REQUEST" with
+        | Ok v -> Ok (int_of_string v)
+        | Error e -> Error e
     let slug () =
       match E.require "TRAVIS_PULL_REQUEST_SLUG" with
         | Ok v -> Ok (Slug.of_string v)
