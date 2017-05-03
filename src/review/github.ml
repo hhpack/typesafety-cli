@@ -1,0 +1,34 @@
+open Lwt
+open Cohttp
+open Cohttp_lwt_unix
+
+type t = {
+  user: string;
+  repo: string;
+  token: string;
+}
+
+let init ~token ~user ~repo =
+  { user; repo; token }
+
+(** Authorization: token OAUTH-TOKEN *)
+let headers_of_api t =
+  let h = Header.init () in
+  Header.add_list h [
+    ("User-Agent", t.user);
+    ("Authorization", ("token " ^ t.token));
+    ("Accept", "application/vnd.github.black-cat-preview+json")
+  ]
+
+let status_code_of_response res =
+  res |> Response.status |> Code.code_of_status
+
+let body_of_response body =
+  body |> Cohttp_lwt_body.to_string
+
+let create_review t ~num ~content =
+  let headers = headers_of_api t in
+  let body = Github_j.string_of_review content in
+  let uri = "https://api.github.com/repos/" ^ t.user ^ "/" ^ t.repo ^ "/pulls/" ^ (string_of_int num) ^ "/reviews" in
+  Client.post (Uri.of_string uri) ~body:(`String body) ~headers:headers >>= fun (res, body) ->
+  body_of_response body
