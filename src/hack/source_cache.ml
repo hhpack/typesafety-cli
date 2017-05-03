@@ -11,6 +11,6 @@ module Source_name = struct
   let hash = Hashtbl.hash
 end
 
-module Cache = MoreLabels.Hashtbl.Make(Source_name)
+module Source_cache = MoreLabels.Hashtbl.Make(Source_name)
 
-include Cache
+include Source_cache

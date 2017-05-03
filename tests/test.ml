@@ -6,7 +6,7 @@ let () =
     Hhvm_test.tests;
     Typesafety_reporter_test.tests;
     Source_file_test.tests;
-    Lines_test.tests;
+    Source_lines_test.tests;
     Review_comment_test.tests;
     Travis_test.tests
   ])

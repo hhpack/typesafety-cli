@@ -34,13 +34,13 @@ module Line_range = struct
     inner_map ~first ~last ~out:[]
 end
 
-module Lines = MoreLabels.Map.Make(Line_number)
+module Source_lines = MoreLabels.Map.Make(Line_number)
 
-include Lines
+include Source_lines
 
 let find_of_line m ~line =
   try
-    Some (Lines.find line m)
+    Some (Source_lines.find line m)
   with Not_found -> None
 
 let range ?(width = 1) m ~line =

@@ -18,4 +18,4 @@ esac
 
 opam init
 opam switch 4.04.1
-opam install oasis ocamlfind atdgen cmdliner process oUnit
+opam install oasis ocamlfind atdgen cmdliner process oUnit cohttp lwt

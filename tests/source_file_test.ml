@@ -3,7 +3,7 @@ open Test_helper
 let example1 = "../tests/fixtures/example1.ml"
 
 let read_all_test tcxt =
-  let cache = Cache.create 1024 in
+  let cache = Source_cache.create 1024 in
   let readed_file1 = Source_file.read_all example1 ~cache in
   let readed_file2 = Source_file.read_all example1 ~cache in
   let is_from_file = match readed_file1 with

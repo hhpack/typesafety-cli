@@ -6,38 +6,77 @@ Authors:     Noritka Horio <holy.shared.design@gmail.com>
 License:     MIT
 Plugins:     META (0.4), DevFiles (0.4)
 BuildTools:  ocamlbuild
-PreBuildCommand: atdgen -t src/typechecker_check.atd && atdgen -j src/typechecker_check.atd
+PreBuildCommand:
+  atdgen -t src/typechecker/typechecker_check.atd -o src/typechecker/typechecker_check
+  atdgen -j src/typechecker/typechecker_check.atd -o src/typechecker/typechecker_check
+  atdgen -t src/review/github.atd -o src/review/github
+  atdgen -j src/review/github.atd -o src/review/github
 
-Library "typesafety"
-  Path: src
+Library "typesafety_misc"
+  Path: src/misc
   Modules:
-    Typesafety,
-    Typesafety_check,
-    Typesafety_reporter,
-    Typechecker_check_t,
-    Typechecker_check_j,
-    Review_comment,
-    Hh_config,
-    Hh_client,
-    Hhvm,
     File,
-    Source_file,
-    Lines,
     Color,
-    Cache,
-    Log,
+    Log
+  FindlibName: typesafety_misc
+
+Library "typesafety_hack"
+  Path: src/hack
+  Modules:
+    Source_file,
+    Source_lines,
+    Source_cache
+  BuildDepends: typesafety_misc
+  FindlibName: typesafety_hack
+
+Library "typesafety_env"
+  Path: src/env
+  Modules:
     Env,
     Ci_env
+  FindlibName: typesafety_env
 
-  BuildDepends: str, atdgen, threads, cmdliner, process
-  FindlibName: typesafety
+Library "typesafety_typechecker"
+  Path: src/typechecker
+  Modules:
+    Typechecker_check_t,
+    Typechecker_check_j
+  BuildDepends: atdgen
+  FindlibName: typesafety_typechecker
+
+Library "typesafety_hhvm"
+  Path: src/hhvm
+  Modules:
+    Hh_config,
+    Hh_client,
+    Hhvm
+  BuildDepends: process, typesafety_misc
+  FindlibName: typesafety_hhvm
+
+Library "typesafety_review"
+  Path: src/review
+  Modules:
+    Review_comment,
+    Github,
+    Github_t,
+    Github_j
+  BuildDepends: atdgen, threads, lwt, cohttp, typesafety_misc, typesafety_hack, typesafety_typechecker
+  FindlibName: typesafety_review
+
+Library "typesafety_cli"
+  Path: src/cli
+  Modules:
+    Typesafety_check,
+    Typesafety_reporter
+  BuildDepends: cmdliner, typesafety_hhvm, typesafety_hack, typesafety_misc, typesafety_typechecker
+  FindlibName: typesafety_cli
 
 Executable typesafety
   Path:       src
   MainIs:     typesafety.ml
   CompiledObject: native
   BuildDepends:
-    str, atdgen, threads, cmdliner, process, typesafety
+    str, atdgen, threads, cmdliner, process, typesafety_cli, typesafety_hack, typesafety_misc, typesafety_env, typesafety_hhvm, typesafety_typechecker, typesafety_review
 
 Executable test
   Path: tests
@@ -46,7 +85,7 @@ Executable test
   CompiledObject: native
   Install: false
   BuildDepends:
-    str, atdgen, threads, cmdliner, process, typesafety, oUnit
+    str, atdgen, threads, cmdliner, process, typesafety_cli, typesafety_cli, typesafety_env, typesafety_typechecker, typesafety_review, oUnit
 
 Test test
   Run$:               flag(tests)

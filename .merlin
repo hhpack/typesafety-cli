@@ -5,3 +5,5 @@ PKG cmdliner
 PKG oUnit
 PKG atdgen
 PKG process
+PKG lwt
+PKG cohttp
