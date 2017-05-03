@@ -9,21 +9,19 @@ module Comment_buffer = struct
   let write t ~s =
     Buffer.add_string t s; t
 
-  let write_ntimes t ~s ~n =
-    let rec add_s t ~s ~n =
-      if n > 0 then
-        (write t ~s) |> add_s ~s ~n:(n - 1)
-      else
-        t in
-    add_s t ~s ~n
+  let write_ntimes t ~c ~n =
+    write t (String.make n c)
 
   let write_space t ~n =
-    write_ntimes t ~s:" " ~n
+    write_ntimes t ~c:' ' ~n
+
+  let write_crlf t ~n =
+    write_ntimes t ~c:'\n' ~n
 
   let writeln ?s ?(n=1) t =
     match s with
-      | Some s -> (write t s) |> write_ntimes ~s:"\n" ~n
-      | None -> write_ntimes t ~s:"\n" ~n
+      | Some s -> (write t s) |> write_crlf ~n
+      | None -> write_crlf t ~n
 
   let contents t =
     Buffer.contents t
@@ -51,7 +49,7 @@ let init ?(root=Sys.getcwd ()) ~user ~repo ~branch () =
 
 let title_of_source ?(level = 2) ~buf ~msg () =
   Comment_buffer.(
-    write_ntimes buf ~s:"#" ~n:level |>
+    write_ntimes buf ~c:'#' ~n:level |>
     write ~s:" File: " |>
     write ~s:msg.source_path
   )
@@ -69,8 +67,8 @@ let hint_of_message t ~msg =
   let ecol = msg.source_end in
   Comment_buffer.(
     t |>
-    write_ntimes ~s:" " ~n:(scol - 1) |>
-    write_ntimes ~s:"^" ~n:(ecol - scol + 1) |>
+    write_space ~n:(scol - 1) |>
+    write_ntimes ~c:'^' ~n:(ecol - scol + 1) |>
     writeln
   )
 
