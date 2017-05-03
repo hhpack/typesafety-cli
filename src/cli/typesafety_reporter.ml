@@ -32,7 +32,7 @@ let indent_with ?(n = 1) s =
   String.concat "\n" indent_lines
 
 let source_code lines line =
-  let line_code = Lines.find line lines in
+  let line_code = Source_lines.find line lines in
   let string_of_line = (string_of_int line) in
   let lpad_length = line_number_length - String.length string_of_line in
   (spaces lpad_length) ^ string_of_line ^ ":" ^ line_code
@@ -67,7 +67,7 @@ let print_error cache =
 
 let print_json json =
   let result = Typechecker_check_j.result_of_string json in
-  List.iteri (print_error (Cache.create 1024)) result.errors
+  List.iteri (print_error (Source_cache.create 1024)) result.errors
 
 let print_result_file file =
   let json = File.read_all file in

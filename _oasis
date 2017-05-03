@@ -24,8 +24,8 @@ Library "typesafety_hack"
   Path: src/hack
   Modules:
     Source_file,
-    Lines,
-    Cache
+    Source_lines,
+    Source_cache
   BuildDepends: typesafety_misc
   FindlibName: typesafety_hack
 
