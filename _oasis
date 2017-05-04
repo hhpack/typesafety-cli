@@ -57,10 +57,11 @@ Library "typesafety_review"
   Path: src/review
   Modules:
     Review_comment,
-    Github,
     Github_t,
-    Github_j
-  BuildDepends: atdgen, threads, lwt, cohttp, typesafety_misc, typesafety_hack, typesafety_typechecker
+    Github_j,
+    Http_client,
+    Github
+  BuildDepends: atdgen, threads, lwt, cohttp, cohttp.lwt, typesafety_misc, typesafety_hack, typesafety_typechecker
   FindlibName: typesafety_review
 
 Library "typesafety_cli"
@@ -85,7 +86,7 @@ Executable test
   CompiledObject: native
   Install: false
   BuildDepends:
-    str, atdgen, threads, cmdliner, process, typesafety_cli, typesafety_cli, typesafety_env, typesafety_typechecker, typesafety_review, oUnit
+    str, atdgen, threads, cmdliner, process, lwt, cohttp, cohttp.lwt, oUnit, typesafety_cli, typesafety_cli, typesafety_env, typesafety_typechecker, typesafety_review
 
 Test test
   Run$:               flag(tests)

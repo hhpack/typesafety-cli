@@ -1,34 +1,46 @@
-open Lwt
-open Cohttp
-open Cohttp_lwt_unix
+(**
+ * Copyright 2017 Noritaka Horio <holy.shared.design@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ *)
 
-type t = {
-  user: string;
-  repo: string;
-  token: string;
-}
+ module type S = sig
+  val create: token:string ->
+    user:string ->
+    repo:string ->
+    num:int ->
+    content:Github_j.review ->
+    (int * string, int * string) Result.result Lwt.t
+  val for_repo: token:string ->
+    user:string ->
+    repo:string ->
+    num:int ->
+    content:Github_j.review ->
+    (int * string, int * string) Result.result Lwt.t
+end
 
-let init ~token ~user ~repo =
-  { user; repo; token }
+module Make(Http_client: Http_client.S): S = struct
+  let endpoint = "https://api.github.com"
+  let repo_endpoint = endpoint ^ "/repos"
+  let uri_of_review ~user ~repo ~num =
+    let review_path = Printf.sprintf "/%s/%s/pulls/%d/reviews" user repo num in
+    Uri.of_string (repo_endpoint ^ review_path)
 
-(** Authorization: token OAUTH-TOKEN *)
-let headers_of_api t =
-  let h = Header.init () in
-  Header.add_list h [
-    ("User-Agent", t.user);
-    ("Authorization", ("token " ^ t.token));
-    ("Accept", "application/vnd.github.black-cat-preview+json")
-  ]
+  let headers_of_review ?(headers=[]) ~token ~user () =
+    let defaults_headers = [
+      ("User-Agent", user);
+      ("Authorization", ("token " ^ token));
+      ("Accept", "application/vnd.github.black-cat-preview+json")
+    ] in
+    ListLabels.concat [headers; defaults_headers]
 
-let status_code_of_response res =
-  res |> Response.status |> Code.code_of_status
+  let create ~token ~user ~repo ~num ~content =
+    let uri = uri_of_review ~user ~repo ~num in
+    let headers = headers_of_review ~token ~user () in
+    let body = Github_j.string_of_review content in
+    Http_client.post uri ~headers ~body
+  let for_repo ~token ~user ~repo = create ~token ~user ~repo
+end
 
-let body_of_response body =
-  body |> Cohttp_lwt_body.to_string
-
-let create_review t ~num ~content =
-  let headers = headers_of_api t in
-  let body = Github_j.string_of_review content in
-  let uri = "https://api.github.com/repos/" ^ t.user ^ "/" ^ t.repo ^ "/pulls/" ^ (string_of_int num) ^ "/reviews" in
-  Client.post (Uri.of_string uri) ~body:(`String body) ~headers:headers >>= fun (res, body) ->
-  body_of_response body
+include Make(Http_client)
