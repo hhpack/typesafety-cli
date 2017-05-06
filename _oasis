@@ -12,6 +12,12 @@ PreBuildCommand:
   atdgen -t src/review/github.atd -o src/review/github
   atdgen -j src/review/github.atd -o src/review/github
 
+Library "typesafety_github"
+  Path: src/github
+  Modules:
+    Github
+  FindlibName: typesafety_github
+
 Library "typesafety_misc"
   Path: src/misc
   Modules:
@@ -34,6 +40,7 @@ Library "typesafety_env"
   Modules:
     Env,
     Ci_env
+  BuildDepends: typesafety_github
   FindlibName: typesafety_env
 
 Library "typesafety_typechecker"
@@ -61,7 +68,7 @@ Library "typesafety_review"
     Github_t,
     Github_j,
     Http_client,
-    Github
+    Github_client
   BuildDepends: atdgen, threads, lwt, cohttp, cohttp.lwt, typesafety_misc, typesafety_env, typesafety_hack, typesafety_typechecker
   FindlibName: typesafety_review
 

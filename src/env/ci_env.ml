@@ -1,27 +1,12 @@
-type token = string
-type branch_name = string
-
-module Slug = struct
-  type t = (string * string)
-  let of_string s =
-    let slug_len = String.length s in
-    let slug_sp_index = String.index s '/' in
-    let user = String.sub s 0 slug_sp_index in
-    let repo_len = (slug_len - (String.length user) - 1) in
-    let repo = String.sub s (slug_sp_index + 1) repo_len in
-    (user, repo)
-  let to_string t =
-    let user, repo = t in
-    user ^ "/" ^ repo
-end
+open Github
 
 module type S = sig
   val is_current: unit -> bool
   val is_pull_request: unit -> bool
-  val token: unit -> (token, string) result
-  val pull_request_number: unit -> (int, string) result
+  val token: unit -> (Token.t, string) result
+  val pull_request_number: unit -> (Pull_request.t, string) result
   val slug: unit -> (Slug.t, string) result
-  val branch: unit -> (branch_name, string) result
+  val branch: unit -> (Branch.t, string) result
 end
 
 module Make(CI: S) = struct
