@@ -62,7 +62,7 @@ Library "typesafety_review"
     Github_j,
     Http_client,
     Github
-  BuildDepends: atdgen, threads, lwt, cohttp, cohttp.lwt, typesafety_misc, typesafety_hack, typesafety_typechecker
+  BuildDepends: atdgen, threads, lwt, cohttp, cohttp.lwt, typesafety_misc, typesafety_env, typesafety_hack, typesafety_typechecker
   FindlibName: typesafety_review
 
 Library "typesafety_cli"

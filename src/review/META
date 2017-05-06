@@ -1,9 +1,9 @@
 # OASIS_START
-# DO NOT EDIT (digest: 31db158d00540940a2345f3974aec2ee)
+# DO NOT EDIT (digest: b3df403a99ccb9d558c3102ecd3daf0b)
 version = "0.3.1"
 description = "Type check wrapper for Hack"
 requires =
-"atdgen threads lwt cohttp cohttp.lwt typesafety_misc typesafety_hack typesafety_typechecker"
+"atdgen threads lwt cohttp cohttp.lwt typesafety_misc typesafety_env typesafety_hack typesafety_typechecker"
 archive(byte) = "typesafety_review.cma"
 archive(byte, plugin) = "typesafety_review.cma"
 archive(native) = "typesafety_review.cmxa"
