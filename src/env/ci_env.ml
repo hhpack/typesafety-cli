@@ -38,7 +38,7 @@ module Travis = struct
         | None -> false
     let is_pull_request () =
       match E.get "TRAVIS_PULL_REQUEST" with
-        | Some v -> true
+        | Some v -> if v = "false" then false else true
         | None -> false
     let token () =
       match E.require "GITHUB_TOKEN" with
@@ -57,6 +57,7 @@ module Travis = struct
   include Make(Env.Sys_env)
 end
 
+(*
 let supports =
   [(module Travis:S)]
 
@@ -67,3 +68,4 @@ let detect () =
   try
     Ok (ListLabels.find ~f:detect_env supports)
   with Not_found -> Error "Sorry, this is an environment not support"
+*)

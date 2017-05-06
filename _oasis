@@ -64,7 +64,7 @@ Library "typesafety_hhvm"
 Library "typesafety_review"
   Path: src/review
   Modules:
-    Review,
+    Github_review,
     Review_comment,
     Github_t,
     Github_j,

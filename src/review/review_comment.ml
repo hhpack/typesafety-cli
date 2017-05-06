@@ -140,7 +140,7 @@ let comment_of_error t ~buf ~error =
     comment_of_messages t ~buf ~messages:error.error_messages in
   title_of buf ~error |> content_of ~error
 
-let create ?(root=Sys.getcwd ()) ~user ~repo ~branch ~json () =
+let create ?(root=Sys.getcwd ()) ~user ~repo ~branch json =
   let t = init ~user ~repo ~branch ~root () in
   let add_title buf ~s =
     Comment_buffer.writeln buf ~s ~n:2 in

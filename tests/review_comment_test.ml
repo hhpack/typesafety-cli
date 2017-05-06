@@ -35,10 +35,10 @@ let test_create_review_comment _ =
   let user = "holyshared" in
   let repo = "typesafety" in
   let branch = "master" in
-  let review_comment = Review_comment.branch_for ~user ~repo ~branch () in
+  let review_comment = Review_comment.branch_for ~user ~repo ~branch in
   let expect = Template.read_template ~file:"../tests/fixtures/review_comment.md" () in
   let json = Template.json_from ~file:"../tests/fixtures/output.json" ~f:result_of_string () in
-  let actual = review_comment ~json:json in
+  let actual = review_comment json in
   assert_equal expect actual
 
 let tests =

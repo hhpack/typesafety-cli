@@ -19,3 +19,7 @@ module Make(S: Supports_ci.S): S = struct
       Ok (ListLabels.find ~f:detect_env supports)
     with Not_found -> Error "Sorry, this is an environment not support"
 end
+
+include Make(struct
+  let supports = [(module Ci_env.Travis:Ci_env.S)]
+end)

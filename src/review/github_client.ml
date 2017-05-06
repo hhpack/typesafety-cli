@@ -5,18 +5,14 @@
  * with this source code in the file LICENSE.
  *)
 
- module type S = sig
-  val create: token:string ->
-    user:string ->
-    repo:string ->
-    num:int ->
-    content:Github_j.review ->
-    (int * string, int * string) Result.result Lwt.t
-  val for_repo: token:string ->
-    user:string ->
-    repo:string ->
-    num:int ->
-    content:Github_j.review ->
+open Github
+
+module type S = sig
+  val create_review: token:Token.t ->
+    user:User.t ->
+    repo:Repository.t ->
+    num:Pull_request.t ->
+    string ->
     (int * string, int * string) Result.result Lwt.t
 end
 
@@ -35,12 +31,13 @@ module Make(Http_client: Http_client.S): S = struct
     ] in
     ListLabels.concat [headers; defaults_headers]
 
-  let create ~token ~user ~repo ~num ~content =
+  let create_review ~token ~user ~repo ~num content =
+    let open Github_t in
+    let review_comment = { body=content; event="REQUEST_CHANGES"; comments=None } in
     let uri = uri_of_review ~user ~repo ~num in
     let headers = headers_of_review ~token ~user () in
-    let body = Github_j.string_of_review content in
+    let body = Github_j.string_of_review review_comment in
     Http_client.post uri ~headers ~body
-  let for_repo ~token ~user ~repo = create ~token ~user ~repo
 end
 
 include Make(Http_client)
