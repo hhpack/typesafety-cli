@@ -10,6 +10,7 @@ open Log
 
 type context = {
   no_hhconfig: bool;
+  review: bool;
   verbose: bool;
 }
 
@@ -56,9 +57,10 @@ let typecheck ctx =
   let typecheck o = next_with_context o ctx typecheck_json in
   check_hhvm_installed |> check_hhconfg |> typecheck
 
-let check no_hhconfig verbose =
+let check no_hhconfig review verbose =
   let ctx = {
     no_hhconfig=no_hhconfig;
+    review=review;
     verbose=verbose;
   } in
   set_verbose verbose;
@@ -70,11 +72,15 @@ let no_hhconfig =
   let doc = "When hhconfig does not exist, do not generate files automatically" in
   Arg.(value & flag & info ["no-hhconfig"] ~doc)
 
+let review =
+  let doc = "If specified, will leave a review comment by Github" in
+  Arg.(value & flag & info ["review"] ~doc)
+
 let verbose =
   let doc = "If specified, will display detailed logs" in
   Arg.(value & flag & info ["verbose"] ~doc)
 
-let check_t = Term.(const check $ no_hhconfig $ verbose)
+let check_t = Term.(const check $ no_hhconfig $ review $ verbose)
 
 let info =
   let doc = "Typechecker wrapper for Hack" in
