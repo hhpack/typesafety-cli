@@ -39,7 +39,8 @@ Library "typesafety_env"
   Path: src/env
   Modules:
     Env,
-    Ci_env
+    Ci_env,
+    Ci_detector
   BuildDepends: typesafety_github
   FindlibName: typesafety_env
 
