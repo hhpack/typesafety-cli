@@ -58,7 +58,7 @@ Library "typesafety_hhvm"
     Hh_config,
     Hh_client,
     Hhvm
-  BuildDepends: process, typesafety_misc
+  BuildDepends: process, typesafety_misc, typesafety_typechecker
   FindlibName: typesafety_hhvm
 
 Library "typesafety_review"
@@ -78,7 +78,7 @@ Library "typesafety_cli"
   Modules:
     Typesafety_check,
     Typesafety_reporter
-  BuildDepends: cmdliner, typesafety_hhvm, typesafety_hack, typesafety_misc, typesafety_typechecker
+  BuildDepends: cmdliner, typesafety_hhvm, typesafety_hack, typesafety_misc, typesafety_review, typesafety_typechecker
   FindlibName: typesafety_cli
 
 Executable typesafety

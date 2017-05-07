@@ -66,9 +66,8 @@ let print_error cache =
   fun err_seq err -> List.iteri (print_error_message ~cache (err_seq + 1)) err.error_messages
 
 let print_json json =
-  let result = Typechecker_check_j.result_of_string json in
-  List.iteri (print_error (Source_cache.create 1024)) result.errors
+  List.iteri (print_error (Source_cache.create 1024)) json.errors
 
 let print_result_file file =
-  let json = File.read_all file in
-  print_json json
+  let json_of s = Typechecker_check_j.result_of_string s in
+  print_json (json_of (File.read_all file))

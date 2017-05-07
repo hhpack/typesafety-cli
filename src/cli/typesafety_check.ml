@@ -63,9 +63,13 @@ let check no_hhconfig review verbose =
     review=review;
     verbose=verbose;
   } in
+  let print_json json = Typesafety_reporter.print_json json in
+  let review_comment json = Github_review.create json in
+  let skip_review json = Ok () in
+  let review_if json ~review = if review then review_comment json else skip_review json in
   set_verbose verbose;
   match typecheck ctx with
-    | Ok v -> Typesafety_reporter.print_json v; Ok ()
+    | Ok json -> print_json json; review_if ~review json
     | Error e -> Error e
 
 let no_hhconfig =
