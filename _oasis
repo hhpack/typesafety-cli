@@ -1,6 +1,6 @@
 OASISFormat: 0.4
 Name:        typesafety
-Version:     0.3.1
+Version:     0.4.0
 Synopsis:    Type check wrapper for Hack
 Authors:     Noritka Horio <holy.shared.design@gmail.com>
 License:     MIT
