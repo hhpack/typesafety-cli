@@ -2,7 +2,7 @@
 
 source .profile
 
-cd projects
+cd projects/typesafety-cli
 oasis setup-clean
 oasis setup
 make clean

@@ -1,13 +1,12 @@
+version: 2
 options:
   verbose: true
 
 syncs:
   typesafety-sync:
-    notify_terminal: true
     src: '..'
-    dest: '/home/typesafety/projects'
-    sync_user: typesafety
-    sync_group: typesafety
+    notify_terminal: true
+    sync_userid: '1000'
     sync_strategy: 'rsync'
     sync_host_port: 10871
     sync_excludes_type: Path

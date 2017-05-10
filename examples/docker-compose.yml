@@ -3,4 +3,4 @@ services:
   typesafety:
     image: holyshared/typesafety:latest
     container_name: 'typesafety_example'
-    command: bash -c /home/typesafety/projects/examples/build
+    command: bash -c /home/typesafety/projects/typesafety-cli/examples/build

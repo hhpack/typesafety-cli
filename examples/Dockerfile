@@ -20,5 +20,5 @@ WORKDIR /home/typesafety
 RUN mkdir projects
 RUN echo 'eval `opam config env`' >> ~/.profile
 RUN sudo -u typesafety sh -c "opam init -y"
-RUN sudo -u typesafety sh -c "opam switch 4.04.0"
-RUN sudo -u typesafety sh -c "opam install oasis ocamlfind camlp4 atdgen cmdliner process oUnit"
+RUN sudo -u typesafety sh -c "opam switch 4.04.1"
+RUN sudo -u typesafety sh -c "opam install oasis ocamlfind camlp4 atdgen lwt cohttp cmdliner process oUnit"
