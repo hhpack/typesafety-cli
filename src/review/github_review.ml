@@ -6,10 +6,9 @@
  *)
 
 module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S) = struct
-  (*
   type ('a, 'b) review_result =
     | Skiped of 'a
-    | Reviewed of 'b*)
+    | Reviewed of 'b
 
   module D = Ci_detector.Make(Supports_ci)
   module G = Github_client.Make(Http_client)
@@ -53,15 +52,19 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S)
     bind branch |>
     bind pull_request_number
 
+  let post_review o =
+    let open Github_t in
+    match Lwt_main.run o with
+      | Ok (code, body) -> Ok (Reviewed (Github_j.review_result_of_string body))
+      | Error (code, body) -> Error ((string_of_int code) ^ ":" ^ body)
+
   let post_review_comment json ~ci =
     let post_review_comment ~token ~user ~repo ~branch ~num json =
       let comment_of json = Review_comment.create ~user ~repo ~branch json in
       let review_comment_by comment = G.create_review ~token ~user ~repo ~num comment in
         comment_of json |>
         review_comment_by |>
-        fun o -> match Lwt_main.run o with
-          | Ok (code, body) -> Ok ()
-          | Error (code, body) -> Error ((string_of_int code) ^ ":" ^ body) in
+        post_review in
     let review = bind_ci_env_vars (Ok post_review_comment) ~ci in
     match review with
       | Ok f -> f json
@@ -73,7 +76,7 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S)
       if Ci.is_pull_request () then
         post_review_comment json ~ci
       else
-        Ok () in
+        Ok (Skiped ()) in
     match D.detect () with
       | Ok ci -> review_by json ~ci
       | Error e -> Error e

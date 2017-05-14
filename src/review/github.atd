@@ -54,4 +54,3 @@ type review_result = {
   submitted_at: string;
   commit_id: string;
 }
-
