@@ -16,6 +16,11 @@ PreBuildCommand:
   atdgen -t src/review/github.atd -o src/review/github
   atdgen -j src/review/github.atd -o src/review/github
 
+SourceRepository head
+  Type: git
+  Location: git://github.com/hhpack/typesafety-cli.git
+  Browser: https://github.com/hhpack/typesafety-cli
+
 Library "typesafety_github"
   Path: src/github
   Modules:
