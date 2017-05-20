@@ -1,6 +1,6 @@
 OASISFormat: 0.4
 Name:        typesafety
-Version:     0.3.1
+Version:     0.4.0
 Synopsis:    Type check wrapper for Hack
 Authors:     Noritka Horio <holy.shared.design@gmail.com>
 License:     MIT
@@ -11,6 +11,12 @@ PreBuildCommand:
   atdgen -j src/typechecker/typechecker_check.atd -o src/typechecker/typechecker_check
   atdgen -t src/review/github.atd -o src/review/github
   atdgen -j src/review/github.atd -o src/review/github
+
+Library "typesafety_github"
+  Path: src/github
+  Modules:
+    Github
+  FindlibName: typesafety_github
 
 Library "typesafety_misc"
   Path: src/misc
@@ -33,7 +39,9 @@ Library "typesafety_env"
   Path: src/env
   Modules:
     Env,
-    Ci_env
+    Ci_env,
+    Ci_detector
+  BuildDepends: typesafety_github
   FindlibName: typesafety_env
 
 Library "typesafety_typechecker"
@@ -50,17 +58,19 @@ Library "typesafety_hhvm"
     Hh_config,
     Hh_client,
     Hhvm
-  BuildDepends: process, typesafety_misc
+  BuildDepends: process, typesafety_misc, typesafety_typechecker
   FindlibName: typesafety_hhvm
 
 Library "typesafety_review"
   Path: src/review
   Modules:
+    Github_review,
     Review_comment,
-    Github,
     Github_t,
-    Github_j
-  BuildDepends: atdgen, threads, lwt, cohttp, typesafety_misc, typesafety_hack, typesafety_typechecker
+    Github_j,
+    Http_client,
+    Github_client
+  BuildDepends: atdgen, threads, lwt, lwt_ssl, cohttp, cohttp.lwt, typesafety_misc, typesafety_env, typesafety_hack, typesafety_typechecker
   FindlibName: typesafety_review
 
 Library "typesafety_cli"
@@ -68,7 +78,7 @@ Library "typesafety_cli"
   Modules:
     Typesafety_check,
     Typesafety_reporter
-  BuildDepends: cmdliner, typesafety_hhvm, typesafety_hack, typesafety_misc, typesafety_typechecker
+  BuildDepends: cmdliner, typesafety_hhvm, typesafety_hack, typesafety_misc, typesafety_review, typesafety_typechecker
   FindlibName: typesafety_cli
 
 Executable typesafety
@@ -85,7 +95,7 @@ Executable test
   CompiledObject: native
   Install: false
   BuildDepends:
-    str, atdgen, threads, cmdliner, process, typesafety_cli, typesafety_cli, typesafety_env, typesafety_typechecker, typesafety_review, oUnit
+    str, atdgen, threads, cmdliner, process, lwt, lwt_ssl, cohttp, cohttp.lwt, oUnit, typesafety_cli, typesafety_cli, typesafety_env, typesafety_typechecker, typesafety_review
 
 Test test
   Run$:               flag(tests)

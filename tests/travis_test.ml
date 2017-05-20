@@ -1,5 +1,6 @@
 open Test_helper
 open Ci_env
+open Github
 
 let test_current_env ctxt =
   let module S = Ci_env.Travis.Make(struct

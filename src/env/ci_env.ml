@@ -1,36 +1,30 @@
-type branch_name = string
-
-module Slug = struct
-  type t = (string * string)
-  let of_string s =
-    let slug_len = String.length s in
-    let slug_sp_index = String.index s '/' in
-    let user = String.sub s 0 slug_sp_index in
-    let repo_len = (slug_len - (String.length user) - 1) in
-    let repo = String.sub s (slug_sp_index + 1) repo_len in
-    (user, repo)
-  let to_string t =
-    let user, repo = t in
-    user ^ "/" ^ repo
-end
+open Github
 
 module type S = sig
   val is_current: unit -> bool
   val is_pull_request: unit -> bool
-  val pull_request_number: unit -> (int, string) result
+  val token: unit -> (Token.t, string) result
+  val pull_request_number: unit -> (Pull_request.t, string) result
   val slug: unit -> (Slug.t, string) result
-  val branch: unit -> (branch_name, string) result
+  val branch: unit -> (Branch.t, string) result
 end
 
 module Make(CI: S) = struct
   (** Return true for current environment *)
   let is_current () = CI.is_current ()
+
   (** It checks whether it is a pull request and returns true if it is a pull request *)
   let is_pull_request () = CI.is_pull_request ()
+
+  (** Return personal token of Github *)
+  let token () = CI.token ()
+
   (** Return pull request number of github *)
   let pull_request_number () = CI.pull_request_number ()
+
   (** Return user name and repository slug *)
   let slug () = CI.slug ()
+
   (** Return branch name *)
   let branch () = CI.branch ()
 end
@@ -44,8 +38,12 @@ module Travis = struct
         | None -> false
     let is_pull_request () =
       match E.get "TRAVIS_PULL_REQUEST" with
-        | Some v -> true
+        | Some v -> if v = "false" then false else true
         | None -> false
+    let token () =
+      match E.require "GITHUB_TOKEN" with
+        | Ok v -> Ok v
+        | Error e -> Error e
     let pull_request_number () =
       match E.require "TRAVIS_PULL_REQUEST" with
         | Ok v -> Ok (int_of_string v)
@@ -59,6 +57,7 @@ module Travis = struct
   include Make(Env.Sys_env)
 end
 
+(*
 let supports =
   [(module Travis:S)]
 
@@ -69,3 +68,4 @@ let detect () =
   try
     Ok (ListLabels.find ~f:detect_env supports)
   with Not_found -> Error "Sorry, this is an environment not support"
+*)

@@ -39,6 +39,11 @@ let typecheck = function
   | Ok _ -> check ()
   | Error e -> Error e
 
+let to_json o =
+  match o with
+    | Ok s -> Ok (Typechecker_check_j.result_of_string s)
+    | Error e -> Error e
+
 let verbose = function
   | Ok v -> debug "[hh_client]: %s" v; Ok v
   | Error e -> Error e
@@ -48,3 +53,4 @@ let typecheck_json () =
     |> verbose
     |> typecheck
     |> verbose
+    |> to_json

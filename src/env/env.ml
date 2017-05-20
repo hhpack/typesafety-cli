@@ -2,7 +2,7 @@ module type S = sig
   val get: string -> string option
 end
 
-module Sys_env = struct
+module Sys_env: S = struct
   let get key =
     try
       Some (Sys.getenv key)
