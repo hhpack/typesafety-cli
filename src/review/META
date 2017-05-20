@@ -1,6 +1,6 @@
 # OASIS_START
-# DO NOT EDIT (digest: fab1440bb59f4556c814b5e2a02beb33)
-version = "0.4.0"
+# DO NOT EDIT (digest: 40276bd0cfe8b3077c22791627d54d59)
+version = "0.4.1"
 description = "Type check wrapper for Hack"
 requires =
 "atdgen threads lwt lwt_ssl cohttp cohttp.lwt typesafety_misc typesafety_env typesafety_hack typesafety_typechecker"

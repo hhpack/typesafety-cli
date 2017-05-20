@@ -1,6 +1,6 @@
 # OASIS_START
-# DO NOT EDIT (digest: db045c0867f5805f79f3091612f69ea4)
-version = "0.4.0"
+# DO NOT EDIT (digest: 5023dbf60ea2e745dd4859e70a026d25)
+version = "0.4.1"
 description = "Type check wrapper for Hack"
 archive(byte) = "typesafety_misc.cma"
 archive(byte, plugin) = "typesafety_misc.cma"
