@@ -1,11 +1,13 @@
 OASISFormat: 0.4
 Name:        typesafety
-Version:     0.4.1
-Synopsis:    Type check wrapper for Hack
+Version:     0.4.2
+Synopsis:    Typechecker powerful wrapper for HHVM/Hack
 Authors:     Noritka Horio <holy.shared.design@gmail.com>
 License:     MIT
 Plugins:     META (0.4), DevFiles (0.4)
-Description: Type check wrapper for Hack
+Description:
+  Detailed information display of type error and review comments to Github will support development with HHVM/Hack.
+  typesafety is designed for use in the CI environment and now supports Travis CI.
 Maintainers: Noritka Horio <holy.shared.design@gmail.com>
 Homepage: https://github.com/hhpack/typesafety-cli
 BugReports: https://github.com/hhpack/typesafety-cli/issues

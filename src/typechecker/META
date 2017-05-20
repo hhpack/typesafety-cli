@@ -1,7 +1,7 @@
 # OASIS_START
-# DO NOT EDIT (digest: 51787ce81a96beafc16df59c859dea31)
-version = "0.4.1"
-description = "Type check wrapper for Hack"
+# DO NOT EDIT (digest: f664aa884d7fb49eab35a50772fcce5c)
+version = "0.4.2"
+description = "Typechecker powerful wrapper for HHVM/Hack"
 requires = "atdgen"
 archive(byte) = "typesafety_typechecker.cma"
 archive(byte, plugin) = "typesafety_typechecker.cma"
