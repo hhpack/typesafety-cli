@@ -4,8 +4,8 @@ version: "0.4.0"
 maintainer: "Noritka Horio <holy.shared.design@gmail.com>"
 author: "Noritka Horio <holy.shared.design@gmail.com>"
 homepage: "https://github.com/hhpack/typesafety-cli"
-bug-reports: ""
-license: ""
+bug-reports: "https://github.com/hhpack/typesafety-cli/issues"
+license: "MIT"
 dev-repo: ""
 build: [
   ["./configure" "--prefix=%{prefix}%"]
