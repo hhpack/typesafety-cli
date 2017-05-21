@@ -12,6 +12,7 @@ Maintainers: Noritka Horio <holy.shared.design@gmail.com>
 Homepage: https://github.com/hhpack/typesafety-cli
 BugReports: https://github.com/hhpack/typesafety-cli/issues
 BuildTools:  ocamlbuild
+BuildDepends: threads, str
 PreBuildCommand:
   atdgen -t src/typechecker/typechecker_check.atd -o src/typechecker/typechecker_check
   atdgen -j src/typechecker/typechecker_check.atd -o src/typechecker/typechecker_check
@@ -23,56 +24,65 @@ SourceRepository head
   Location: git://github.com/hhpack/typesafety-cli.git
   Browser: https://github.com/hhpack/typesafety-cli
 
-Library "typesafety_github"
+Library "github"
   Path: src/github
   Modules:
     Github
-  FindlibName: typesafety_github
+  FindlibName: github
+  FindlibParent: typesafety
 
-Library "typesafety_misc"
+Library "misc"
   Path: src/misc
   Modules:
     File,
     Color,
     Log
-  FindlibName: typesafety_misc
+  FindlibName: misc
+  FindlibParent: typesafety
 
-Library "typesafety_hack"
+Library "hack"
   Path: src/hack
   Modules:
     Source_file,
     Source_lines,
     Source_cache
-  BuildDepends: typesafety_misc
-  FindlibName: typesafety_hack
+  BuildDepends: typesafety.misc
+  FindlibName: hack
+  FindlibParent: typesafety
 
-Library "typesafety_env"
+Library "env"
   Path: src/env
   Modules:
     Env,
     Ci_env,
     Ci_detector
-  BuildDepends: typesafety_github
-  FindlibName: typesafety_env
+  BuildDepends: typesafety.github
+  FindlibName: env
+  FindlibParent: typesafety
 
-Library "typesafety_typechecker"
+Library "typechecker"
   Path: src/typechecker
   Modules:
     Typechecker_check_t,
     Typechecker_check_j
   BuildDepends: atdgen
-  FindlibName: typesafety_typechecker
+  FindlibName: typechecker
+  FindlibParent: typesafety
 
-Library "typesafety_hhvm"
+Library "hhvm"
   Path: src/hhvm
   Modules:
     Hh_config,
     Hh_client,
     Hhvm
-  BuildDepends: process, typesafety_misc, typesafety_typechecker
-  FindlibName: typesafety_hhvm
+  BuildDepends:
+    process,
+    typesafety.misc,
+    typesafety.typechecker
+  FindlibName: hhvm
+  FindlibParent: typesafety
 
-Library "typesafety_review"
+Library "review"
   Path: src/review
   Modules:
     Github_review,
@@ -81,23 +91,39 @@ Library "typesafety_review"
     Github_j,
     Http_client,
     Github_client
-  BuildDepends: atdgen, threads, lwt, lwt_ssl, cohttp, cohttp.lwt, typesafety_misc, typesafety_env, typesafety_hack, typesafety_typechecker
-  FindlibName: typesafety_review
+  BuildDepends:
+    atdgen,
+    lwt,
+    lwt_ssl,
+    cohttp,
+    cohttp.lwt,
+    typesafety.misc,
+    typesafety.env,
+    typesafety.hack,
+    typesafety.typechecker
+  FindlibName: review
+  FindlibParent: typesafety
 
-Library "typesafety_cli"
+Library "typesafety"
   Path: src/cli
   Modules:
     Typesafety_check,
     Typesafety_reporter
-  BuildDepends: cmdliner, typesafety_hhvm, typesafety_hack, typesafety_misc, typesafety_review, typesafety_typechecker
-  FindlibName: typesafety_cli
+  BuildDepends:
+    cmdliner,
+    typesafety.hhvm,
+    typesafety.hack,
+    typesafety.misc,
+    typesafety.review,
+    typesafety.typechecker
+  FindlibName: typesafety
 
 Executable typesafety
   Path:       src
   MainIs:     typesafety.ml
   CompiledObject: native
-  BuildDepends:
-    str, atdgen, threads, cmdliner, process, typesafety_cli, typesafety_hack, typesafety_misc, typesafety_env, typesafety_hhvm, typesafety_typechecker, typesafety_review
+  Install: true
+  BuildDepends: typesafety
 
 Executable test
   Path: tests
@@ -106,7 +132,7 @@ Executable test
   CompiledObject: native
   Install: false
   BuildDepends:
-    str, atdgen, threads, cmdliner, process, lwt, lwt_ssl, cohttp, cohttp.lwt, oUnit, typesafety_cli, typesafety_cli, typesafety_env, typesafety_typechecker, typesafety_review
+    oUnit, typesafety
 
 Test test
   Run$:               flag(tests)
