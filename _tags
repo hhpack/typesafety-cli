@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: e1a01f40392de831b45898d80fda0275)
+# DO NOT EDIT (digest: 11c6b263204f004c1732ef52f2a89c01)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -14,40 +14,53 @@ true: annot, bin_annot
 ".git": not_hygienic
 "_darcs": -traverse
 "_darcs": not_hygienic
-# Library typesafety_github
-"src/github/typesafety_github.cmxs": use_typesafety_github
-# Library typesafety_misc
-"src/misc/typesafety_misc.cmxs": use_typesafety_misc
-# Library typesafety_hack
-"src/hack/typesafety_hack.cmxs": use_typesafety_hack
-<src/hack/*.ml{,i,y}>: use_typesafety_misc
-# Library typesafety_env
-"src/env/typesafety_env.cmxs": use_typesafety_env
-<src/env/*.ml{,i,y}>: use_typesafety_github
-# Library typesafety_typechecker
-"src/typechecker/typesafety_typechecker.cmxs": use_typesafety_typechecker
+# Library github
+"src/github/github.cmxs": use_github
+<src/github/*.ml{,i,y}>: pkg_str
+<src/github/*.ml{,i,y}>: pkg_threads
+# Library misc
+"src/misc/misc.cmxs": use_misc
+<src/misc/*.ml{,i,y}>: pkg_str
+<src/misc/*.ml{,i,y}>: pkg_threads
+# Library hack
+"src/hack/hack.cmxs": use_hack
+<src/hack/*.ml{,i,y}>: pkg_str
+<src/hack/*.ml{,i,y}>: pkg_threads
+<src/hack/*.ml{,i,y}>: use_misc
+# Library env
+"src/env/env.cmxs": use_env
+<src/env/*.ml{,i,y}>: pkg_str
+<src/env/*.ml{,i,y}>: pkg_threads
+<src/env/*.ml{,i,y}>: use_github
+# Library typechecker
+"src/typechecker/typechecker.cmxs": use_typechecker
 <src/typechecker/*.ml{,i,y}>: pkg_atdgen
-# Library typesafety_hhvm
-"src/hhvm/typesafety_hhvm.cmxs": use_typesafety_hhvm
+<src/typechecker/*.ml{,i,y}>: pkg_str
+<src/typechecker/*.ml{,i,y}>: pkg_threads
+# Library hhvm
+"src/hhvm/hhvm.cmxs": use_hhvm
 <src/hhvm/*.ml{,i,y}>: pkg_atdgen
 <src/hhvm/*.ml{,i,y}>: pkg_process
-<src/hhvm/*.ml{,i,y}>: use_typesafety_misc
-<src/hhvm/*.ml{,i,y}>: use_typesafety_typechecker
-# Library typesafety_review
-"src/review/typesafety_review.cmxs": use_typesafety_review
+<src/hhvm/*.ml{,i,y}>: pkg_str
+<src/hhvm/*.ml{,i,y}>: pkg_threads
+<src/hhvm/*.ml{,i,y}>: use_misc
+<src/hhvm/*.ml{,i,y}>: use_typechecker
+# Library review
+"src/review/review.cmxs": use_review
 <src/review/*.ml{,i,y}>: pkg_atdgen
 <src/review/*.ml{,i,y}>: pkg_cohttp
 <src/review/*.ml{,i,y}>: pkg_cohttp.lwt
 <src/review/*.ml{,i,y}>: pkg_lwt
 <src/review/*.ml{,i,y}>: pkg_lwt_ssl
+<src/review/*.ml{,i,y}>: pkg_str
 <src/review/*.ml{,i,y}>: pkg_threads
-<src/review/*.ml{,i,y}>: use_typesafety_env
-<src/review/*.ml{,i,y}>: use_typesafety_github
-<src/review/*.ml{,i,y}>: use_typesafety_hack
-<src/review/*.ml{,i,y}>: use_typesafety_misc
-<src/review/*.ml{,i,y}>: use_typesafety_typechecker
-# Library typesafety_cli
-"src/cli/typesafety_cli.cmxs": use_typesafety_cli
+<src/review/*.ml{,i,y}>: use_env
+<src/review/*.ml{,i,y}>: use_github
+<src/review/*.ml{,i,y}>: use_hack
+<src/review/*.ml{,i,y}>: use_misc
+<src/review/*.ml{,i,y}>: use_typechecker
+# Library typesafety
+"src/cli/typesafety.cmxs": use_typesafety
 <src/cli/*.ml{,i,y}>: pkg_atdgen
 <src/cli/*.ml{,i,y}>: pkg_cmdliner
 <src/cli/*.ml{,i,y}>: pkg_cohttp
@@ -55,14 +68,15 @@ true: annot, bin_annot
 <src/cli/*.ml{,i,y}>: pkg_lwt
 <src/cli/*.ml{,i,y}>: pkg_lwt_ssl
 <src/cli/*.ml{,i,y}>: pkg_process
+<src/cli/*.ml{,i,y}>: pkg_str
 <src/cli/*.ml{,i,y}>: pkg_threads
-<src/cli/*.ml{,i,y}>: use_typesafety_env
-<src/cli/*.ml{,i,y}>: use_typesafety_github
-<src/cli/*.ml{,i,y}>: use_typesafety_hack
-<src/cli/*.ml{,i,y}>: use_typesafety_hhvm
-<src/cli/*.ml{,i,y}>: use_typesafety_misc
-<src/cli/*.ml{,i,y}>: use_typesafety_review
-<src/cli/*.ml{,i,y}>: use_typesafety_typechecker
+<src/cli/*.ml{,i,y}>: use_env
+<src/cli/*.ml{,i,y}>: use_github
+<src/cli/*.ml{,i,y}>: use_hack
+<src/cli/*.ml{,i,y}>: use_hhvm
+<src/cli/*.ml{,i,y}>: use_misc
+<src/cli/*.ml{,i,y}>: use_review
+<src/cli/*.ml{,i,y}>: use_typechecker
 # Executable typesafety
 "src/typesafety.native": pkg_atdgen
 "src/typesafety.native": pkg_cmdliner
@@ -73,14 +87,14 @@ true: annot, bin_annot
 "src/typesafety.native": pkg_process
 "src/typesafety.native": pkg_str
 "src/typesafety.native": pkg_threads
-"src/typesafety.native": use_typesafety_cli
-"src/typesafety.native": use_typesafety_env
-"src/typesafety.native": use_typesafety_github
-"src/typesafety.native": use_typesafety_hack
-"src/typesafety.native": use_typesafety_hhvm
-"src/typesafety.native": use_typesafety_misc
-"src/typesafety.native": use_typesafety_review
-"src/typesafety.native": use_typesafety_typechecker
+"src/typesafety.native": use_env
+"src/typesafety.native": use_github
+"src/typesafety.native": use_hack
+"src/typesafety.native": use_hhvm
+"src/typesafety.native": use_misc
+"src/typesafety.native": use_review
+"src/typesafety.native": use_typechecker
+"src/typesafety.native": use_typesafety
 <src/*.ml{,i,y}>: pkg_atdgen
 <src/*.ml{,i,y}>: pkg_cmdliner
 <src/*.ml{,i,y}>: pkg_cohttp
@@ -90,14 +104,14 @@ true: annot, bin_annot
 <src/*.ml{,i,y}>: pkg_process
 <src/*.ml{,i,y}>: pkg_str
 <src/*.ml{,i,y}>: pkg_threads
-<src/*.ml{,i,y}>: use_typesafety_cli
-<src/*.ml{,i,y}>: use_typesafety_env
-<src/*.ml{,i,y}>: use_typesafety_github
-<src/*.ml{,i,y}>: use_typesafety_hack
-<src/*.ml{,i,y}>: use_typesafety_hhvm
-<src/*.ml{,i,y}>: use_typesafety_misc
-<src/*.ml{,i,y}>: use_typesafety_review
-<src/*.ml{,i,y}>: use_typesafety_typechecker
+<src/*.ml{,i,y}>: use_env
+<src/*.ml{,i,y}>: use_github
+<src/*.ml{,i,y}>: use_hack
+<src/*.ml{,i,y}>: use_hhvm
+<src/*.ml{,i,y}>: use_misc
+<src/*.ml{,i,y}>: use_review
+<src/*.ml{,i,y}>: use_typechecker
+<src/*.ml{,i,y}>: use_typesafety
 # Executable test
 "tests/test.native": pkg_atdgen
 "tests/test.native": pkg_cmdliner
@@ -109,14 +123,14 @@ true: annot, bin_annot
 "tests/test.native": pkg_process
 "tests/test.native": pkg_str
 "tests/test.native": pkg_threads
-"tests/test.native": use_typesafety_cli
-"tests/test.native": use_typesafety_env
-"tests/test.native": use_typesafety_github
-"tests/test.native": use_typesafety_hack
-"tests/test.native": use_typesafety_hhvm
-"tests/test.native": use_typesafety_misc
-"tests/test.native": use_typesafety_review
-"tests/test.native": use_typesafety_typechecker
+"tests/test.native": use_env
+"tests/test.native": use_github
+"tests/test.native": use_hack
+"tests/test.native": use_hhvm
+"tests/test.native": use_misc
+"tests/test.native": use_review
+"tests/test.native": use_typechecker
+"tests/test.native": use_typesafety
 <tests/*.ml{,i,y}>: pkg_atdgen
 <tests/*.ml{,i,y}>: pkg_cmdliner
 <tests/*.ml{,i,y}>: pkg_cohttp
@@ -127,12 +141,12 @@ true: annot, bin_annot
 <tests/*.ml{,i,y}>: pkg_process
 <tests/*.ml{,i,y}>: pkg_str
 <tests/*.ml{,i,y}>: pkg_threads
-<tests/*.ml{,i,y}>: use_typesafety_cli
-<tests/*.ml{,i,y}>: use_typesafety_env
-<tests/*.ml{,i,y}>: use_typesafety_github
-<tests/*.ml{,i,y}>: use_typesafety_hack
-<tests/*.ml{,i,y}>: use_typesafety_hhvm
-<tests/*.ml{,i,y}>: use_typesafety_misc
-<tests/*.ml{,i,y}>: use_typesafety_review
-<tests/*.ml{,i,y}>: use_typesafety_typechecker
+<tests/*.ml{,i,y}>: use_env
+<tests/*.ml{,i,y}>: use_github
+<tests/*.ml{,i,y}>: use_hack
+<tests/*.ml{,i,y}>: use_hhvm
+<tests/*.ml{,i,y}>: use_misc
+<tests/*.ml{,i,y}>: use_review
+<tests/*.ml{,i,y}>: use_typechecker
+<tests/*.ml{,i,y}>: use_typesafety
 # OASIS_STOP

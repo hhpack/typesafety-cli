@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: e4849348509e60e6e9d109c17db482b6) *)
+(* DO NOT EDIT (digest: 84947f61154a655d5bc4c388d3d3e833) *)
 module OASISGettext = struct
 (* # 22 "src/oasis/OASISGettext.ml" *)
 
@@ -887,20 +887,20 @@ let package_default =
   {
      MyOCamlbuildBase.lib_ocaml =
        [
-          ("typesafety_github", ["src/github"], []);
-          ("typesafety_misc", ["src/misc"], []);
-          ("typesafety_hack", ["src/hack"], []);
-          ("typesafety_env", ["src/env"], []);
-          ("typesafety_typechecker", ["src/typechecker"], []);
-          ("typesafety_hhvm", ["src/hhvm"], []);
-          ("typesafety_review", ["src/review"], []);
-          ("typesafety_cli", ["src/cli"], [])
+          ("github", ["src/github"], []);
+          ("misc", ["src/misc"], []);
+          ("hack", ["src/hack"], []);
+          ("env", ["src/env"], []);
+          ("typechecker", ["src/typechecker"], []);
+          ("hhvm", ["src/hhvm"], []);
+          ("review", ["src/review"], []);
+          ("typesafety", ["src/cli"], [])
        ];
      lib_c = [];
      flags = [];
      includes =
        [
-          ("tests", ["src/cli"; "src/env"; "src/review"; "src/typechecker"]);
+          ("tests", ["src/cli"]);
           ("src/review",
             ["src/env"; "src/hack"; "src/misc"; "src/typechecker"]);
           ("src/hhvm", ["src/misc"; "src/typechecker"]);
@@ -914,16 +914,7 @@ let package_default =
                "src/review";
                "src/typechecker"
             ]);
-          ("src",
-            [
-               "src/cli";
-               "src/env";
-               "src/hack";
-               "src/hhvm";
-               "src/misc";
-               "src/review";
-               "src/typechecker"
-            ])
+          ("src", ["src/cli"])
        ]
   }
   ;;
@@ -932,6 +923,6 @@ let conf = {MyOCamlbuildFindlib.no_automatic_syntax = false}
 
 let dispatch_default = MyOCamlbuildBase.dispatch_default conf package_default;;
 
-# 936 "myocamlbuild.ml"
+# 927 "myocamlbuild.ml"
 (* OASIS_STOP *)
 Ocamlbuild_plugin.dispatch dispatch_default;;
