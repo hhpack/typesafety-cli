@@ -18,4 +18,4 @@ esac
 
 opam init
 opam switch 4.04.1
-opam install oasis ssl lwt_ssl ocamlfind atdgen cmdliner process oUnit cohttp lwt
+opam install -y oasis ssl lwt_ssl ocamlfind atdgen cmdliner process oUnit cohttp lwt
