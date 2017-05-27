@@ -23,7 +23,7 @@ or
 ### Typecheck and Github review
 
 Using Github review api, you can post the check results as review comments.  
-Current version only supports [https://travis-ci.org/](Travis CI).
+Current version only supports [Travis CI](https://travis-ci.org/).
 
 	typesafety --review
 
