@@ -19,7 +19,7 @@ The following environment is necessary to build.
 You can install dependent packages with the following command.
 
 	opam switch 4.04.0
-	opam install -y oasis ocamlfind atdgen cmdliner process oUnit
+	opam install -y oasis ssl lwt_ssl ocamlfind atdgen cmdliner process oUnit cohttp lwt
 
 ## Build
 
