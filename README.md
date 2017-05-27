@@ -7,19 +7,57 @@
 Typesafety is a type checker wrapper for [Hack](http://hacklang.org/).  
 Detailed report at type check, automatic generation of .hhconfig, etc.
 
+
+## Basis usage
+
+### Typecheck
+
+If you do not want to create **.hhconfig** automatically, specify **--no-hhconfig**.
+
+	typesafety
+
+or
+
+	typesafety --no-hhconfig
+
+### Typecheck and Github review
+
+Using Github review api, you can post the check results as review comments.  
+Current version only supports [https://travis-ci.org/](Travis CI).
+
+	typesafety --review
+
+You need to specify [Personal access token](https://github.com/settings/tokens) for environment variable **GITHUB_TOKEN**.  
+The access authority must be **repo** or **public_repo**.
+
 ## Environment
 
 The following environment is necessary to build.
 
 * OCaml >= 4.04.0
-* Opam >= 1.2.2
+* OPAM >= 1.2.2
+
+## Install
 
 ### Dependent packages
 
-You can install dependent packages with the following command.
+You can install dependent packages with the following command.  
+If you use the **--review option**, you need to install openssl.
+
+#### Debian/Ubuntu
+
+	sudo apt-get install -y opam
+	sudo apt-get install -y libssl-dev pkg-config
+
+#### macOS
+
+	brew install opam
+	brew install openssl pkg-config
+
+### Install typesafety
 
 	opam switch 4.04.0
-	opam install -y oasis ssl lwt_ssl ocamlfind atdgen cmdliner process oUnit cohttp lwt
+	opam pin add typesafety https://github.com/hhpack/typesafety-cli.git
 
 ## Build
 
