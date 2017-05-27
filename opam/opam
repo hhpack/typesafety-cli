@@ -1,0 +1,35 @@
+opam-version: "1.2"
+name: "typesafety"
+version: "0.4.4"
+maintainer: "Noritka Horio <holy.shared.design@gmail.com>"
+authors: [ "Noritka Horio <holy.shared.design@gmail.com>" ]
+license: "MIT"
+homepage: "https://github.com/hhpack/typesafety-cli"
+dev-repo: "git://github.com/hhpack/typesafety-cli.git"
+bug-reports: "https://github.com/hhpack/typesafety-cli/issues"
+build: [
+  ["ocaml" "setup.ml" "-configure" "--prefix" prefix]
+  ["ocaml" "setup.ml" "-build"]
+]
+install: ["ocaml" "setup.ml" "-install"]
+remove: [
+  ["ocaml" "%{etc}%/typesafety/setup.ml" "-C" "%{etc}%/typesafety"
+    "-uninstall"]
+]
+build-test: [
+  ["ocaml" "setup.ml" "-configure" "--enable-tests"]
+  ["ocaml" "setup.ml" "-build"]
+  ["ocaml" "setup.ml" "-test"]
+]
+depends: [
+  "atdgen"
+  "base-threads"
+  ("cmdliner" {= "0.9.8"} | "cmdliner" {= "0.9.7"} | "cmdliner" {= "0.9.6"} | "cmdliner" {= "0.9.5"} | "cmdliner" {= "0.9.4"} | "cmdliner" {= "0.9.2"})
+  "cohttp"
+  "lwt"
+  "lwt_ssl"
+  "ocamlbuild" {build}
+  "ocamlfind" {build}
+  "ounit" {test}
+  "process"
+]

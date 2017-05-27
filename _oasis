@@ -1,6 +1,6 @@
 OASISFormat: 0.4
 Name:        typesafety
-Version:     0.4.3
+Version:     0.4.4
 Synopsis:    Typechecker powerful wrapper for HHVM/Hack
 Authors:     Noritka Horio <holy.shared.design@gmail.com>
 License:     MIT
@@ -23,6 +23,11 @@ SourceRepository head
   Type: git
   Location: git://github.com/hhpack/typesafety-cli.git
   Browser: https://github.com/hhpack/typesafety-cli
+
+SourceRepository opam-pin
+  Type: git
+  Location: git://github.com/hhpack/typesafety-cli.git
+  Branch: master
 
 Library "github"
   Path: src/github

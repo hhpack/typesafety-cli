@@ -1,0 +1,5 @@
+Typechecker powerful wrapper for HHVM/Hack
+
+Detailed information display of type error and review comments to
+Github will support development with HHVM/Hack. typesafety is designed
+for use in the CI environment and now supports Travis CI.
