@@ -1,3 +1,4 @@
+open OUnit2
 open Test_helper
 open Typechecker_check_j
 
@@ -19,7 +20,7 @@ let error_detail = {
 let test_uri_of_message _ =
   let actual = Review_comment.uri_of_message (init ()) error_detail in
   let expect = "https://github.com/holyshared/typesafety/blob/master/src/example.text#L2" in
-  assert_equal actual expect
+  assert_equal ~pp_diff:print_diff actual expect
 
 let test_hint_of_message _ =
   let hint_line = Review_comment.(
@@ -29,7 +30,7 @@ let test_hint_of_message _ =
       contents
     )
   ) in
-  assert_equal "^^^^^\n" hint_line
+  assert_equal ~pp_diff:print_diff "^^^^^\n" hint_line
 
 let test_create_review_comment _ =
   let user = "holyshared" in
@@ -39,7 +40,7 @@ let test_create_review_comment _ =
   let expect = Template.read_template ~file:"../tests/fixtures/review_comment.md" () in
   let json = Template.json_from ~file:"../tests/fixtures/output.json" ~f:result_of_string () in
   let actual = review_comment json in
-  assert_equal expect actual
+  assert_equal ~pp_diff:print_diff expect actual
 
 let tests =
   "all_tests" >::: [

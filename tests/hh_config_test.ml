@@ -1,4 +1,5 @@
 open OUnit2
+open Test_helper
 open Hh_config
 
 let failed e ~prefix =
@@ -32,7 +33,8 @@ let test_auto_generate_exists ctx =
     | Ok _ ->
       let already_exists = AlreadyExists temp_file in
       match create_if ~dir:temp_dir ~no_hhconfig:true () with
-        | Ok v -> assert_equal ~msg:"when exists" already_exists v
+        | Ok v ->
+          assert_equal ~pp_diff:diff_of_hhconfig_result ~msg:"when exists" already_exists v
         | Error e -> assert_failure e
 
 let test_auto_generate_not_exists ctx =
@@ -40,7 +42,8 @@ let test_auto_generate_not_exists ctx =
   let temp_file = (Filename.concat temp_dir ".hhconfig") in
   let created = FileCreated temp_file in
   match create_if ~dir:temp_dir ~no_hhconfig:false () with
-    | Ok v -> assert_equal ~msg:"when not_exists" created v
+    | Ok v ->
+      assert_equal ~pp_diff:diff_of_hhconfig_result ~msg:"when not_exists" created v
     | Error e -> assert_failure e
 
 let tests = "all_tests" >::: [

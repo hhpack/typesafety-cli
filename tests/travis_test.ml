@@ -1,3 +1,4 @@
+open OUnit2
 open Test_helper
 open Ci_env
 open Github
@@ -29,7 +30,7 @@ let test_slug ctxt =
     match slug with
       | Ok v -> Slug.to_string v
       | Error _ -> "invalid slug" in
-  assert_equal expect (actual (S.slug ()))
+  assert_equal ~pp_diff:print_diff expect (actual (S.slug ()))
 
 let tests =
   "all_tests" >::: [

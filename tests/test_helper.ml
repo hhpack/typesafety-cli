@@ -2,14 +2,11 @@ let print_diff f v =
   let expect, actual = v in
   Format.fprintf f "\n  actual: %s\n  expected: %s" actual expect
 
-let assert_equal ?ctxt ?msg expect actual =
-  OUnit2.assert_equal ?ctxt ?msg ~pp_diff:print_diff expect actual
+let diff_of_int f v =
+  let expect, actual = v in
+  Format.fprintf f "\n  actual: %s\n  expected: %s" (string_of_int actual) (string_of_int expect)
 
-let assert_bool s v =
-  OUnit2.assert_bool s v
-
-let assert_failure e =
-  OUnit2.assert_failure e
-
-let (>::) = OUnit2.(>::)
-let (>:::) = OUnit2.(>:::)
+let diff_of_hhconfig_result f v =
+  let open Hh_config in
+  let expect, actual = v in
+  Format.fprintf f "\n  actual: %s\n  expected: %s" (string_of_result actual) (string_of_result expect)
