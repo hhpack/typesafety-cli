@@ -57,15 +57,30 @@ module Travis = struct
   include Make(Env.Sys_env)
 end
 
-(*
-let supports =
-  [(module Travis:S)]
-
-let detect () =
-  let detect_env env =
-    let module E = (val env: S) in
-    E.is_current () in
-  try
-    Ok (ListLabels.find ~f:detect_env supports)
-  with Not_found -> Error "Sorry, this is an environment not support"
-*)
+module General = struct
+  module Make(Env_s: Env.S): S = struct
+    module E = Env.Make(Env_s)
+    let is_current () =
+      match E.get "CI" with
+        | Some v -> bool_of_string v
+        | None -> false
+    let is_pull_request () =
+      match E.get "CI_PULL_REQUEST" with
+        | Some v -> if v = "false" then false else true
+        | None -> false
+    let token () =
+      match E.require "GITHUB_TOKEN" with
+        | Ok v -> Ok v
+        | Error e -> Error e
+    let pull_request_number () =
+      match E.require "CI_PULL_REQUEST" with
+        | Ok v -> Ok (int_of_string v)
+        | Error e -> Error e
+    let slug () =
+      match E.require "CI_PULL_REQUEST_SLUG" with
+        | Ok v -> Ok (Slug.of_string v)
+        | Error e -> Error e
+    let branch () = E.require "CI_PULL_REQUEST_BRANCH"
+  end
+  include Make(Env.Sys_env)
+end

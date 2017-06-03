@@ -9,5 +9,6 @@ let () =
     Source_lines_test.tests;
     Review_comment_test.tests;
     Travis_test.tests;
+    General_test.tests;
     Github_j_test.tests
   ])
