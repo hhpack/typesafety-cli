@@ -22,7 +22,7 @@ let read_range_test tcxt =
     let line_number, source_code = line in
     (string_of_int line_number) ^ ":" ^ source_code in
   let readed_file f = Source_file.read_range ~line:2 f in
-  let joined_line_range f = List.fold_right (fun a b -> (string_of_line a) ^ b) (readed_file f) "" in
+  let joined_line_range f = List.fold_left (fun b a -> b ^ (string_of_line a) ) "" (readed_file f) in
   assert_equal
     ~pp_diff:print_diff
     "1:let () =2:  print_endline \"example1.ml\"3:"
