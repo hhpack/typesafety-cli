@@ -1,3 +1,4 @@
+open OUnit2
 open Test_helper
 
 let example1 = "../tests/fixtures/example1.ml"
@@ -23,6 +24,7 @@ let read_range_test tcxt =
   let readed_file f = Source_file.read_range ~line:2 f in
   let joined_line_range f = List.fold_right (fun a b -> (string_of_line a) ^ b) (readed_file f) "" in
   assert_equal
+    ~pp_diff:print_diff
     "1:let () =2:  print_endline \"example1.ml\"3:"
     (joined_line_range example1)
 
