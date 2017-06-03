@@ -6,9 +6,13 @@
  *)
 
 module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S) = struct
-  type ('a, 'b) review_result =
-    | Skiped of 'a
-    | Reviewed of 'b
+  type skip_result =
+    | NoError
+    | NotPullRequest
+
+  type review_result =
+    | Skiped of skip_result
+    | Reviewed of Github_t.review_result
 
   module D = Ci_detector.Make(Supports_ci)
   module G = Github_client.Make(Http_client)
@@ -69,7 +73,7 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S)
     let review_if_has_errors json ~f =
       let open Typechecker_check_t in
       if json.passed then
-        Ok (Skiped ())
+        Ok (Skiped NoError)
       else
         f json in
 
@@ -83,7 +87,7 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S)
       if Ci.is_pull_request () then
         post_review_comment json ~ci
       else
-        Ok (Skiped ()) in
+        Ok (Skiped NotPullRequest) in
     match D.detect () with
       | Ok ci -> review_by json ~ci
       | Error e -> Error e

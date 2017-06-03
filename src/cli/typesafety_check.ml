@@ -67,11 +67,15 @@ module Github_task = struct
     | Reviewed of Github_t.review_result
     | ReviewFailed of string
 
+  let skiped_reason = function
+    | Github_review.NoError -> Skiped "Skiped github review (reason: no errors)"
+    | Github_review.NotPullRequest -> Skiped "Skiped github review (reason: not pull request)"
+
   let review_success result =
     let open Github_t in
     match result with
       | Github_review.Reviewed json -> Reviewed json
-      | Github_review.Skiped _ -> Skiped "Skiped github review"
+      | Github_review.Skiped v -> skiped_reason v
 
   let on_review result =
     let open Github_t in
