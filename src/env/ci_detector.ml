@@ -21,5 +21,8 @@ module Make(S: Supports_ci.S): S = struct
 end
 
 include Make(struct
-  let supports = [(module Ci_env.Travis:Ci_env.S)]
+  let supports = [
+    (module Ci_env.Travis:Ci_env.S);
+    (module Ci_env.General:Ci_env.S)
+  ]
 end)
