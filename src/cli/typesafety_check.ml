@@ -62,19 +62,30 @@ module Report_task = struct
 end
 
 module Github_task = struct
+  type result =
+    | Skiped of string
+    | Reviewed of Github_t.review_result
+    | ReviewFailed of string
+
   let review_success result =
     let open Github_t in
     match result with
-      | Github_review.Reviewed json -> Ok (info "The review was successful\n%s" json.pull_request_url)
-      | Github_review.Skiped _ -> Ok (info "%s" "Skiped github review")
+      | Github_review.Reviewed json -> Reviewed json
+      | Github_review.Skiped _ -> Skiped "Skiped github review"
 
-  let on_review = function
-    | Ok v -> review_success v
-    | Error e -> Error e
+  let on_review result =
+    let open Github_t in
+    match result with
+      | Skiped v -> Ok (info "%s" v)
+      | Reviewed json -> Ok (info "The review was successful\n%s" json.pull_request_url)
+      | ReviewFailed e -> Error e
 
-  let create_review json = Github_review.create json
+  let create_review json =
+    match Github_review.create json with
+      | Ok v -> review_success v
+      | Error e -> ReviewFailed e
 
-  let skip_review json = Ok (Github_review.Skiped ())
+  let skip_review json = Skiped "Skiped github review"
 
   let review_if json ~review =
     let try_review json =
