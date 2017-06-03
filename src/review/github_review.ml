@@ -66,8 +66,15 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S)
         review_comment_by |>
         post_review in
     let review = bind_ci_env_vars (Ok post_review_comment) ~ci in
+    let review_if_has_errors json ~f =
+      let open Typechecker_check_t in
+      if json.passed then
+        Ok (Skiped ())
+      else
+        f json in
+
     match review with
-      | Ok f -> f json
+      | Ok f -> review_if_has_errors ~f json
       | Error e -> Error e
 
   let create json =
