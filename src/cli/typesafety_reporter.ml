@@ -43,7 +43,7 @@ let lines_of_source ~file ~cache =
     | Cache lines -> lines
 
 let printer msg_seq =
-  if msg_seq == 0 then error else info
+  if msg_seq = 0 then error else info
 
 let print_header_message err_seq msg_seq message =
   let log = printer msg_seq in
@@ -59,7 +59,7 @@ let print_description_message msg_seq message lines_of_source =
 let print_error_message err_seq ~cache =
   fun msg_seq message ->
     let lines_of_source = lines_of_source ~file:message.source_path ~cache in
-    if msg_seq == 0 then print_header_message err_seq msg_seq message;
+    if msg_seq = 0 then print_header_message err_seq msg_seq message;
     print_description_message msg_seq message lines_of_source
 
 let print_error cache =
