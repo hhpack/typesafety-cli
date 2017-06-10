@@ -43,7 +43,7 @@ let lines_of_source ~file ~cache =
     | Cache lines -> lines
 
 let printer msg_seq =
-  if msg_seq == 0 then error else info
+  if msg_seq = 0 then error else info
 
 let print_header_message err_seq msg_seq message =
   let log = printer msg_seq in
@@ -59,14 +59,14 @@ let print_description_message msg_seq message lines_of_source =
 let print_error_message err_seq ~cache =
   fun msg_seq message ->
     let lines_of_source = lines_of_source ~file:message.source_path ~cache in
-    if msg_seq == 0 then print_header_message err_seq msg_seq message;
+    if msg_seq = 0 then print_header_message err_seq msg_seq message;
     print_description_message msg_seq message lines_of_source
 
 let print_error cache =
   fun err_seq err -> List.iteri (print_error_message ~cache (err_seq + 1)) err.error_messages
 
 let print_json json =
-  List.iteri (print_error (Source_cache.create 1024)) json.errors
+  Ok (List.iteri (print_error (Source_cache.create 1024)) json.errors)
 
 let print_result_file file =
   let json_of s = Typechecker_check_j.result_of_string s in

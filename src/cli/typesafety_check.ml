@@ -80,7 +80,7 @@ module Github_task = struct
   let on_review result =
     let open Github_t in
     match result with
-      | Skiped v -> Ok (info "%s" v)
+      | Skiped v -> Ok (info "%s\n" v)
       | Reviewed json -> Ok (info "The review was successful\n%s" json.pull_request_url)
       | ReviewFailed e -> Error e
 
@@ -108,7 +108,12 @@ let check no_hhconfig review verbose =
   } in
   set_verbose verbose;
   match typecheck ctx with
-    | Ok json -> Report_task.print_json json; Github_task.review_if ~review json
+    | Ok json ->
+      begin
+        match Report_task.print_json json with
+          | Ok _ -> Github_task.review_if ~review json
+          | Error e -> Error e
+      end
     | Error e -> Error e
 
 let no_hhconfig =

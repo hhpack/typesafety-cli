@@ -1,0 +1,46 @@
+{
+  "passed":false,
+  "errors":[
+    {
+      "message":[
+        {
+          "descr":"Expected variable",
+          "path":"{{root}}/examples/src/Example.hh",
+          "line":8,
+          "start":35,
+          "end":35,
+          "code":1002
+        }
+      ]
+    },
+    {
+      "message":[
+        {
+          "descr":"Invalid return type",
+          "path":"{{root}}/examples/src/ExampleClient.hh",
+          "line":8,
+          "start":21,
+          "end":24,
+          "code":4110
+        },
+        {
+          "descr":"This is an object of type typesafetycli\\Response",
+          "path":"{{root}}/examples/src/ExampleClient.hh",
+          "line":8,
+          "start":46,
+          "end":53,
+          "code":4110
+        },
+        {
+          "descr":"It is incompatible with void because this function implicitly returns void",
+          "path":"{{root}}/examples/src/ExampleClient.hh",
+          "line":8,
+          "start":21,
+          "end":24,
+          "code":4110
+        }
+      ]
+    }
+  ],
+  "version":" Thu Jan  1 09:00:00 1970"
+}
