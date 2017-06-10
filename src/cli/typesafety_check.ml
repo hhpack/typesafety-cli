@@ -80,7 +80,7 @@ module Github_task = struct
   let on_review result =
     let open Github_t in
     match result with
-      | Skiped v -> Ok (info "%s" v)
+      | Skiped v -> Ok (info "%s\n" v)
       | Reviewed json -> Ok (info "The review was successful\n%s" json.pull_request_url)
       | ReviewFailed e -> Error e
 
