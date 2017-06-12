@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 11c6b263204f004c1732ef52f2a89c01)
+# DO NOT EDIT (digest: 0bb82513b032b391c8869e84527e82f2)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -16,44 +16,44 @@ true: annot, bin_annot
 "_darcs": not_hygienic
 # Library github
 "src/github/github.cmxs": use_github
-<src/github/*.ml{,i,y}>: pkg_str
-<src/github/*.ml{,i,y}>: pkg_threads
+<src/github/*.ml{,i,y}>: package(str)
+<src/github/*.ml{,i,y}>: package(threads)
 # Library misc
 "src/misc/misc.cmxs": use_misc
-<src/misc/*.ml{,i,y}>: pkg_str
-<src/misc/*.ml{,i,y}>: pkg_threads
+<src/misc/*.ml{,i,y}>: package(str)
+<src/misc/*.ml{,i,y}>: package(threads)
 # Library hack
 "src/hack/hack.cmxs": use_hack
-<src/hack/*.ml{,i,y}>: pkg_str
-<src/hack/*.ml{,i,y}>: pkg_threads
+<src/hack/*.ml{,i,y}>: package(str)
+<src/hack/*.ml{,i,y}>: package(threads)
 <src/hack/*.ml{,i,y}>: use_misc
 # Library env
 "src/env/env.cmxs": use_env
-<src/env/*.ml{,i,y}>: pkg_str
-<src/env/*.ml{,i,y}>: pkg_threads
+<src/env/*.ml{,i,y}>: package(str)
+<src/env/*.ml{,i,y}>: package(threads)
 <src/env/*.ml{,i,y}>: use_github
 # Library typechecker
 "src/typechecker/typechecker.cmxs": use_typechecker
-<src/typechecker/*.ml{,i,y}>: pkg_atdgen
-<src/typechecker/*.ml{,i,y}>: pkg_str
-<src/typechecker/*.ml{,i,y}>: pkg_threads
+<src/typechecker/*.ml{,i,y}>: package(atdgen)
+<src/typechecker/*.ml{,i,y}>: package(str)
+<src/typechecker/*.ml{,i,y}>: package(threads)
 # Library hhvm
 "src/hhvm/hhvm.cmxs": use_hhvm
-<src/hhvm/*.ml{,i,y}>: pkg_atdgen
-<src/hhvm/*.ml{,i,y}>: pkg_process
-<src/hhvm/*.ml{,i,y}>: pkg_str
-<src/hhvm/*.ml{,i,y}>: pkg_threads
+<src/hhvm/*.ml{,i,y}>: package(atdgen)
+<src/hhvm/*.ml{,i,y}>: package(process)
+<src/hhvm/*.ml{,i,y}>: package(str)
+<src/hhvm/*.ml{,i,y}>: package(threads)
 <src/hhvm/*.ml{,i,y}>: use_misc
 <src/hhvm/*.ml{,i,y}>: use_typechecker
 # Library review
 "src/review/review.cmxs": use_review
-<src/review/*.ml{,i,y}>: pkg_atdgen
-<src/review/*.ml{,i,y}>: pkg_cohttp
-<src/review/*.ml{,i,y}>: pkg_cohttp.lwt
-<src/review/*.ml{,i,y}>: pkg_lwt
-<src/review/*.ml{,i,y}>: pkg_lwt_ssl
-<src/review/*.ml{,i,y}>: pkg_str
-<src/review/*.ml{,i,y}>: pkg_threads
+<src/review/*.ml{,i,y}>: package(atdgen)
+<src/review/*.ml{,i,y}>: package(cohttp)
+<src/review/*.ml{,i,y}>: package(cohttp.lwt)
+<src/review/*.ml{,i,y}>: package(lwt)
+<src/review/*.ml{,i,y}>: package(lwt_ssl)
+<src/review/*.ml{,i,y}>: package(str)
+<src/review/*.ml{,i,y}>: package(threads)
 <src/review/*.ml{,i,y}>: use_env
 <src/review/*.ml{,i,y}>: use_github
 <src/review/*.ml{,i,y}>: use_hack
@@ -61,15 +61,15 @@ true: annot, bin_annot
 <src/review/*.ml{,i,y}>: use_typechecker
 # Library typesafety
 "src/cli/typesafety.cmxs": use_typesafety
-<src/cli/*.ml{,i,y}>: pkg_atdgen
-<src/cli/*.ml{,i,y}>: pkg_cmdliner
-<src/cli/*.ml{,i,y}>: pkg_cohttp
-<src/cli/*.ml{,i,y}>: pkg_cohttp.lwt
-<src/cli/*.ml{,i,y}>: pkg_lwt
-<src/cli/*.ml{,i,y}>: pkg_lwt_ssl
-<src/cli/*.ml{,i,y}>: pkg_process
-<src/cli/*.ml{,i,y}>: pkg_str
-<src/cli/*.ml{,i,y}>: pkg_threads
+<src/cli/*.ml{,i,y}>: package(atdgen)
+<src/cli/*.ml{,i,y}>: package(cmdliner)
+<src/cli/*.ml{,i,y}>: package(cohttp)
+<src/cli/*.ml{,i,y}>: package(cohttp.lwt)
+<src/cli/*.ml{,i,y}>: package(lwt)
+<src/cli/*.ml{,i,y}>: package(lwt_ssl)
+<src/cli/*.ml{,i,y}>: package(process)
+<src/cli/*.ml{,i,y}>: package(str)
+<src/cli/*.ml{,i,y}>: package(threads)
 <src/cli/*.ml{,i,y}>: use_env
 <src/cli/*.ml{,i,y}>: use_github
 <src/cli/*.ml{,i,y}>: use_hack
@@ -78,15 +78,15 @@ true: annot, bin_annot
 <src/cli/*.ml{,i,y}>: use_review
 <src/cli/*.ml{,i,y}>: use_typechecker
 # Executable typesafety
-"src/typesafety.native": pkg_atdgen
-"src/typesafety.native": pkg_cmdliner
-"src/typesafety.native": pkg_cohttp
-"src/typesafety.native": pkg_cohttp.lwt
-"src/typesafety.native": pkg_lwt
-"src/typesafety.native": pkg_lwt_ssl
-"src/typesafety.native": pkg_process
-"src/typesafety.native": pkg_str
-"src/typesafety.native": pkg_threads
+"src/typesafety.native": package(atdgen)
+"src/typesafety.native": package(cmdliner)
+"src/typesafety.native": package(cohttp)
+"src/typesafety.native": package(cohttp.lwt)
+"src/typesafety.native": package(lwt)
+"src/typesafety.native": package(lwt_ssl)
+"src/typesafety.native": package(process)
+"src/typesafety.native": package(str)
+"src/typesafety.native": package(threads)
 "src/typesafety.native": use_env
 "src/typesafety.native": use_github
 "src/typesafety.native": use_hack
@@ -95,15 +95,15 @@ true: annot, bin_annot
 "src/typesafety.native": use_review
 "src/typesafety.native": use_typechecker
 "src/typesafety.native": use_typesafety
-<src/*.ml{,i,y}>: pkg_atdgen
-<src/*.ml{,i,y}>: pkg_cmdliner
-<src/*.ml{,i,y}>: pkg_cohttp
-<src/*.ml{,i,y}>: pkg_cohttp.lwt
-<src/*.ml{,i,y}>: pkg_lwt
-<src/*.ml{,i,y}>: pkg_lwt_ssl
-<src/*.ml{,i,y}>: pkg_process
-<src/*.ml{,i,y}>: pkg_str
-<src/*.ml{,i,y}>: pkg_threads
+<src/*.ml{,i,y}>: package(atdgen)
+<src/*.ml{,i,y}>: package(cmdliner)
+<src/*.ml{,i,y}>: package(cohttp)
+<src/*.ml{,i,y}>: package(cohttp.lwt)
+<src/*.ml{,i,y}>: package(lwt)
+<src/*.ml{,i,y}>: package(lwt_ssl)
+<src/*.ml{,i,y}>: package(process)
+<src/*.ml{,i,y}>: package(str)
+<src/*.ml{,i,y}>: package(threads)
 <src/*.ml{,i,y}>: use_env
 <src/*.ml{,i,y}>: use_github
 <src/*.ml{,i,y}>: use_hack
@@ -113,16 +113,16 @@ true: annot, bin_annot
 <src/*.ml{,i,y}>: use_typechecker
 <src/*.ml{,i,y}>: use_typesafety
 # Executable test
-"tests/test.native": pkg_atdgen
-"tests/test.native": pkg_cmdliner
-"tests/test.native": pkg_cohttp
-"tests/test.native": pkg_cohttp.lwt
-"tests/test.native": pkg_lwt
-"tests/test.native": pkg_lwt_ssl
-"tests/test.native": pkg_oUnit
-"tests/test.native": pkg_process
-"tests/test.native": pkg_str
-"tests/test.native": pkg_threads
+"tests/test.native": package(atdgen)
+"tests/test.native": package(cmdliner)
+"tests/test.native": package(cohttp)
+"tests/test.native": package(cohttp.lwt)
+"tests/test.native": package(lwt)
+"tests/test.native": package(lwt_ssl)
+"tests/test.native": package(oUnit)
+"tests/test.native": package(process)
+"tests/test.native": package(str)
+"tests/test.native": package(threads)
 "tests/test.native": use_env
 "tests/test.native": use_github
 "tests/test.native": use_hack
@@ -131,16 +131,16 @@ true: annot, bin_annot
 "tests/test.native": use_review
 "tests/test.native": use_typechecker
 "tests/test.native": use_typesafety
-<tests/*.ml{,i,y}>: pkg_atdgen
-<tests/*.ml{,i,y}>: pkg_cmdliner
-<tests/*.ml{,i,y}>: pkg_cohttp
-<tests/*.ml{,i,y}>: pkg_cohttp.lwt
-<tests/*.ml{,i,y}>: pkg_lwt
-<tests/*.ml{,i,y}>: pkg_lwt_ssl
-<tests/*.ml{,i,y}>: pkg_oUnit
-<tests/*.ml{,i,y}>: pkg_process
-<tests/*.ml{,i,y}>: pkg_str
-<tests/*.ml{,i,y}>: pkg_threads
+<tests/*.ml{,i,y}>: package(atdgen)
+<tests/*.ml{,i,y}>: package(cmdliner)
+<tests/*.ml{,i,y}>: package(cohttp)
+<tests/*.ml{,i,y}>: package(cohttp.lwt)
+<tests/*.ml{,i,y}>: package(lwt)
+<tests/*.ml{,i,y}>: package(lwt_ssl)
+<tests/*.ml{,i,y}>: package(oUnit)
+<tests/*.ml{,i,y}>: package(process)
+<tests/*.ml{,i,y}>: package(str)
+<tests/*.ml{,i,y}>: package(threads)
 <tests/*.ml{,i,y}>: use_env
 <tests/*.ml{,i,y}>: use_github
 <tests/*.ml{,i,y}>: use_hack
