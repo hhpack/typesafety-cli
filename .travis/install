@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-eval $(opam config env)
-
-opam install -y oasis ssl lwt_ssl ocamlfind atdgen cmdliner process oUnit cohttp lwt
