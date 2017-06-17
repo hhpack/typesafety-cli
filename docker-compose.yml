@@ -1,9 +1,9 @@
 version: '2'
 services:
   ocaml:
-    image: holyshared/ocaml:latest
+    build: .
+    image: typesafety/build:latest
     volumes:
-      - ./.opam/:/home/develop/.opam
       - ./:/home/develop/project
     tty: true
     cap_add:
