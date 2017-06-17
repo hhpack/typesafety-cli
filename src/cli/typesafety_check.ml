@@ -100,6 +100,30 @@ module Github_task = struct
     try_review json |> on_review
 end
 
+let failed_if_typecheck_error json =
+  let open Typechecker_check_t in
+  if json.passed then
+    Ok ()
+  else
+    Error "There is an error of type check"
+
+let report_typecheck_result json ~review =
+  let reporters = [
+    Report_task.print_json;
+    Github_task.review_if ~review;
+    failed_if_typecheck_error
+  ] in
+
+  let rec report json ~reporters =
+    match reporters with
+      | [] -> Ok ()
+      | reporter::remain_reporters ->
+        match reporter json with
+          | Ok _ -> report json ~reporters:remain_reporters
+          | Error e -> Error e in
+
+  report json ~reporters
+
 let check no_hhconfig review verbose =
   let ctx = {
     no_hhconfig=no_hhconfig;
@@ -108,12 +132,7 @@ let check no_hhconfig review verbose =
   } in
   set_verbose verbose;
   match typecheck ctx with
-    | Ok json ->
-      begin
-        match Report_task.print_json json with
-          | Ok _ -> Github_task.review_if ~review json
-          | Error e -> Error e
-      end
+    | Ok json -> report_typecheck_result ~review json
     | Error e -> Error e
 
 let no_hhconfig =
