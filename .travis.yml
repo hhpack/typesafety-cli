@@ -3,6 +3,9 @@ sudo: required
 dist: trusty
 services:
   - docker
+install:
+  - mkdir .opam
+  - docker-compose run ocaml bash -e .travis/install
 script:
   - docker-compose run ocaml bash -e .travis/test
 matrix:
