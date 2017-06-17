@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+eval $(opam config env)
+
+opam list
+
+rm -rf _build configure setup.log setup.data setup.log
+
+oasis setup
+
+make configure CONFIGUREFLAGS=--enable-tests
+make test

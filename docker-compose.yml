@@ -1,0 +1,12 @@
+version: '2'
+services:
+  ocaml:
+    image: holyshared/ocaml:latest
+    volumes:
+      - ./:/home/develop/project
+    tty: true
+    cap_add:
+      - ALL
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
