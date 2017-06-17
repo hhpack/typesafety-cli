@@ -1,13 +1,13 @@
 language: c
 sudo: required
+dist: trusty
+services:
+  - docker
 install:
-  - bash -ex .travis-ci-install.sh
-os:
-  - linux
-  - osx
-before_script:
-  - eval $(opam config env)
-  - oasis setup
-  - make configure CONFIGUREFLAGS=--enable-tests
+  - docker-compose build
 script:
-  - make test
+  - docker-compose run ocaml bash -e .travis/test
+matrix:
+  fast_finish: true
+notifications:
+  email: false
