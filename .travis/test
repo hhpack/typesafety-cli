@@ -2,11 +2,8 @@
 
 eval $(opam config env)
 
-opam list
+opam install -y oasis ssl lwt_ssl ocamlfind atdgen cmdliner process oUnit cohttp lwt
 
-rm -rf _build configure setup.log setup.data setup.log
-
-oasis setup
-
+make distclean
 make configure CONFIGUREFLAGS=--enable-tests
 make test

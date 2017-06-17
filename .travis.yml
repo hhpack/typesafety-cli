@@ -3,13 +3,8 @@ sudo: required
 dist: trusty
 services:
   - docker
-install:
-  - docker-compose run ocaml bash -ex .travis/install
-os:
-  - linux
-  - osx
 script:
-  - docker-compose run ocaml bash -ex .travis/test
+  - docker-compose run ocaml bash -e .travis/test
 matrix:
   fast_finish: true
 notifications:
