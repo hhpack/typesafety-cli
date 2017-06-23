@@ -3,8 +3,6 @@ services:
   ocaml:
     build: .
     image: typesafety/build:latest
-    volumes:
-      - ./:/home/develop/project
     tty: true
     cap_add:
       - ALL
