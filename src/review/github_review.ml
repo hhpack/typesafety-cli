@@ -82,14 +82,19 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S)
       | Error e -> Error e
 
   let create json =
+    let debug ci =
+      let module Ci = (val ci: Ci_env.S) in
+      Ci.print ~f:(fun (k, v) -> Log.debug "%s = %s" k v) in
+
     let review_by json ~ci =
       let module Ci = (val ci: Ci_env.S) in
       if Ci.is_pull_request () then
         post_review_comment json ~ci
       else
         Ok (Skiped NotPullRequest) in
+
     match D.detect () with
-      | Ok ci -> review_by json ~ci
+      | Ok ci -> debug ci; review_by json ~ci
       | Error e -> Error e
 end
 

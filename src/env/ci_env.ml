@@ -7,26 +7,29 @@ module type S = sig
   val pull_request_number: unit -> (Pull_request.t, string) result
   val slug: unit -> (Slug.t, string) result
   val branch: unit -> (Branch.t, string) result
+  val print: f:((string * string) -> unit )-> unit
 end
 
 module Make(CI: S) = struct
   (** Return true for current environment *)
-  let is_current () = CI.is_current ()
+  let is_current = CI.is_current
 
   (** It checks whether it is a pull request and returns true if it is a pull request *)
-  let is_pull_request () = CI.is_pull_request ()
+  let is_pull_request = CI.is_pull_request
 
   (** Return personal token of Github *)
-  let token () = CI.token ()
+  let token = CI.token
 
   (** Return pull request number of github *)
-  let pull_request_number () = CI.pull_request_number ()
+  let pull_request_number = CI.pull_request_number
 
   (** Return user name and repository slug *)
-  let slug () = CI.slug ()
+  let slug = CI.slug
 
   (** Return branch name *)
-  let branch () = CI.branch ()
+  let branch = CI.branch
+
+  let print = CI.print
 end
 
 module Travis = struct
