@@ -33,20 +33,36 @@ module Travis = struct
   module Make(Env_s: Env.S): S = struct
     module E = Env.Make(Env_s)
 
+    let variables = [
+      "TRAVIS";
+      "TRAVIS_PULL_REQUEST";
+      "TRAVIS_PULL_REQUEST_SLUG";
+      "TRAVIS_PULL_REQUEST_BRANCH";
+      "GITHUB_TOKEN"
+    ]
+
     let is_current () =
       E.is_enabled "TRAVIS"
+
     let is_pull_request () =
       match E.get "TRAVIS_PULL_REQUEST" with
         | Some v -> if v = "false" then  false else true
         | None -> false
+
     let token () =
       E.require "GITHUB_TOKEN"
+
     let pull_request_number () =
       E.require_map "TRAVIS_PULL_REQUEST" ~f:int_of_string
+
     let slug () =
       E.require_map "TRAVIS_PULL_REQUEST_SLUG" ~f:Slug.of_string
+
     let branch () =
       E.require "TRAVIS_PULL_REQUEST_BRANCH"
+
+    let print ~f = E.print ~f ~secures:["GITHUB_TOKEN"] variables
+
   end
   include Make(Env.Sys_env)
 end
@@ -54,20 +70,36 @@ end
 module General = struct
   module Make(Env_s: Env.S): S = struct
     module E = Env.Make(Env_s)
+
+    let variables = [
+      "CI";
+      "CI_PULL_REQUEST";
+      "CI_PULL_REQUEST_SLUG";
+      "CI_PULL_REQUEST_BRANCH";
+      "GITHUB_TOKEN"
+    ]
+
     let is_current () =
       E.is_enabled "CI"
+
     let is_pull_request () =
       match E.get "CI_PULL_REQUEST" with
         | Some v -> if v = "false" then false else true
         | None -> false
+
     let token () =
       E.require "GITHUB_TOKEN"
+
     let pull_request_number () =
       E.require_map "CI_PULL_REQUEST" ~f:int_of_string
+
     let slug () =
       E.require_map "CI_PULL_REQUEST_SLUG" ~f:Slug.of_string
+
     let branch () =
       E.require "CI_PULL_REQUEST_BRANCH"
+
+    let print ~f = E.print ~f ~secures:["GITHUB_TOKEN"] variables
   end
   include Make(Env.Sys_env)
 end
