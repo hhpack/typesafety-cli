@@ -32,27 +32,21 @@ end
 module Travis = struct
   module Make(Env_s: Env.S): S = struct
     module E = Env.Make(Env_s)
+
     let is_current () =
-      match E.get "TRAVIS" with
-        | Some v -> bool_of_string v
-        | None -> false
+      E.is_enabled "TRAVIS"
     let is_pull_request () =
       match E.get "TRAVIS_PULL_REQUEST" with
-        | Some v -> if v = "false" then false else true
+        | Some v -> if v = "false" then  false else true
         | None -> false
     let token () =
-      match E.require "GITHUB_TOKEN" with
-        | Ok v -> Ok v
-        | Error e -> Error e
+      E.require "GITHUB_TOKEN"
     let pull_request_number () =
-      match E.require "TRAVIS_PULL_REQUEST" with
-        | Ok v -> Ok (int_of_string v)
-        | Error e -> Error e
+      E.require_map "TRAVIS_PULL_REQUEST" ~f:int_of_string
     let slug () =
-      match E.require "TRAVIS_PULL_REQUEST_SLUG" with
-        | Ok v -> Ok (Slug.of_string v)
-        | Error e -> Error e
-    let branch () = E.require "TRAVIS_PULL_REQUEST_BRANCH"
+      E.require_map "TRAVIS_PULL_REQUEST_SLUG" ~f:Slug.of_string
+    let branch () =
+      E.require "TRAVIS_PULL_REQUEST_BRANCH"
   end
   include Make(Env.Sys_env)
 end
@@ -61,26 +55,19 @@ module General = struct
   module Make(Env_s: Env.S): S = struct
     module E = Env.Make(Env_s)
     let is_current () =
-      match E.get "CI" with
-        | Some v -> bool_of_string v
-        | None -> false
+      E.is_enabled "CI"
     let is_pull_request () =
       match E.get "CI_PULL_REQUEST" with
         | Some v -> if v = "false" then false else true
         | None -> false
     let token () =
-      match E.require "GITHUB_TOKEN" with
-        | Ok v -> Ok v
-        | Error e -> Error e
+      E.require "GITHUB_TOKEN"
     let pull_request_number () =
-      match E.require "CI_PULL_REQUEST" with
-        | Ok v -> Ok (int_of_string v)
-        | Error e -> Error e
+      E.require_map "CI_PULL_REQUEST" ~f:int_of_string
     let slug () =
-      match E.require "CI_PULL_REQUEST_SLUG" with
-        | Ok v -> Ok (Slug.of_string v)
-        | Error e -> Error e
-    let branch () = E.require "CI_PULL_REQUEST_BRANCH"
+      E.require_map "CI_PULL_REQUEST_SLUG" ~f:Slug.of_string
+    let branch () =
+      E.require "CI_PULL_REQUEST_BRANCH"
   end
   include Make(Env.Sys_env)
 end
