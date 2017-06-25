@@ -45,7 +45,7 @@ let to_json o =
     | Error e -> Error e
 
 let verbose = function
-  | Ok v -> debug "[hh_client]: %s" v; Ok v
+  | Ok v -> debug "[hh_client]: %s\n" v; Ok v
   | Error e -> Error e
 
 let typecheck_json () =
