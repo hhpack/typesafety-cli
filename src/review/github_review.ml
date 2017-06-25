@@ -84,7 +84,8 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S)
   let create json =
     let debug ci =
       let module Ci = (val ci: Ci_env.S) in
-      Ci.print ~f:(fun (k, v) -> Log.debug "%s = %s" k v) in
+      Log.debug "Environment variables:\n";
+      Ci.print ~f:(fun (k, v) -> Log.debug "%s = %s\n" k v) in
 
     let review_by json ~ci =
       let module Ci = (val ci: Ci_env.S) in
