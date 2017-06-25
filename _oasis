@@ -136,7 +136,7 @@ Executable typesafety_review
   MainIs:     typesafety_review.ml
   CompiledObject: native
   Install: true
-  BuildDepends: cmdliner (>= 1.0.0), typesafety.review
+  BuildDepends: cmdliner (>= 1.0.0), typesafety.review, typesafety.misc
 
 Executable test
   Path: tests

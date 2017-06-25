@@ -8,7 +8,27 @@ let verbose =
   let doc = "If specified, will display detailed logs" in
   Arg.(value & flag & info ["verbose"] ~doc)
 
-let review json_file verbose = Ok ()
+let review json_file verbose =
+  if Sys.file_exists json_file then
+    begin
+      let json = File.read_all json_file in
+      let result_of json = Typechecker_check_j.result_of_string json in
+      match Github_review.create (result_of json) with
+        | Ok result -> begin
+          let open Github_review in
+          match result with
+            | Skiped reason ->
+              begin
+                match reason with
+                  | NoError -> Ok (Log.success "review skiped (no error)\n")
+                  | NotPullRequest -> Ok (Log.success "review skiped (not pull request)\n")
+              end
+            | Reviewed _ -> Ok (Log.success "review done\n")
+          end
+        | Error e -> Error e
+    end
+  else
+    Error ("File " ^ json_file ^ " not found")
 
 let review_t = Term.(const review $ json_file $ verbose)
 
