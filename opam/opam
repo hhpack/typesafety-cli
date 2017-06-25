@@ -33,4 +33,4 @@ depends: [
   "ounit" {test & >= "2.0.0"}
   "process"
 ]
-available: [ ocaml-version >= "4.04.1" ]
+available: [ ocaml-version >= "4.04.2" ]

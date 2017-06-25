@@ -18,7 +18,7 @@ PreBuildCommand:
   atdgen -j src/typechecker/typechecker_check.atd -o src/typechecker/typechecker_check
   atdgen -t src/review/github.atd -o src/review/github
   atdgen -j src/review/github.atd -o src/review/github
-OCamlVersion: >= 4.04.1
+OCamlVersion: >= 4.04.2
 
 SourceRepository head
   Type: git
