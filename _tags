@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 0bb82513b032b391c8869e84527e82f2)
+# DO NOT EDIT (digest: 1b29bb3bfc449e9dde601b3e60579355)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -95,23 +95,38 @@ true: annot, bin_annot
 "src/typesafety.native": use_review
 "src/typesafety.native": use_typechecker
 "src/typesafety.native": use_typesafety
+<src/*.ml{,i,y}>: package(process)
+<src/*.ml{,i,y}>: use_hhvm
+<src/*.ml{,i,y}>: use_typesafety
+# Executable typesafety_review
+"src/typesafety_review.native": package(atdgen)
+"src/typesafety_review.native": package(cmdliner)
+"src/typesafety_review.native": package(cohttp)
+"src/typesafety_review.native": package(cohttp.lwt)
+"src/typesafety_review.native": package(lwt)
+"src/typesafety_review.native": package(lwt_ssl)
+"src/typesafety_review.native": package(str)
+"src/typesafety_review.native": package(threads)
+"src/typesafety_review.native": use_env
+"src/typesafety_review.native": use_github
+"src/typesafety_review.native": use_hack
+"src/typesafety_review.native": use_misc
+"src/typesafety_review.native": use_review
+"src/typesafety_review.native": use_typechecker
 <src/*.ml{,i,y}>: package(atdgen)
 <src/*.ml{,i,y}>: package(cmdliner)
 <src/*.ml{,i,y}>: package(cohttp)
 <src/*.ml{,i,y}>: package(cohttp.lwt)
 <src/*.ml{,i,y}>: package(lwt)
 <src/*.ml{,i,y}>: package(lwt_ssl)
-<src/*.ml{,i,y}>: package(process)
 <src/*.ml{,i,y}>: package(str)
 <src/*.ml{,i,y}>: package(threads)
 <src/*.ml{,i,y}>: use_env
 <src/*.ml{,i,y}>: use_github
 <src/*.ml{,i,y}>: use_hack
-<src/*.ml{,i,y}>: use_hhvm
 <src/*.ml{,i,y}>: use_misc
 <src/*.ml{,i,y}>: use_review
 <src/*.ml{,i,y}>: use_typechecker
-<src/*.ml{,i,y}>: use_typesafety
 # Executable test
 "tests/test.native": package(atdgen)
 "tests/test.native": package(cmdliner)

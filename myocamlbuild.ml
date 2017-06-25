@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: 1b4e77244fc032183597e72ace43b863) *)
+(* DO NOT EDIT (digest: a529f2ca5b5a3fd09701585a81405c1f) *)
 module OASISGettext = struct
 (* # 22 "src/oasis/OASISGettext.ml" *)
 
@@ -908,7 +908,7 @@ let package_default =
                "src/review";
                "src/typechecker"
             ]);
-          ("src", ["src/cli"])
+          ("src", ["src/cli"; "src/review"])
        ]
   }
   ;;

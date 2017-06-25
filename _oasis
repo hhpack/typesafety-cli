@@ -131,6 +131,13 @@ Executable typesafety
   Install: true
   BuildDepends: typesafety
 
+Executable typesafety_review
+  Path:       src
+  MainIs:     typesafety_review.ml
+  CompiledObject: native
+  Install: true
+  BuildDepends: cmdliner (>= 1.0.0), typesafety.review
+
 Executable test
   Path: tests
   MainIs: test.ml
