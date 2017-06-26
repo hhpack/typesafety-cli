@@ -63,13 +63,16 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S)
       | Error (code, body) -> Error ((string_of_int code) ^ ":" ^ body)
 
   let post_review_comment json ~ci =
+
     let post_review_comment ~token ~user ~repo ~branch ~num json =
       let comment_of json = Review_comment.create ~user ~repo ~branch json in
       let review_comment_by comment = G.create_review ~token ~user ~repo ~num comment in
         comment_of json |>
         review_comment_by |>
         post_review in
+
     let review = bind_ci_env_vars (Ok post_review_comment) ~ci in
+
     let review_if_has_errors json ~f =
       let open Typechecker_check_t in
       if json.passed then
