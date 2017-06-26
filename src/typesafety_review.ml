@@ -9,6 +9,7 @@ let verbose =
   Arg.(value & flag & info ["verbose"] ~doc)
 
 let review json_file verbose =
+  Log.set_verbose verbose;
   if Sys.file_exists json_file then
     begin
       let json = File.read_all json_file in
