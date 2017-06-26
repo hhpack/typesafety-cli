@@ -1,10 +1,9 @@
 open OUnit2
 open Test_helper
-open Ci_env
 open Github
 
 let test_current_env ctxt =
-  let module S = Ci_env.Travis.Make(struct
+  let module S = Ci_service_env.Travis.Make(struct
     let get key = match key with
       | "TRAVIS" -> Some "true"
       | _ -> Some "false"
@@ -12,7 +11,7 @@ let test_current_env ctxt =
   assert_bool "current env is false" (S.is_current ())
 
 let test_not_current_env ctxt =
-  let module S = Ci_env.Travis.Make(struct
+  let module S = Ci_service_env.Travis.Make(struct
     let get key = match key with
       | "TRAVIS" -> Some "false"
       | _ -> Some "false"
@@ -20,7 +19,7 @@ let test_not_current_env ctxt =
   assert_bool "current env is true" (not (S.is_current ()))
 
 let test_slug ctxt =
-  let module S = Ci_env.Travis.Make(struct
+  let module S = Ci_service_env.Travis.Make(struct
     let get key = match key with
       | "TRAVIS_PULL_REQUEST_SLUG" -> Some "holyshared/typesafey"
       | _ -> None

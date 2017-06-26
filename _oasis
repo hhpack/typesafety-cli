@@ -60,6 +60,8 @@ Library "env"
   Path: src/env
   Modules:
     Env,
+    Ci_service_env,
+    Github_env,
     Ci_env,
     Ci_detector
   BuildDepends: typesafety.github

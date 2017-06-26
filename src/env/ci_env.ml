@@ -27,80 +27,22 @@ module type S = sig
   val branch: unit -> (Branch.t, string) result
 
   (** Print environment variables *)
-  val print: f:((string * string) -> unit )-> unit
+  val print_env_vals: f:((string * string) -> unit) -> unit
 end
 
-module Travis = struct
-  module Make(Env_s: Env.S): S = struct
-    module E = Env.Make(Env_s)
+module Make (Ci_service: Ci_service_env.S): S = struct
+  let token = Github_env.token
 
-    let variables = [
-      "TRAVIS";
-      "TRAVIS_PULL_REQUEST";
-      "TRAVIS_PULL_REQUEST_SLUG";
-      "TRAVIS_PULL_REQUEST_BRANCH";
-      "GITHUB_TOKEN"
-    ]
+  let is_current = Ci_service.is_current
+  let is_pull_request = Ci_service.is_pull_request
+  let pull_request_number = Ci_service.pull_request_number
+  let slug = Ci_service.slug
+  let branch = Ci_service.branch
 
-    let is_current () =
-      E.is_enabled "TRAVIS"
-
-    let is_pull_request () =
-      match E.get "TRAVIS_PULL_REQUEST" with
-        | Some v -> if v = "false" then  false else true
-        | None -> false
-
-    let token () =
-      E.require "GITHUB_TOKEN"
-
-    let pull_request_number () =
-      E.require_map "TRAVIS_PULL_REQUEST" ~f:int_of_string
-
-    let slug () =
-      E.require_map "TRAVIS_PULL_REQUEST_SLUG" ~f:Slug.of_string
-
-    let branch () =
-      E.require "TRAVIS_PULL_REQUEST_BRANCH"
-
-    let print ~f = E.print ~f ~secures:["GITHUB_TOKEN"] variables
-
-  end
-  include Make(Env.Sys_env)
+  let print_env_vals ~f =
+    Env.print ~f ~secures:Github_env.variables Ci_service.variables
 end
 
-module General = struct
-  module Make(Env_s: Env.S): S = struct
-    module E = Env.Make(Env_s)
-
-    let variables = [
-      "CI";
-      "CI_PULL_REQUEST";
-      "CI_PULL_REQUEST_SLUG";
-      "CI_PULL_REQUEST_BRANCH";
-      "GITHUB_TOKEN"
-    ]
-
-    let is_current () =
-      E.is_enabled "CI"
-
-    let is_pull_request () =
-      match E.get "CI_PULL_REQUEST" with
-        | Some v -> if v = "false" then false else true
-        | None -> false
-
-    let token () =
-      E.require "GITHUB_TOKEN"
-
-    let pull_request_number () =
-      E.require_map "CI_PULL_REQUEST" ~f:int_of_string
-
-    let slug () =
-      E.require_map "CI_PULL_REQUEST_SLUG" ~f:Slug.of_string
-
-    let branch () =
-      E.require "CI_PULL_REQUEST_BRANCH"
-
-    let print ~f = E.print ~f ~secures:["GITHUB_TOKEN"] variables
-  end
-  include Make(Env.Sys_env)
-end
+(** Support ci environments *)
+(* module Travis = Make(Ci_service_env.Travis) *)
+(* module General = Make(Ci_service_env.General) *)

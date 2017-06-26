@@ -32,7 +32,8 @@ end
 
 module Make(S: S) = struct
   let require_failed key = Error (key ^ " is required")
-  let get key = S.get key
+
+  include S
 
   (**
     Check whether the environment variable is valid
