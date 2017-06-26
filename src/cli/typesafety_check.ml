@@ -1,5 +1,5 @@
 (**
- * Copyright 2016 Noritaka Horio <holy.shared.design@gmail.com>
+ * Copyright 2016-2017 Noritaka Horio <holy.shared.design@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -135,8 +135,13 @@ let check no_hhconfig review verbose =
   set_verbose verbose;
   info "Type check is started\n";
   match typecheck ctx with
-    | Ok json -> report_typecheck_result ~review json
-    | Error e -> Error e
+    | Ok json ->
+      begin
+        match report_typecheck_result ~review json with
+          | Ok _ -> `Ok ()
+          | Error e -> `Error (true, e)
+      end
+    | Error e -> `Error (true, e)
 
 let no_hhconfig =
   let doc = "When hhconfig does not exist, do not generate files automatically" in
@@ -150,9 +155,9 @@ let verbose =
   let doc = "If specified, will display detailed logs" in
   Arg.(value & flag & info ["verbose"] ~doc)
 
-let check_t = Term.(const check $ no_hhconfig $ review $ verbose)
+let check_t = Term.(ret Term.(const check $ no_hhconfig $ review $ verbose))
 
 let info =
   let doc = "Typechecker wrapper for Hack" in
   let man = [ `S "BUGS"; `P "Email bug reports to <holy.shared.design@gmail.com>."; ] in
-  Term.info "typesafety" ~version:"0.1.0" ~doc ~man
+  Term.info "typesafety" ~version:"0.1.0" ~exits:Term.default_exits ~doc ~man
