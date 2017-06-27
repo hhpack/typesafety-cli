@@ -45,7 +45,18 @@ module Slug = struct
     let user = String.sub s 0 slug_sp_index in
     let repo_len = (slug_len - (String.length user) - 1) in
     let repo = String.sub s (slug_sp_index + 1) repo_len in
-    (user, repo)
+    (User.of_string user, Repository.of_string repo)
+
+  (** Return owner of github repository *)
+  let repo_name t =
+    let _, repo = t in
+    Repository.of_string repo
+
+  (** Return owner of github repository *)
+  let repo_owner t =
+    let user, _ = t in
+    User.of_string user
+
   let to_string t =
     let user, repo = t in
     user ^ "/" ^ repo
