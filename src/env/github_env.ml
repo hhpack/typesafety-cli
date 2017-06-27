@@ -10,17 +10,22 @@ open Github
 module type S = sig
   val variables: string list
 
+  (** Return user name of Github *)
+  val github_user: unit -> User.t option
+
   (** Return personal token of Github *)
-  val token: unit -> (Token.t, string) result
+  val github_token: unit -> (Token.t, string) result
 end
 
 module Make(Env_s: Env.S): S = struct
   include Env.Make(Env_s)
 
   let variables = [
-    "GITHUB_TOKEN"
+    "GITHUB_USER";
+    "GITHUB_TOKEN";
   ]
 
-  let token () = require "GITHUB_TOKEN"
+  let github_user () = get_map "GITHUB_USER" ~f:User.of_string
+  let github_token () = require "GITHUB_TOKEN"
 end
 include Make(Env.Sys_env)

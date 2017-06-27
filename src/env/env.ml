@@ -35,6 +35,12 @@ module Make(S: S) = struct
 
   include S
 
+  (** Get environment variable, apply function f and return *)
+  let get_map key ~f =
+    match get key with
+      | Some v -> Some (f v)
+      | None -> None
+
   (**
     Check whether the environment variable is valid
 

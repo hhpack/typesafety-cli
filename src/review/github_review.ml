@@ -17,9 +17,9 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S)
   module D = Ci_detector.Make(Supports_ci)
   module G = Github_client.Make(Http_client)
 
-  let token ci ~f =
+  let github_token ci ~f =
     let module Ci = (val ci: Ci_env.S) in
-    match Ci.token () with
+    match Ci.github_token () with
       | Ok token -> Ok (f ~token)
       | Error e -> Error e
 
@@ -51,7 +51,7 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S)
   let bind_ci_env_vars f ~ci =
     let bind f = bind_with ~f ~ci in
     f |>
-    bind token |>
+    bind github_token |>
     bind slug |>
     bind branch |>
     bind pull_request_number

@@ -14,8 +14,10 @@ module type S = sig
   (** It checks whether it is a pull request and returns true if it is a pull request *)
   val is_pull_request: unit -> bool
 
+  val github_user: unit -> User.t option
+
   (** Return personal token of Github *)
-  val token: unit -> (Token.t, string) result
+  val github_token: unit -> (Token.t, string) result
 
   (** Return pull request number of github *)
   val pull_request_number: unit -> (Pull_request.t, string) result
@@ -31,7 +33,8 @@ module type S = sig
 end
 
 module Make (Ci_service: Ci_service_env.S): S = struct
-  let token = Github_env.token
+  let github_user = Github_env.github_user
+  let github_token = Github_env.github_token
 
   let is_current = Ci_service.is_current
   let is_pull_request = Ci_service.is_pull_request
@@ -42,7 +45,3 @@ module Make (Ci_service: Ci_service_env.S): S = struct
   let print_env_vals ~f =
     Env.print ~f ~secures:Github_env.variables Ci_service.variables
 end
-
-(** Support ci environments *)
-(* module Travis = Make(Ci_service_env.Travis) *)
-(* module General = Make(Ci_service_env.General) *)
