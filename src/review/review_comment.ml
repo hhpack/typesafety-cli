@@ -45,9 +45,9 @@ module Message = struct
 end
 
 type t = {
-  user: string;
-  repo: string;
-  branch: string;
+  user: Github.User.t;
+  repo: Github.Repository.t;
+  branch: Github.Branch.t;
   root: string;
 }
 
@@ -62,9 +62,9 @@ let title_of_source ?(level = 2) ~buf ~msg () =
   )
 
 let uri_of_branch t =
-  let uri_of_user user = "https://github.com/" ^ user in
-  let uri_of_branch branch = "blob" ^ "/" ^ branch in
-  (uri_of_user t.user ^ "/" ^ t.repo ^ "/" ^ (uri_of_branch t.branch))
+  let uri_of_user user = "https://github.com/" ^ (Github.User.to_string user) in
+  let uri_of_branch branch = "blob" ^ "/" ^ (Github.Branch.to_string branch) in
+  (uri_of_user t.user ^ "/" ^ (Github.Repository.to_string t.repo) ^ "/" ^ (uri_of_branch t.branch))
 
 let uri_of_message t ~msg =
   (uri_of_branch t) ^ "/" ^ (Message.uri_of msg ~root:t.root)

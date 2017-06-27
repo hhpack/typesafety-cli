@@ -26,6 +26,6 @@ module Make(Env_s: Env.S): S = struct
   ]
 
   let github_user () = get_map "GITHUB_USER" ~f:User.of_string
-  let github_token () = require "GITHUB_TOKEN"
+  let github_token () = require_map "GITHUB_TOKEN" ~f:Token.of_string
 end
 include Make(Env.Sys_env)

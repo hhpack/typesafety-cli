@@ -105,6 +105,7 @@ Library "review"
     lwt_ssl (>= 1.0.1),
     cohttp (>= 0.21.1),
     cohttp.lwt,
+    typesafety.github,
     typesafety.misc,
     typesafety.env,
     typesafety.hack,

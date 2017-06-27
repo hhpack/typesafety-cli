@@ -19,14 +19,15 @@ end
 module Make(Http_client: Http_client.S): S = struct
   let endpoint = "https://api.github.com"
   let repo_endpoint = endpoint ^ "/repos"
+
   let uri_of_review ~user ~repo ~num =
-    let review_path = Printf.sprintf "/%s/%s/pulls/%d/reviews" user repo num in
+    let review_path = Printf.sprintf "/%s/%s/pulls/%d/reviews" (Github.User.to_string user) (Github.Repository.to_string repo) (Github.Pull_request.to_int num) in
     Uri.of_string (repo_endpoint ^ review_path)
 
   let headers_of_review ?(headers=[]) ~token ~user () =
     let defaults_headers = [
-      ("User-Agent", user);
-      ("Authorization", ("token " ^ token));
+      ("User-Agent", (Github.User.to_string user));
+      ("Authorization", ("token " ^ (Github.Token.to_string token)));
       ("Accept", "application/vnd.github.black-cat-preview+json")
     ] in
     ListLabels.concat [headers; defaults_headers]

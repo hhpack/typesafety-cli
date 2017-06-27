@@ -5,15 +5,19 @@
  * with this source code in the file LICENSE.
  *)
 
-module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S) = struct
-  type skip_result =
-    | NoError
-    | NotPullRequest
+type skip_result =
+  | NoError
+  | NotPullRequest
 
-  type review_result =
-    | Skiped of skip_result
-    | Reviewed of Github_t.review_result
+type review_result =
+  | Skiped of skip_result
+  | Reviewed of Github_t.review_result
 
+module type S = sig
+  val create: Typechecker_check_t.result -> (review_result, string) result
+end
+
+module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S): S = struct
   module D = Ci_detector.Make(Supports_ci)
   module G = Github_client.Make(Http_client)
 
@@ -24,11 +28,11 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S)
       | Error e -> Error e
 
   let slug ci ~f =
+    let open Github in
     let module Ci = (val ci: Ci_env.S) in
     match Ci.slug () with
       | Ok slug ->
-        let user, repo = slug in
-        Ok (f ~user ~repo)
+        Ok (f ~user:(Slug.repo_owner slug) ~repo:(Slug.repo_name slug))
       | Error e -> Error e
 
   let branch ci ~f =

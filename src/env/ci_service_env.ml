@@ -48,13 +48,13 @@ module Travis = struct
         | None -> false
 
     let pull_request_number () =
-      require_map "TRAVIS_PULL_REQUEST" ~f:int_of_string
+      require_map "TRAVIS_PULL_REQUEST" ~f:Pull_request.of_string
 
     let slug () =
       require_map "TRAVIS_PULL_REQUEST_SLUG" ~f:Slug.of_string
 
     let branch () =
-      require "TRAVIS_PULL_REQUEST_BRANCH"
+      require_map "TRAVIS_PULL_REQUEST_BRANCH" ~f:Branch.of_string
   end
   include Make(Env.Sys_env)
 end
@@ -80,13 +80,13 @@ module General = struct
         | None -> false
 
     let pull_request_number () =
-      require_map "CI_PULL_REQUEST" ~f:int_of_string
+      require_map "CI_PULL_REQUEST" ~f:Pull_request.of_string
 
     let slug () =
       require_map "CI_PULL_REQUEST_SLUG" ~f:Slug.of_string
 
     let branch () =
-      require "CI_PULL_REQUEST_BRANCH"
+      require_map "CI_PULL_REQUEST_BRANCH" ~f:Branch.of_string
   end
   include Make(Env.Sys_env)
 end
