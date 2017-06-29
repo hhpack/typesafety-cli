@@ -18,5 +18,3 @@ module type S = sig
 end
 
 module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S): S
-
-val create: Typechecker_check_t.result -> (review_result, string) result

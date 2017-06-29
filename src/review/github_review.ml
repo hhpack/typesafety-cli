@@ -21,6 +21,11 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S)
   module D = Ci_detector.Make(Supports_ci)
   module G = Github_client.Make(Http_client)
 
+  let github_user ci ~f =
+    let module Ci = (val ci: Ci_env.S) in
+    let github_user = Ci.github_user () in
+    Ok (f ~user:github_user)
+
   let github_token ci ~f =
     let module Ci = (val ci: Ci_env.S) in
     match Ci.github_token () with
@@ -31,8 +36,7 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S)
     let open Github in
     let module Ci = (val ci: Ci_env.S) in
     match Ci.slug () with
-      | Ok slug ->
-        Ok (f ~user:(Slug.repo_owner slug) ~repo:(Slug.repo_name slug))
+      | Ok slug -> Ok (f ~slug:slug)
       | Error e -> Error e
 
   let branch ci ~f =
@@ -55,6 +59,7 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S)
   let bind_ci_env_vars f ~ci =
     let bind f = bind_with ~f ~ci in
     f |>
+    bind github_user |>
     bind github_token |>
     bind slug |>
     bind branch |>
@@ -68,12 +73,10 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S)
 
   let post_review_comment json ~ci =
 
-    let post_review_comment ~token ~user ~repo ~branch ~num json =
-      let comment_of json = Review_comment.create ~user ~repo ~branch json in
-      let review_comment_by comment = G.create_review ~token ~user ~repo ~num comment in
-        comment_of json |>
-        review_comment_by |>
-        post_review in
+    let post_review_comment ~user ~token ~slug ~branch ~num json =
+      let comment_of json = Review_comment.create ~slug ~branch json in
+      let review_comment_by comment = G.create_review ?user ~token ~slug ~num comment in
+      comment_of json |> review_comment_by |> post_review in
 
     let review = bind_ci_env_vars (Ok post_review_comment) ~ci in
 
@@ -105,5 +108,3 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S)
       | Ok ci -> debug ci; review_by json ~ci
       | Error e -> Error e
 end
-
-include Make(Ci_detector)(Http_client)

@@ -62,6 +62,8 @@ module Report_task = struct
 end
 
 module Github_task = struct
+  module Review = Github_review.Make(Ci_detector)(Http_client)
+
   type result =
     | Skiped of string
     | Reviewed of Github_t.review_result
@@ -85,7 +87,7 @@ module Github_task = struct
       | ReviewFailed e -> Error e
 
   let create_review json =
-    match Github_review.create json with
+    match Review.create json with
       | Ok v -> review_success v
       | Error e -> ReviewFailed e
 

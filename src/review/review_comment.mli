@@ -21,12 +21,10 @@ module Message: sig
 end
 
 val create: ?root: string ->
-  user:Github.User.t ->
-  repo:Github.Repository.t ->
+  slug:Github.Slug.t ->
   branch:Github.Branch.t ->
   Typechecker_check_t.result -> string
 
-val branch_for: user:Github.User.t ->
-  repo:Github.Repository.t ->
+val branch_for: slug:Github.Slug.t ->
   branch:Github.Branch.t ->
   (?root: string -> Typechecker_check_t.result -> string)

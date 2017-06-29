@@ -8,19 +8,12 @@
 open Github
 
 module type S = sig
-  val create_review: token:Token.t ->
-    user:User.t ->
-    repo:Repository.t ->
+  val create_review: ?user:User.t ->
+    token:Token.t ->
+    slug:Slug.t ->
     num:Pull_request.t ->
     string ->
     (int * string, int * string) Result.result Lwt.t
 end
 
 module Make(Http_client: Http_client.S): S
-
-val create_review: token:Token.t ->
-  user:User.t ->
-  repo:Repository.t ->
-  num:Pull_request.t ->
-  string ->
-  (int * string, int * string) Result.result Lwt.t

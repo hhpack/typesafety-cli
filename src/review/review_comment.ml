@@ -51,7 +51,9 @@ type t = {
   root: string;
 }
 
-let init ?(root=Sys.getcwd ()) ~user ~repo ~branch () =
+let init ?(root=Sys.getcwd ()) ~slug ~branch () =
+  let user = Github.Slug.repo_owner slug in
+  let repo = Github.Slug.repo_name slug in
   { user; repo; branch; root }
 
 let title_of_source ?(level = 2) ~buf ~msg () =
@@ -147,8 +149,8 @@ let comment_of_error t ~buf ~error =
     comment_of_messages t ~buf ~messages:error.error_messages in
   title_of buf ~error |> content_of ~error
 
-let create ?(root=Sys.getcwd ()) ~user ~repo ~branch json =
-  let t = init ~user ~repo ~branch ~root () in
+let create ?(root=Sys.getcwd ()) ~slug ~branch json =
+  let t = init ~slug ~branch ~root () in
   let add_title buf ~s =
     Comment_buffer.writeln buf ~s ~n:2 in
   let add_error buf ~error =
@@ -173,4 +175,4 @@ let create ?(root=Sys.getcwd ()) ~user ~repo ~branch json =
     contents
   )
 
-let branch_for ~user ~repo ~branch = create ~user ~repo ~branch
+let branch_for ~slug ~branch = create ~slug ~branch

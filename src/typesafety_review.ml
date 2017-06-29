@@ -7,6 +7,8 @@
 
 open Cmdliner
 
+module Review = Github_review.Make(Ci_detector)(Http_client)
+
 let json_file =
   let doc = "Report file for input. (try hh_client check --json > output.json)" in
   Arg.(required & pos 0 (some file) None & info [] ~docv:"JSON" ~doc)
@@ -20,7 +22,7 @@ let review json_file verbose =
   let result_of json = Typechecker_check_j.result_of_string json in
   Log.set_verbose verbose;
   Log.info "Github review started\n";
-  match Github_review.create (result_of json) with
+  match Review.create (result_of json) with
     | Ok result ->
       begin
         let open Github_review in
