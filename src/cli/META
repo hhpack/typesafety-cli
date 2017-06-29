@@ -1,9 +1,9 @@
 # OASIS_START
-# DO NOT EDIT (digest: 21127026c1ebc2baf590e1e35d3ac380)
+# DO NOT EDIT (digest: e86071a2bbd475cea9b8005dfa89781d)
 version = "0.5.6"
 description = "Typechecker powerful wrapper for HHVM/Hack"
 requires =
-"threads str cmdliner typesafety.hhvm typesafety.hack typesafety.misc typesafety.review typesafety.typechecker"
+"threads str typesafety.hhvm typesafety.hack typesafety.misc typesafety.review typesafety.typechecker"
 archive(byte) = "typesafety.cma"
 archive(byte, plugin) = "typesafety.cma"
 archive(native) = "typesafety.cmxa"

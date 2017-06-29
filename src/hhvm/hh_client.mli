@@ -5,10 +5,4 @@
  * with this source code in the file LICENSE.
  *)
 
-module Source_name = struct
-  type t = string
-  let equal = (=)
-  let hash = Hashtbl.hash
-end
-
-include MoreLabels.Hashtbl.Make(Source_name)
+val typecheck_json: unit -> (Typechecker_check_t.result, string) result

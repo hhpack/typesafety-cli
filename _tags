@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 1b29bb3bfc449e9dde601b3e60579355)
+# DO NOT EDIT (digest: 570c691f708122aacbd52cb47501a89c)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -62,7 +62,6 @@ true: annot, bin_annot
 # Library typesafety
 "src/cli/typesafety.cmxs": use_typesafety
 <src/cli/*.ml{,i,y}>: package(atdgen)
-<src/cli/*.ml{,i,y}>: package(cmdliner)
 <src/cli/*.ml{,i,y}>: package(cohttp)
 <src/cli/*.ml{,i,y}>: package(cohttp.lwt)
 <src/cli/*.ml{,i,y}>: package(lwt)
@@ -129,7 +128,6 @@ true: annot, bin_annot
 <src/*.ml{,i,y}>: use_typechecker
 # Executable test
 "tests/test.native": package(atdgen)
-"tests/test.native": package(cmdliner)
 "tests/test.native": package(cohttp)
 "tests/test.native": package(cohttp.lwt)
 "tests/test.native": package(lwt)
@@ -147,7 +145,6 @@ true: annot, bin_annot
 "tests/test.native": use_typechecker
 "tests/test.native": use_typesafety
 <tests/*.ml{,i,y}>: package(atdgen)
-<tests/*.ml{,i,y}>: package(cmdliner)
 <tests/*.ml{,i,y}>: package(cohttp)
 <tests/*.ml{,i,y}>: package(cohttp.lwt)
 <tests/*.ml{,i,y}>: package(lwt)

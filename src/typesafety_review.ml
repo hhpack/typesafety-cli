@@ -7,8 +7,6 @@
 
 open Cmdliner
 
-module Review = Github_review.Make(Ci_detector)(Http_client)
-
 let json_file =
   let doc = "Report file for input. (try hh_client check --json > output.json)" in
   Arg.(required & pos 0 (some file) None & info [] ~docv:"JSON" ~doc)
@@ -22,19 +20,9 @@ let review json_file verbose =
   let result_of json = Typechecker_check_j.result_of_string json in
   Log.set_verbose verbose;
   Log.info "Github review started\n";
-  match Review.create (result_of json) with
-    | Ok result ->
-      begin
-        let open Github_review in
-        match result with
-          | Skiped reason ->
-            begin
-              match reason with
-                | NoError -> `Ok (Log.success "review skiped (no error)\n")
-                | NotPullRequest -> `Ok (Log.success "review skiped (not pull request)\n")
-            end
-          | Reviewed _ -> `Ok (Log.success "review done\n")
-      end
+
+  match Typesafety_github.review_if (result_of json) ~review:true with
+    | Ok v -> `Ok v
     | Error e -> `Error (false, e)
 
 let review_t = Term.ret (Term.(const review $ json_file $ verbose))

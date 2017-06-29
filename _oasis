@@ -117,9 +117,9 @@ Library "typesafety"
   Path: src/cli
   Modules:
     Typesafety_check,
-    Typesafety_reporter
+    Typesafety_report,
+    Typesafety_github
   BuildDepends:
-    cmdliner (>= 1.0.0),
     typesafety.hhvm,
     typesafety.hack,
     typesafety.misc,
@@ -132,7 +132,7 @@ Executable typesafety
   MainIs:     typesafety.ml
   CompiledObject: native
   Install: true
-  BuildDepends: typesafety
+  BuildDepends: cmdliner (>= 1.0.0), typesafety
 
 Executable typesafety_review
   Path:       src

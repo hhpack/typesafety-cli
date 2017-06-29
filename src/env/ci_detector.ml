@@ -32,9 +32,11 @@ module Make(S: Supports_ci.S): S = struct
     with Not_found -> Error "Sorry, this is an environment not support"
 end
 
-include Make(struct
+module Current_supports = Make(struct
+  open Ci_service_env
+
   let supports = [
-    (module Ci_service_env.Travis: Ci_service_env.S);
-    (module Ci_service_env.General: Ci_service_env.S)
+    (module Travis: S);
+    (module General: S)
   ]
 end)

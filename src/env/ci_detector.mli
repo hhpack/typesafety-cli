@@ -20,5 +20,4 @@ end
 
 module Make (S: Supports_ci.S): S
 
-val supports: (module Ci_service_env.S) list
-val detect: unit -> ((module Ci_env.S), string) result
+module Current_supports: Supports_ci.S

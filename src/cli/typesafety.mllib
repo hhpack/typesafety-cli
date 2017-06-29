@@ -1,5 +1,6 @@
 # OASIS_START
-# DO NOT EDIT (digest: 659db6dde9bc6ff9819e87200b2846ff)
+# DO NOT EDIT (digest: 4b189a45fe055fb6623b3b6dca06045a)
 Typesafety_check
-Typesafety_reporter
+Typesafety_report
+Typesafety_github
 # OASIS_STOP
