@@ -1,0 +1,11 @@
+{
+  "passed":false,
+  "errors":[{
+    "message":[{
+      "descr":"Was expecting a type hint",
+      "path":"/Users/holyshared/Documents/projects/typesafety-cli/Stack.hh",
+      "line":15,"start":25,"end":29,"code":4032
+    }]
+  }],
+  "version":"ad133f299ece0e45db8536473a8ef77cc4612ae3 Thu Jun  8 14:59:12 2017"
+}

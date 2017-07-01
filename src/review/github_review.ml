@@ -5,30 +5,38 @@
  * with this source code in the file LICENSE.
  *)
 
-module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S) = struct
-  type skip_result =
-    | NoError
-    | NotPullRequest
+type skip_result =
+  | NoError
+  | NotPullRequest
 
-  type review_result =
-    | Skiped of skip_result
-    | Reviewed of Github_t.review_result
+type review_result =
+  | Skiped of skip_result
+  | Reviewed of Github_t.review_result
 
+module type S = sig
+  val create: Typechecker_check_t.result -> (review_result, string) result
+end
+
+module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S): S = struct
   module D = Ci_detector.Make(Supports_ci)
   module G = Github_client.Make(Http_client)
 
-  let token ci ~f =
+  let github_user ci ~f =
     let module Ci = (val ci: Ci_env.S) in
-    match Ci.token () with
+    let github_user = Ci.github_user () in
+    Ok (f ~user:github_user)
+
+  let github_token ci ~f =
+    let module Ci = (val ci: Ci_env.S) in
+    match Ci.github_token () with
       | Ok token -> Ok (f ~token)
       | Error e -> Error e
 
   let slug ci ~f =
+    let open Github in
     let module Ci = (val ci: Ci_env.S) in
     match Ci.slug () with
-      | Ok slug ->
-        let user, repo = slug in
-        Ok (f ~user ~repo)
+      | Ok slug -> Ok (f ~slug:slug)
       | Error e -> Error e
 
   let branch ci ~f =
@@ -51,7 +59,8 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S)
   let bind_ci_env_vars f ~ci =
     let bind f = bind_with ~f ~ci in
     f |>
-    bind token |>
+    bind github_user |>
+    bind github_token |>
     bind slug |>
     bind branch |>
     bind pull_request_number
@@ -63,13 +72,14 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S)
       | Error (code, body) -> Error ((string_of_int code) ^ ":" ^ body)
 
   let post_review_comment json ~ci =
-    let post_review_comment ~token ~user ~repo ~branch ~num json =
-      let comment_of json = Review_comment.create ~user ~repo ~branch json in
-      let review_comment_by comment = G.create_review ~token ~user ~repo ~num comment in
-        comment_of json |>
-        review_comment_by |>
-        post_review in
+
+    let post_review_comment ~user ~token ~slug ~branch ~num json =
+      let comment_of json = Review_comment.create ~slug ~branch json in
+      let review_comment_by comment = G.create_review ?user ~token ~slug ~num comment in
+      comment_of json |> review_comment_by |> post_review in
+
     let review = bind_ci_env_vars (Ok post_review_comment) ~ci in
+
     let review_if_has_errors json ~f =
       let open Typechecker_check_t in
       if json.passed then
@@ -85,7 +95,7 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S)
     let debug ci =
       let module Ci = (val ci: Ci_env.S) in
       Log.debug "Environment variables:\n";
-      Ci.print ~f:(fun (k, v) -> Log.debug "%s = %s\n" k v) in
+      Ci.print_env_vals ~f:(fun (k, v) -> Log.debug "%s = %s\n" k v) in
 
     let review_by json ~ci =
       let module Ci = (val ci: Ci_env.S) in
@@ -98,5 +108,3 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S)
       | Ok ci -> debug ci; review_by json ~ci
       | Error e -> Error e
 end
-
-include Make(Ci_detector)(Http_client)

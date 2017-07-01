@@ -35,9 +35,9 @@ let create_if ?(dir = Sys.getcwd ()) ~no_hhconfig () =
   let not_exists = not (exists config_file) in
   let not_exists_error = Error (config_file ^ " is not found") in
   if not_exists then
-    if not no_hhconfig then
-      touch config_file
-    else
+    if no_hhconfig then
       not_exists_error
+    else
+      touch config_file
   else
     Ok (already_exists config_file)

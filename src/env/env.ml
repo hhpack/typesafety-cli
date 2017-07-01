@@ -32,7 +32,14 @@ end
 
 module Make(S: S) = struct
   let require_failed key = Error (key ^ " is required")
-  let get key = S.get key
+
+  include S
+
+  (** Get environment variable, apply function f and return *)
+  let get_map key ~f =
+    match get key with
+      | Some v -> Some (f v)
+      | None -> None
 
   (**
     Check whether the environment variable is valid
@@ -71,7 +78,7 @@ module Make(S: S) = struct
         | Some v -> f (mask k v)
         | None -> () in
     let print_env_v k = print_if_key_exists k ~f in
-    ListLabels.iter ~f:print_env_v variables
+    ListLabels.iter ~f:print_env_v (List.concat [variables; secures])
 
 end
 

@@ -60,6 +60,8 @@ Library "env"
   Path: src/env
   Modules:
     Env,
+    Ci_service_env,
+    Github_env,
     Ci_env,
     Ci_detector
   BuildDepends: typesafety.github
@@ -103,6 +105,7 @@ Library "review"
     lwt_ssl (>= 1.0.1),
     cohttp (>= 0.21.1),
     cohttp.lwt,
+    typesafety.github,
     typesafety.misc,
     typesafety.env,
     typesafety.hack,
@@ -114,9 +117,9 @@ Library "typesafety"
   Path: src/cli
   Modules:
     Typesafety_check,
-    Typesafety_reporter
+    Typesafety_report,
+    Typesafety_github
   BuildDepends:
-    cmdliner (>= 1.0.0),
     typesafety.hhvm,
     typesafety.hack,
     typesafety.misc,
@@ -129,7 +132,14 @@ Executable typesafety
   MainIs:     typesafety.ml
   CompiledObject: native
   Install: true
-  BuildDepends: typesafety
+  BuildDepends: cmdliner (>= 1.0.0), typesafety
+
+Executable typesafety_review
+  Path:       src
+  MainIs:     typesafety_review.ml
+  CompiledObject: native
+  Install: true
+  BuildDepends: cmdliner (>= 1.0.0), typesafety.review, typesafety.misc
 
 Executable test
   Path: tests
