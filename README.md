@@ -34,7 +34,7 @@ The access authority must be **repo** or **public_repo**.
 
 The following environment is necessary to build.
 
-* OCaml >= 4.04.0
+* OCaml >= 4.04.2
 * OPAM >= 1.2.2
 
 ## Install
@@ -56,7 +56,7 @@ If you use the **--review option**, you need to install openssl.
 
 ### Install typesafety
 
-	opam switch 4.04.0
+	opam switch 4.04.2
 	opam pin add typesafety https://github.com/hhpack/typesafety-cli.git
 
 ## Build
