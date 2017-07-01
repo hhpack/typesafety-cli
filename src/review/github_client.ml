@@ -41,7 +41,7 @@ module Make(Http_client: Http_client.S): S = struct
 
   let create_review ?user ~token ~slug ~num content =
     let open Github_t in
-    let review_comment = { body=content; event="REQUEST_CHANGES"; comments=None } in
+    let review_comment = { body=content; event="COMMENT"; comments=None } in
     let uri = uri_of_review ~slug ~num in
     let user_agent = (user_for_header ?user ~slug) in
     let headers = headers_of_review ~token ~user:user_agent () in
