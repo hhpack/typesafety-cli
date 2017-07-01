@@ -37,7 +37,6 @@ module Travis = struct
       "TRAVIS_PULL_REQUEST";
       "TRAVIS_PULL_REQUEST_SLUG";
       "TRAVIS_PULL_REQUEST_BRANCH";
-      "GITHUB_TOKEN"
     ]
 
     let is_current () = is_enabled "TRAVIS"
@@ -69,7 +68,6 @@ module General = struct
       "CI_PULL_REQUEST";
       "CI_PULL_REQUEST_SLUG";
       "CI_PULL_REQUEST_BRANCH";
-      "GITHUB_TOKEN"
     ]
 
     let is_current () = is_enabled "CI"

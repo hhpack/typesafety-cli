@@ -78,7 +78,7 @@ module Make(S: S) = struct
         | Some v -> f (mask k v)
         | None -> () in
     let print_env_v k = print_if_key_exists k ~f in
-    ListLabels.iter ~f:print_env_v variables
+    ListLabels.iter ~f:print_env_v (List.concat [variables; secures])
 
 end
 
