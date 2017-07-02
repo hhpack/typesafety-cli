@@ -56,11 +56,13 @@ let init ?(root=Sys.getcwd ()) ~slug ~branch () =
   let repo = Github.Slug.repo_name slug in
   { user; repo; branch; root }
 
-let title_of_source ?(level = 2) ~buf ~msg () =
+let title_of_source ?(level = 2) ~root ~buf ~msg () =
+  let relative_from ~root path =
+    Str.replace_first (Str.regexp (root ^ "/")) "" path in
   Comment_buffer.(
     write_ntimes buf ~c:'#' ~n:level |>
     write ~s:" File: " |>
-    write ~s:msg.source_path
+    write ~s:(relative_from ~root msg.source_path)
   )
 
 let uri_of_branch t =
@@ -141,9 +143,9 @@ let comment_of_messages t ~buf ~messages =
     write_messages ~buf ~messages in
   write_messages ~buf ~messages
 
-let comment_of_error t ~buf ~error =
+let comment_of_error t ~root ~buf ~error =
   let title_of buf ~error =
-    title_of_source ~buf ~msg:(ListLabels.hd error.error_messages) () |>
+    title_of_source ~root ~buf ~msg:(ListLabels.hd error.error_messages) () |>
     Comment_buffer.writeln ~n:2 in
   let content_of buf ~error =
     comment_of_messages t ~buf ~messages:error.error_messages in
@@ -154,9 +156,9 @@ let create ?(root=Sys.getcwd ()) ~slug ~branch json =
   let add_title buf ~s =
     Comment_buffer.writeln buf ~s ~n:2 in
   let add_error buf ~error =
-    comment_of_error t ~buf ~error in
+    comment_of_error t ~root ~buf ~error in
   let add_error_with_crlf buf ~error =
-    comment_of_error t ~buf ~error |> Comment_buffer.writeln ~n:2 in
+    comment_of_error t ~root ~buf ~error |> Comment_buffer.writeln ~n:2 in
   let add_all_error buf ~errors =
     let rec add_all buf ~errors =
       match errors with

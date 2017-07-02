@@ -1,6 +1,6 @@
 # Type checking errors
 
-## File: {{root}}/fixtures/Example1.txt
+## File: fixtures/Example1.txt
 
 This method is not declared as abstract, it must have a body
 
@@ -13,7 +13,7 @@ This method is not declared as abstract, it must have a body
 
 https://github.com/holyshared/typesafety/blob/master/fixtures/Example1.txt#L6
 
-## File: {{root}}/fixtures/Example1.txt
+## File: fixtures/Example1.txt
 
 Unbound name: T (an object type)
 
@@ -26,7 +26,7 @@ Unbound name: T (an object type)
 
 https://github.com/holyshared/typesafety/blob/master/fixtures/Example1.txt#L6
 
-## File: {{root}}/fixtures/Example1.txt
+## File: fixtures/Example1.txt
 
 You probably forgot to bind this type parameter right?
 Add <T> somewhere (after the function name definition, or after the class name)
@@ -41,7 +41,7 @@ Examples: function foo<T> or class A<T>
 
 https://github.com/holyshared/typesafety/blob/master/fixtures/Example1.txt#L6
 
-## File: {{root}}/fixtures/Example1.txt
+## File: fixtures/Example1.txt
 
 Expected variable
 
