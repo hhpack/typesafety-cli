@@ -13,21 +13,57 @@ module Comment_buffer = struct
   let create ?(size=1024) () =
     Buffer.create size
 
+  let ntimes ~c ~n =
+    String.make n c
+
+  let spaces ~n =
+    String.make n ' '
+
   let write t ~s =
     Buffer.add_string t s; t
 
   let write_ntimes t ~c ~n =
-    write t (String.make n c)
+    write t ~s:(ntimes ~n ~c)
 
   let write_space t ~n =
-    write_ntimes t ~c:' ' ~n
+    write t ~s:(spaces ~n)
+
+  let write_indent ?(n=1) t =
+    write t ~s:(ntimes ~c:'\t' ~n)
 
   let write_crlf t ~n =
-    write_ntimes t ~c:'\n' ~n
+    write t ~s:(ntimes ~c:'\n' ~n)
+
+  let write_with_c t ~c ~n ~s =
+    Buffer.add_string t (ntimes ~c ~n);
+    Buffer.add_string t s;
+    t
+
+  let write_with_indent ?(indent=1) ?(ln=0) ~s t =
+    let write_line buf s = write_with_c buf ~c:'\t' ~n:indent ~s:(s ^ "\n") in
+    let write_ln buf ~n = if n <= 0 then buf else write_crlf buf ~n in
+
+    let write_one_line buf ~s =
+        write_ntimes buf ~c:'\t' ~n:indent |>
+        write ~s |>
+        write_ln ~n:ln in
+
+    let write_multiple_line buf ~lines =
+      ListLabels.fold_left ~f:write_line ~init:t lines |>
+      write_ln ~n:(ln - 1) (* Consider the case of multiple lines *) in
+
+    let lines = String.split_on_char '\n' s in
+    match lines with
+      | [] -> t
+      | hd::[] -> write_one_line t ~s:hd
+      | hd::tail -> write_multiple_line t ~lines:(hd::tail)
+
+  let write_wrap_s t ~wrap ~s =
+    write t ~s:wrap |> write ~s |> write ~s:wrap
 
   let writeln ?s ?(n=1) t =
     match s with
-      | Some s -> (write t s) |> write_crlf ~n
+      | Some s -> write t ~s |> write_crlf ~n
       | None -> write_crlf t ~n
 
   let contents t =
@@ -56,13 +92,12 @@ let init ?(root=Sys.getcwd ()) ~slug ~branch () =
   let repo = Github.Slug.repo_name slug in
   { user; repo; branch; root }
 
-let title_of_source ?(level = 2) ~root ~buf ~msg () =
+let title_of_source ~root ~buf ~msg =
   let relative_from ~root path =
     Str.replace_first (Str.regexp (root ^ "/")) "" path in
   Comment_buffer.(
-    write_ntimes buf ~c:'#' ~n:level |>
-    write ~s:" File: " |>
-    write ~s:(relative_from ~root msg.source_path)
+    write buf ~s:"* [ ] " |>
+    write_wrap_s ~wrap:"**" ~s:(relative_from ~root msg.source_path)
   )
 
 let uri_of_branch t =
@@ -84,12 +119,13 @@ let hint_of_message t ~msg =
   )
 
 let source_of_message ~msg buf =
-  let quotation buf = Comment_buffer.writeln ~s:"```" buf in
+  let hack_code_start buf = Comment_buffer.write_with_indent ~ln:1 ~s:"```hack" buf in
+  let hack_code_end buf = Comment_buffer.write_with_indent ~ln:1 ~s:"```" buf in
   let write_line ~llen ~line buf =
     let line_number, line_source = line in
     let indent = llen - (StringLabels.length (string_of_int line_number)) in
     Comment_buffer.(
-      write_space buf ~n:indent |>
+      write_with_indent buf ~s:(spaces ~n:indent) |>
       writeln ~s:((string_of_int line_number) ^ ":" ^ line_source)
     ) in
   let write_lines_of ~msg buf =
@@ -107,9 +143,11 @@ let source_of_message ~msg buf =
       if msg.source_line = line_num then
         let current_line_len = (StringLabels.length (string_of_int line_num)) in
         let indent = (line_length - current_line_len) + current_line_len + 1 in
-        buf |>
-        Comment_buffer.write_space ~n:indent |>
-        hint_of_message ~msg
+        Comment_buffer.(
+          write_indent buf |>
+          write_space ~n:indent |>
+          hint_of_message ~msg
+        )
       else
         buf in
     let write_line_of buf line =
@@ -118,18 +156,18 @@ let source_of_message ~msg buf =
     ListLabels.fold_left ~f:write_line_of ~init:buf lines in
 
   Comment_buffer.(
-    quotation buf |>
+    hack_code_start buf |>
     write_lines_of ~msg |>
-    quotation
+    hack_code_end
   )
 
 let comment_of_messages t ~buf ~messages =
   let write_message buf ~msg =
     Comment_buffer.(
-      writeln buf ~s:msg.source_descr ~n:2 |>
+      write_with_indent buf ~s:msg.source_descr ~ln:2 |>
       source_of_message ~msg |>
       writeln |>
-      write ~s:(uri_of_message t ~msg)
+      write_with_indent ~s:(uri_of_message t ~msg)
     ) in
   let write ~buf ~msg = write_message buf ~msg in
   let write_with_crlf ~buf ~msg =
@@ -145,7 +183,7 @@ let comment_of_messages t ~buf ~messages =
 
 let comment_of_error t ~root ~buf ~error =
   let title_of buf ~error =
-    title_of_source ~root ~buf ~msg:(ListLabels.hd error.error_messages) () |>
+    title_of_source ~root ~buf ~msg:(ListLabels.hd error.error_messages) |>
     Comment_buffer.writeln ~n:2 in
   let content_of buf ~error =
     comment_of_messages t ~buf ~messages:error.error_messages in
@@ -172,7 +210,7 @@ let create ?(root=Sys.getcwd ()) ~slug ~branch json =
 
   Comment_buffer.(
     create () |>
-    add_title ~s:"# Type checking errors" |>
+    add_title ~s:"Type check error found in your pull request." |>
     add_all_error ~errors:json.errors |>
     contents
   )
