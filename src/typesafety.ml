@@ -36,7 +36,7 @@ let report_typecheck_result json ~review =
 
 let check no_hhconfig review verbose =
   set_verbose verbose;
-  info "Type check is started\n";
+  info "\nType check is started\n\n";
   match Typesafety_check.typecheck ~no_hhconfig () with
     | Ok json ->
       begin

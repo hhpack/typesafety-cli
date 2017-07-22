@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 76882610e29d01882e9ea98e8fa674a2)
+# DO NOT EDIT (digest: deb7af8200d62fb1993cbcbf148bc25b)
 version = "0.7.0"
 description = "Typechecker powerful wrapper for HHVM/Hack"
 requires =
@@ -57,7 +57,8 @@ package "misc" (
 package "hhvm" (
  version = "0.7.0"
  description = "Typechecker powerful wrapper for HHVM/Hack"
- requires = "threads str process typesafety.misc typesafety.typechecker"
+ requires =
+ "threads str lwt typesafety.process typesafety.misc typesafety.typechecker"
  archive(byte) = "hhvm.cma"
  archive(byte, plugin) = "hhvm.cma"
  archive(native) = "hhvm.cmxa"

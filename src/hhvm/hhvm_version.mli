@@ -5,8 +5,11 @@
  * with this source code in the file LICENSE.
  *)
 
-module type S = sig
-  val typecheck_json: unit -> (Typechecker_check_t.result, string) result Lwt.t
-end
+type t = {
+  version: string;
+  compiler: string;
+  repo_schema: string;
+}
 
-module Make(S: Process.S) : S
+val parse_version: string -> (t, string) result
+val print_version: t -> unit

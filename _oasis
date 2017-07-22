@@ -40,7 +40,8 @@ Library "github"
 Library "process"
   Path: src/process
   Modules:
-    Process
+    Process,
+    Process_result
   BuildDepends: lwt
   FindlibName: process
   FindlibParent: typesafety
@@ -90,9 +91,11 @@ Library "hhvm"
   Modules:
     Hh_config,
     Hh_client,
+    Hhvm_version,
     Hhvm
   BuildDepends:
-    process,
+    lwt,
+    typesafety.process,
     typesafety.misc,
     typesafety.typechecker
   FindlibName: hhvm
@@ -124,6 +127,7 @@ Library "review"
 Library "typesafety"
   Path: src/cli
   Modules:
+    Typesafety_hhvm,
     Typesafety_check,
     Typesafety_report,
     Typesafety_github

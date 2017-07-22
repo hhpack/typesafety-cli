@@ -7,31 +7,23 @@
 
 open Log
 
-type version = {
-  version: string;
-  compiler: string;
-  repo_schema: string;
-}
+module type S = sig
+  val check_version: unit -> (string, string) result Lwt.t
+  val parse_version: string -> (Hhvm_version.t, string) result
+  val print_version: Hhvm_version.t -> unit
+end
 
-let check_version () =
-  try
-    Ok (String.concat "\n" (Process.read_stdout "hhvm" [|"--version"|]))
-  with _ -> Error "hhvm not installed"
+module Make(S: Process.S) : S  = struct
+  open Lwt.Infix
 
-let parse_version output =
-  let regexp = Str.regexp "HipHop VM \\(.+\\)\nCompiler: \\(.+\\)\nRepo schema: \\(.+\\)" in
-  let group n s = Str.matched_group n s in
-  let version s = group 1 s in
-  let compiler s = group 2 s in
-  let repo_schema s = group 3 s in
-  if Str.string_match regexp output 0 then
-    Ok {
-      version=(version output);
-      compiler=(compiler output);
-      repo_schema=(repo_schema output);
-    }
-  else
-    Error "hhvm not installed"
+  include Hhvm_version
 
-let print_version v =
-  info "Installed hhvm version: %s." v.version
+  let return_result ~msg result =
+    match result with
+      | Ok v -> Process_result.return_ok v
+      | Error err -> Process_result.return_error ~msg err
+
+  let check_version () =
+    let command = ("", [|"hhvm"; "--version"|]) in
+    S.exec command >>= return_result ~msg:"hhvm not installed"
+end

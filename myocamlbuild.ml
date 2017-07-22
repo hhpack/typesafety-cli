@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: f871fe62fd30d9d63a8173734590b604) *)
+(* DO NOT EDIT (digest: bdff49ef8d433bccea322080489146af) *)
 module OASISGettext = struct
 (* # 22 "src/oasis/OASISGettext.ml" *)
 
@@ -904,7 +904,7 @@ let package_default =
                "src/misc";
                "src/typechecker"
             ]);
-          ("src/hhvm", ["src/misc"; "src/typechecker"]);
+          ("src/hhvm", ["src/misc"; "src/process"; "src/typechecker"]);
           ("src/hack", ["src/misc"]);
           ("src/env", ["src/github"]);
           ("src/cli",

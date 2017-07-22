@@ -5,52 +5,48 @@
  * with this source code in the file LICENSE.
  *)
 
-open Process
-open Process.Exit
-open Process.Output
+open Lwt.Infix
 open Log
 
-let hhclient_command ?(args=[||]) cmd =
-  let exec_args = Array.append [|cmd|] args in
-  run "hh_client" exec_args
+module type S = sig
+  val typecheck_json: unit -> (Typechecker_check_t.result, string) result Lwt.t
+end
 
-let hhclient_stderr result = String.concat "\n" result.stderr
+module Make(S: Process.S): S = struct
+  let with_redirect cmd =
+    Printf.sprintf "hh_client %s 2>&1" cmd
 
-let hhclient_error signal result =
-  let signal_string = Signal.to_string signal in
-  let stderr_output = hhclient_stderr result in
-  signal_string ^ ": " ^ stderr_output
+  let verbose = function
+    | Ok v -> debug "[hh_client]: %s\n" v; Lwt.return_ok v
+    | Error e -> Lwt.return_error e
 
-let restart () =
-  let result = hhclient_command "restart" in
-  match result.exit_status with
-    | Exit _ -> Ok (hhclient_stderr result)
-    | Kill signal -> Error (hhclient_error signal result)
-    | Stop signal -> Error (hhclient_error signal result)
+  let return_result ~msg result =
+    match result with
+      | Ok v -> Process_result.return_ok v
+      | Error err -> Process_result.return_error ~msg err
 
-let check () =
-  let result = hhclient_command "check" ~args:[|"--json"|]in
-  match result.exit_status with
-    | Exit _ -> Ok (hhclient_stderr result)
-    | Kill signal -> Error (hhclient_error signal result)
-    | Stop signal -> Error (hhclient_error signal result)
+  let restart () =
+    S.shell_exec (with_redirect "restart")
+      >>= return_result ~msg:"Server restart failed"
 
-let typecheck = function
-  | Ok _ -> check ()
-  | Error e -> Error e
+  let check () =
+    S.shell_exec ~ignore:true (with_redirect "check --json")
+      >>= return_result ~msg:"Did not return the expected json results"
 
-let to_json o =
-  match o with
-    | Ok s -> Ok (Typechecker_check_j.result_of_string s)
-    | Error e -> Error e
+  let to_json result =
+    match result with
+      | Ok s -> Lwt.return_ok (Typechecker_check_j.result_of_string s)
+      | Error e -> Lwt.return_error e
 
-let verbose = function
-  | Ok v -> debug "[hh_client]: %s\n" v; Ok v
-  | Error e -> Error e
+  let next result ~f =
+    match result with
+      | Ok _ -> f ()
+      | Error e -> Lwt.return_error e
 
-let typecheck_json () =
-  restart ()
-    |> verbose
-    |> typecheck
-    |> verbose
-    |> to_json
+  let typecheck_json () =
+    restart ()
+      >>= verbose
+      >>= next ~f:check
+      >>= verbose
+      >>= to_json
+end

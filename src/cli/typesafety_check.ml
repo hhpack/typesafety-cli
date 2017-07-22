@@ -5,26 +5,31 @@
  * with this source code in the file LICENSE.
  *)
 
+open Lwt.Infix
 open Log
 
 let next o ~f =
   match o with
     | Ok v -> f ()
-    | Error e -> Error e
+    | Error e -> Lwt.return_error e
 
 let map_next o ~f =
   match o with
-    | Ok v -> f v
-    | Error e -> Error e
+    | Ok v -> Lwt.return (f v)
+    | Error e -> Lwt.return_error e
 
 let check_hhvm_installed () =
-  let open Hhvm in
+  let open Hhvm_version in
+  let open Typesafety_hhvm in
+  let start () = Lwt.return_ok (debug "Checking the version of hhvm installed.\n") in
   let print_version v = Ok (debug "Installed hhvm version: %s.\n" v.version) in
-  let start = Ok (debug "Checking the version of hhvm installed.\n") in
-  let check_version _ = Hhvm.check_version () in
+  let check_version o = next o ~f:Hhvm.check_version in
   let parse_version o = map_next o ~f:Hhvm.parse_version in
   let print_installed_version o = map_next o ~f:print_version in
-  start |> check_version |> parse_version |> print_installed_version
+  start ()
+    >>= check_version
+    >>= parse_version
+    >>= print_installed_version
 
 let check_hhconfg ?(no_hhconfig=true) () =
   let auto_config_generate o =
@@ -32,15 +37,18 @@ let check_hhconfg ?(no_hhconfig=true) () =
       | Ok _ -> Hh_config.create_if ~no_hhconfig ()
       | Error e -> Error e in
   let start = Ok (debug "Checking configuration file.\n") in
-  let generated o =
-    match o with
-      | Ok v -> Ok (debug "%s\n" (Hh_config.string_of_result v))
-      | Error e -> Error e in
-  start |> auto_config_generate |> generated
+  let generated = function
+    | Ok v -> Ok (debug "%s\n" (Hh_config.string_of_result v))
+    | Error e -> Error e in
+  Lwt.return (start |> auto_config_generate |> generated)
 
 let typecheck ?(no_hhconfig=false) () =
+  let open Typesafety_hhvm in
   let check_hhconfg = next ~f:(check_hhconfg ~no_hhconfig) in
   let typecheck_json = next ~f:(Hh_client.typecheck_json) in
-  check_hhvm_installed ()
-    |> check_hhconfg
-    |> typecheck_json
+
+  Lwt_main.run (
+    check_hhvm_installed ()
+      >>= check_hhconfg
+      >>= typecheck_json
+    )

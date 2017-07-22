@@ -1,5 +1,5 @@
 open OUnit2
-open Hhvm
+open Hhvm_version
 
 let test_parse_hhvm_version =
   "parse_hhvm_version" >:: (
