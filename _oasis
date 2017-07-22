@@ -37,6 +37,14 @@ Library "github"
   FindlibName: github
   FindlibParent: typesafety
 
+Library "process"
+  Path: src/process
+  Modules:
+    Process
+  BuildDepends: lwt
+  FindlibName: process
+  FindlibParent: typesafety
+
 Library "misc"
   Path: src/misc
   Modules:

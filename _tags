@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 570c691f708122aacbd52cb47501a89c)
+# DO NOT EDIT (digest: 48be4fb77271f3eadcdfa696ae17fbf3)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -18,6 +18,11 @@ true: annot, bin_annot
 "src/github/github.cmxs": use_github
 <src/github/*.ml{,i,y}>: package(str)
 <src/github/*.ml{,i,y}>: package(threads)
+# Library process
+"src/process/process.cmxs": use_process
+<src/process/*.ml{,i,y}>: package(lwt)
+<src/process/*.ml{,i,y}>: package(str)
+<src/process/*.ml{,i,y}>: package(threads)
 # Library misc
 "src/misc/misc.cmxs": use_misc
 <src/misc/*.ml{,i,y}>: package(str)
