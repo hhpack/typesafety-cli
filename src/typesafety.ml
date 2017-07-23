@@ -63,7 +63,7 @@ let check_t = Term.(ret Term.(const check $ no_hhconfig $ review $ verbose))
 let info =
   let doc = "Typechecker wrapper for Hack" in
   let man = [ `S "BUGS"; `P "Email bug reports to <holy.shared.design@gmail.com>."; ] in
-  Term.info "typesafety" ~version:"0.1.0" ~exits:Term.default_exits ~doc ~man
+  Term.info "typesafety" ~version:"0.7.0" ~exits:Term.default_exits ~doc ~man
 
 let () =
   Term.exit @@ (Term.eval (check_t, info))
