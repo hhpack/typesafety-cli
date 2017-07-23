@@ -5,12 +5,10 @@
  * with this source code in the file LICENSE.
  *)
 
-type version = {
-  version: string;
-  compiler: string;
-  repo_schema: string;
-}
+module type S = sig
+  val check_version: unit -> (string, string) result Lwt.t
+  val parse_version: string -> (Hhvm_version.t, string) result
+  val print_version: Hhvm_version.t -> unit
+end
 
-val check_version: unit -> (string, string) result
-val parse_version: string -> (version, string) result
-val print_version: version -> unit
+module Make(S: Process.S) : S

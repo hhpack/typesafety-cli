@@ -5,8 +5,5 @@
  * with this source code in the file LICENSE.
  *)
 
-module type S = sig
-  val typecheck_json: unit -> (Typechecker_check_t.result, string) result Lwt.t
-end
-
-module Make(S: Process.S) : S
+module Hhvm : Hhvm.S
+module Hh_client : Hh_client.S

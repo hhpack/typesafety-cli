@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 570c691f708122aacbd52cb47501a89c)
+# DO NOT EDIT (digest: b1573fb8132e53f322410da40093fdd9)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -18,6 +18,11 @@ true: annot, bin_annot
 "src/github/github.cmxs": use_github
 <src/github/*.ml{,i,y}>: package(str)
 <src/github/*.ml{,i,y}>: package(threads)
+# Library process
+"src/process/process.cmxs": use_process
+<src/process/*.ml{,i,y}>: package(lwt)
+<src/process/*.ml{,i,y}>: package(str)
+<src/process/*.ml{,i,y}>: package(threads)
 # Library misc
 "src/misc/misc.cmxs": use_misc
 <src/misc/*.ml{,i,y}>: package(str)
@@ -40,10 +45,11 @@ true: annot, bin_annot
 # Library hhvm
 "src/hhvm/hhvm.cmxs": use_hhvm
 <src/hhvm/*.ml{,i,y}>: package(atdgen)
-<src/hhvm/*.ml{,i,y}>: package(process)
+<src/hhvm/*.ml{,i,y}>: package(lwt)
 <src/hhvm/*.ml{,i,y}>: package(str)
 <src/hhvm/*.ml{,i,y}>: package(threads)
 <src/hhvm/*.ml{,i,y}>: use_misc
+<src/hhvm/*.ml{,i,y}>: use_process
 <src/hhvm/*.ml{,i,y}>: use_typechecker
 # Library review
 "src/review/review.cmxs": use_review
@@ -66,7 +72,6 @@ true: annot, bin_annot
 <src/cli/*.ml{,i,y}>: package(cohttp.lwt)
 <src/cli/*.ml{,i,y}>: package(lwt)
 <src/cli/*.ml{,i,y}>: package(lwt_ssl)
-<src/cli/*.ml{,i,y}>: package(process)
 <src/cli/*.ml{,i,y}>: package(str)
 <src/cli/*.ml{,i,y}>: package(threads)
 <src/cli/*.ml{,i,y}>: use_env
@@ -74,6 +79,7 @@ true: annot, bin_annot
 <src/cli/*.ml{,i,y}>: use_hack
 <src/cli/*.ml{,i,y}>: use_hhvm
 <src/cli/*.ml{,i,y}>: use_misc
+<src/cli/*.ml{,i,y}>: use_process
 <src/cli/*.ml{,i,y}>: use_review
 <src/cli/*.ml{,i,y}>: use_typechecker
 # Executable typesafety
@@ -83,7 +89,6 @@ true: annot, bin_annot
 "src/typesafety.native": package(cohttp.lwt)
 "src/typesafety.native": package(lwt)
 "src/typesafety.native": package(lwt_ssl)
-"src/typesafety.native": package(process)
 "src/typesafety.native": package(str)
 "src/typesafety.native": package(threads)
 "src/typesafety.native": use_env
@@ -91,11 +96,12 @@ true: annot, bin_annot
 "src/typesafety.native": use_hack
 "src/typesafety.native": use_hhvm
 "src/typesafety.native": use_misc
+"src/typesafety.native": use_process
 "src/typesafety.native": use_review
 "src/typesafety.native": use_typechecker
 "src/typesafety.native": use_typesafety
-<src/*.ml{,i,y}>: package(process)
 <src/*.ml{,i,y}>: use_hhvm
+<src/*.ml{,i,y}>: use_process
 <src/*.ml{,i,y}>: use_typesafety
 # Executable typesafety_review
 "src/typesafety_review.native": package(atdgen)
@@ -133,7 +139,6 @@ true: annot, bin_annot
 "tests/test.native": package(lwt)
 "tests/test.native": package(lwt_ssl)
 "tests/test.native": package(oUnit)
-"tests/test.native": package(process)
 "tests/test.native": package(str)
 "tests/test.native": package(threads)
 "tests/test.native": use_env
@@ -141,6 +146,7 @@ true: annot, bin_annot
 "tests/test.native": use_hack
 "tests/test.native": use_hhvm
 "tests/test.native": use_misc
+"tests/test.native": use_process
 "tests/test.native": use_review
 "tests/test.native": use_typechecker
 "tests/test.native": use_typesafety
@@ -150,7 +156,6 @@ true: annot, bin_annot
 <tests/*.ml{,i,y}>: package(lwt)
 <tests/*.ml{,i,y}>: package(lwt_ssl)
 <tests/*.ml{,i,y}>: package(oUnit)
-<tests/*.ml{,i,y}>: package(process)
 <tests/*.ml{,i,y}>: package(str)
 <tests/*.ml{,i,y}>: package(threads)
 <tests/*.ml{,i,y}>: use_env
@@ -158,6 +163,7 @@ true: annot, bin_annot
 <tests/*.ml{,i,y}>: use_hack
 <tests/*.ml{,i,y}>: use_hhvm
 <tests/*.ml{,i,y}>: use_misc
+<tests/*.ml{,i,y}>: use_process
 <tests/*.ml{,i,y}>: use_review
 <tests/*.ml{,i,y}>: use_typechecker
 <tests/*.ml{,i,y}>: use_typesafety

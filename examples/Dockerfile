@@ -22,4 +22,4 @@ RUN echo 'eval `opam config env`' >> ~/.profile
 RUN sudo -u typesafety sh -c "opam init -y"
 RUN sudo -u typesafety sh -c "opam switch 4.04.1"
 RUN sudo -u typesafety sh -c "opam depext conf-openssl.1"
-RUN sudo -u typesafety sh -c "opam install oasis ocamlfind camlp4 atdgen lwt lwt_ssl cohttp cmdliner process oUnit"
+RUN sudo -u typesafety sh -c "opam install oasis ocamlfind camlp4 atdgen lwt lwt_ssl cohttp cmdliner oUnit"
