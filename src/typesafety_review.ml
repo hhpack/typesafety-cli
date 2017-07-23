@@ -30,7 +30,7 @@ let review_t = Term.ret (Term.(const review $ json_file $ verbose))
 let info =
   let doc = "Github review command" in
   let man = [ `S "BUGS"; `P "Email bug reports to <holy.shared.design@gmail.com>."; ] in
-  Term.info "typesafety_github_review" ~version:"0.7.0" ~exits:Term.default_exits ~doc ~man
+  Term.info "typesafety_github_review" ~version:"0.8.0" ~exits:Term.default_exits ~doc ~man
 
 let () =
   Term.exit @@ (Term.eval (review_t, info))

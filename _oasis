@@ -1,6 +1,6 @@
 OASISFormat: 0.4
 Name:        typesafety
-Version:     0.7.0
+Version:     0.8.0
 Synopsis:    Typechecker powerful wrapper for HHVM/Hack
 Authors:     Noritka Horio <holy.shared.design@gmail.com>
 License:     MIT
