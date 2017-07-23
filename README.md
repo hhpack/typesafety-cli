@@ -61,6 +61,23 @@ If you use the **--review option**, you need to install openssl.
 
 ## Build
 
+Install necessary system packages.  
+Openssl is mandatory to use the https protocol.
+
+#### Debian/Ubuntu
+
+	sudo apt-get install -y opam
+	sudo apt-get install -y libssl-dev pkg-config
+
+#### macOS
+
+	brew install opam
+	brew install openssl pkg-config
+
+Install dependent packages.
+
+	opam install -y oasis ssl lwt_ssl ocamlfind atdgen cmdliner oUnit cohttp lwt
+
 You can build with the following command.
 
 	make build
