@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: b1573fb8132e53f322410da40093fdd9)
+# DO NOT EDIT (digest: 7f8cf6b5652a7520149a14e0b32b05c3)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -55,6 +55,7 @@ true: annot, bin_annot
 "src/review/review.cmxs": use_review
 <src/review/*.ml{,i,y}>: package(atdgen)
 <src/review/*.ml{,i,y}>: package(cohttp)
+<src/review/*.ml{,i,y}>: package(cohttp-lwt-unix)
 <src/review/*.ml{,i,y}>: package(cohttp.lwt)
 <src/review/*.ml{,i,y}>: package(lwt)
 <src/review/*.ml{,i,y}>: package(lwt_ssl)
@@ -69,6 +70,7 @@ true: annot, bin_annot
 "src/cli/typesafety.cmxs": use_typesafety
 <src/cli/*.ml{,i,y}>: package(atdgen)
 <src/cli/*.ml{,i,y}>: package(cohttp)
+<src/cli/*.ml{,i,y}>: package(cohttp-lwt-unix)
 <src/cli/*.ml{,i,y}>: package(cohttp.lwt)
 <src/cli/*.ml{,i,y}>: package(lwt)
 <src/cli/*.ml{,i,y}>: package(lwt_ssl)
@@ -86,6 +88,7 @@ true: annot, bin_annot
 "src/typesafety.native": package(atdgen)
 "src/typesafety.native": package(cmdliner)
 "src/typesafety.native": package(cohttp)
+"src/typesafety.native": package(cohttp-lwt-unix)
 "src/typesafety.native": package(cohttp.lwt)
 "src/typesafety.native": package(lwt)
 "src/typesafety.native": package(lwt_ssl)
@@ -107,6 +110,7 @@ true: annot, bin_annot
 "src/typesafety_review.native": package(atdgen)
 "src/typesafety_review.native": package(cmdliner)
 "src/typesafety_review.native": package(cohttp)
+"src/typesafety_review.native": package(cohttp-lwt-unix)
 "src/typesafety_review.native": package(cohttp.lwt)
 "src/typesafety_review.native": package(lwt)
 "src/typesafety_review.native": package(lwt_ssl)
@@ -121,6 +125,7 @@ true: annot, bin_annot
 <src/*.ml{,i,y}>: package(atdgen)
 <src/*.ml{,i,y}>: package(cmdliner)
 <src/*.ml{,i,y}>: package(cohttp)
+<src/*.ml{,i,y}>: package(cohttp-lwt-unix)
 <src/*.ml{,i,y}>: package(cohttp.lwt)
 <src/*.ml{,i,y}>: package(lwt)
 <src/*.ml{,i,y}>: package(lwt_ssl)
@@ -135,6 +140,7 @@ true: annot, bin_annot
 # Executable test
 "tests/test.native": package(atdgen)
 "tests/test.native": package(cohttp)
+"tests/test.native": package(cohttp-lwt-unix)
 "tests/test.native": package(cohttp.lwt)
 "tests/test.native": package(lwt)
 "tests/test.native": package(lwt_ssl)
@@ -152,6 +158,7 @@ true: annot, bin_annot
 "tests/test.native": use_typesafety
 <tests/*.ml{,i,y}>: package(atdgen)
 <tests/*.ml{,i,y}>: package(cohttp)
+<tests/*.ml{,i,y}>: package(cohttp-lwt-unix)
 <tests/*.ml{,i,y}>: package(cohttp.lwt)
 <tests/*.ml{,i,y}>: package(lwt)
 <tests/*.ml{,i,y}>: package(lwt_ssl)
