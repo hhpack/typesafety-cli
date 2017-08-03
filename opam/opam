@@ -1,6 +1,6 @@
 opam-version: "1.2"
 name: "typesafety"
-version: "0.8.0"
+version: "0.9.0"
 maintainer: "Noritka Horio <holy.shared.design@gmail.com>"
 authors: [ "Noritka Horio <holy.shared.design@gmail.com>" ]
 license: "MIT"
@@ -25,9 +25,10 @@ depends: [
   "atdgen" {>= "1.10.2"}
   "base-threads"
   "cmdliner" {build & >= "1.0.0"}
-  "cohttp" {>= "0.21.1"}
-  "lwt"
-  "lwt_ssl" {>= "1.0.1"}
+  "cohttp" {>= "0.99.0"}
+  "cohttp-lwt-unix" {>= "0.99.0"}
+  ("lwt" {= "3.0.0"} | "lwt" {= "2.7.1"} | "lwt" {= "2.7.0"} | "lwt" {= "2.6.0"} | "lwt" {= "2.5.2"} | "lwt" {= "2.5.1"} | "lwt" {= "2.5.0"} | "lwt" {= "2.4.8"} | "lwt" {= "2.4.7"} | "lwt" {= "2.4.6"} | "lwt" {= "2.4.5"} | "lwt" {= "2.4.4"} | "lwt" {= "2.4.3"} | "lwt" {= "2.4.2"} | "lwt" {= "2.4.1"} | "lwt" {= "2.4.0"} | "lwt" {= "2.3.2"})
+  "lwt_ssl" {= "1.0.1"}
   "ocamlbuild" {build}
   "ocamlfind" {build}
   "ounit" {test & >= "2.0.0"}
