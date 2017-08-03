@@ -1,7 +1,7 @@
 FROM holyshared/ocaml:latest
 ENV DEBIAN_FRONTEND noninteractive
 MAINTAINER Noritaka Horio <holy.shared.design@gmail.com>
-RUN sudo -u develop sh -c 'opam install -y oasis ssl lwt_ssl ocamlfind atdgen cmdliner oUnit cohttp lwt'
+RUN sudo -u develop sh -c 'opam install -y oasis ssl lwt lwt_ssl ocamlfind atdgen cmdliner oUnit cohttp cohttp-lwt-unix'
 WORKDIR project
 COPY src src
 COPY tests tests

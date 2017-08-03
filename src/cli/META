@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 39a8119f3d52fb72d61f9d7d625e20b6)
+# DO NOT EDIT (digest: 499c05e3fa36f3a583f3cace27bdba35)
 version = "0.8.0"
 description = "Typechecker powerful wrapper for HHVM/Hack"
 requires =
@@ -24,7 +24,7 @@ package "review" (
  version = "0.8.0"
  description = "Typechecker powerful wrapper for HHVM/Hack"
  requires =
- "threads str atdgen lwt lwt_ssl cohttp cohttp.lwt typesafety.github typesafety.misc typesafety.env typesafety.hack typesafety.typechecker"
+ "threads str atdgen lwt lwt_ssl cohttp cohttp.lwt cohttp-lwt-unix typesafety.github typesafety.misc typesafety.env typesafety.hack typesafety.typechecker"
  archive(byte) = "review.cma"
  archive(byte, plugin) = "review.cma"
  archive(native) = "review.cmxa"
