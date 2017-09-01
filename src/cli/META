@@ -1,6 +1,6 @@
 # OASIS_START
-# DO NOT EDIT (digest: d617be7bb59a452f03cdc018653e9787)
-version = "0.9.0"
+# DO NOT EDIT (digest: 03568d6892d39eab0797679d28e0c07b)
+version = "0.9.1"
 description = "Typechecker powerful wrapper for HHVM/Hack"
 requires =
 "threads str typesafety.hhvm typesafety.hack typesafety.misc typesafety.review typesafety.typechecker"
@@ -10,7 +10,7 @@ archive(native) = "typesafety.cmxa"
 archive(native, plugin) = "typesafety.cmxs"
 exists_if = "typesafety.cma"
 package "typechecker" (
- version = "0.9.0"
+ version = "0.9.1"
  description = "Typechecker powerful wrapper for HHVM/Hack"
  requires = "threads str atdgen"
  archive(byte) = "typechecker.cma"
@@ -21,7 +21,7 @@ package "typechecker" (
 )
 
 package "review" (
- version = "0.9.0"
+ version = "0.9.1"
  description = "Typechecker powerful wrapper for HHVM/Hack"
  requires =
  "threads str atdgen lwt lwt_ssl cohttp cohttp.lwt cohttp-lwt-unix typesafety.github typesafety.misc typesafety.env typesafety.hack typesafety.typechecker"
@@ -33,7 +33,7 @@ package "review" (
 )
 
 package "process" (
- version = "0.9.0"
+ version = "0.9.1"
  description = "Typechecker powerful wrapper for HHVM/Hack"
  requires = "threads str lwt"
  archive(byte) = "process.cma"
@@ -44,7 +44,7 @@ package "process" (
 )
 
 package "misc" (
- version = "0.9.0"
+ version = "0.9.1"
  description = "Typechecker powerful wrapper for HHVM/Hack"
  requires = "threads str"
  archive(byte) = "misc.cma"
@@ -55,7 +55,7 @@ package "misc" (
 )
 
 package "hhvm" (
- version = "0.9.0"
+ version = "0.9.1"
  description = "Typechecker powerful wrapper for HHVM/Hack"
  requires =
  "threads str lwt typesafety.process typesafety.misc typesafety.typechecker"
@@ -67,7 +67,7 @@ package "hhvm" (
 )
 
 package "hack" (
- version = "0.9.0"
+ version = "0.9.1"
  description = "Typechecker powerful wrapper for HHVM/Hack"
  requires = "threads str typesafety.misc"
  archive(byte) = "hack.cma"
@@ -78,7 +78,7 @@ package "hack" (
 )
 
 package "github" (
- version = "0.9.0"
+ version = "0.9.1"
  description = "Typechecker powerful wrapper for HHVM/Hack"
  requires = "threads str"
  archive(byte) = "github.cma"
@@ -89,7 +89,7 @@ package "github" (
 )
 
 package "env" (
- version = "0.9.0"
+ version = "0.9.1"
  description = "Typechecker powerful wrapper for HHVM/Hack"
  requires = "threads str typesafety.github"
  archive(byte) = "env.cma"
