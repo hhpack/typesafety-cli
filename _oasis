@@ -42,7 +42,7 @@ Library "process"
   Modules:
     Process,
     Process_result
-  BuildDepends: lwt
+  BuildDepends: lwt (>= 3.1.0)
   FindlibName: process
   FindlibParent: typesafety
 
@@ -94,7 +94,7 @@ Library "hhvm"
     Hhvm_version,
     Hhvm
   BuildDepends:
-    lwt,
+    lwt (>= 3.1.0),
     typesafety.process,
     typesafety.misc,
     typesafety.typechecker
@@ -112,8 +112,8 @@ Library "review"
     Github_client
   BuildDepends:
     atdgen (>= 1.10.2),
-    lwt,
-    lwt_ssl (>= 1.0.1),
+    lwt (>= 3.1.0),
+    lwt_ssl (>= 1.1.0),
     cohttp (>= 0.99.0),
     cohttp.lwt (>= 0.99.0),
     cohttp-lwt-unix (>= 0.99.0),
