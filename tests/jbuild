@@ -3,7 +3,7 @@
 (executable (
   (name test)
   (libraries (
-    ounit
+    oUnit
     typesafety.cli
     typesafety.misc
     typesafety.env
