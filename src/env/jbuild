@@ -1,0 +1,7 @@
+(jbuild_version 1)
+
+(library (
+  (public_name typesafety.env)
+  (name env)
+  (libraries (github))
+))

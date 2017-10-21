@@ -1,5 +1,6 @@
 open OUnit2
 open Test_helper
+open Hack
 
 let make items =
   List.fold_left (

@@ -5,7 +5,7 @@
  * with this source code in the file LICENSE.
  *)
 
-open Log
+open Misc.Log
 
 type t = {
   version: string;

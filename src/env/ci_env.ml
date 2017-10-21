@@ -43,5 +43,5 @@ module Make (Ci_service: Ci_service_env.S): S = struct
   let branch = Ci_service.branch
 
   let print_env_vals ~f =
-    Env.print ~f ~secures:Github_env.variables Ci_service.variables
+    Sys_env.print ~f ~secures:Github_env.variables Ci_service.variables
 end

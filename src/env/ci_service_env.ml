@@ -29,8 +29,8 @@ end
 
 (** Travis CI *)
 module Travis = struct
-  module Make(Env_s: Env.S): S = struct
-    include Env.Make(Env_s)
+  module Make(Env_s: Sys_env.S): S = struct
+    include Sys_env.Make(Env_s)
 
     let variables = [
       "TRAVIS";
@@ -55,13 +55,13 @@ module Travis = struct
     let branch () =
       require_map "TRAVIS_PULL_REQUEST_BRANCH" ~f:Branch.of_string
   end
-  include Make(Env.Sys_env)
+  include Make(Sys_env.Sys_env)
 end
 
 (** General CI *)
 module General = struct
-  module Make(Env_s: Env.S): S = struct
-    include Env.Make(Env_s)
+  module Make(Env_s: Sys_env.S): S = struct
+    include Sys_env.Make(Env_s)
 
     let variables = [
       "CI";
@@ -86,5 +86,5 @@ module General = struct
     let branch () =
       require_map "CI_PULL_REQUEST_BRANCH" ~f:Branch.of_string
   end
-  include Make(Env.Sys_env)
+  include Make(Sys_env.Sys_env)
 end

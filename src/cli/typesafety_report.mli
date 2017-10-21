@@ -5,4 +5,6 @@
  * with this source code in the file LICENSE.
  *)
 
+open Typechecker
+
 val print_json: Typechecker_check_t.result -> (unit, string) result

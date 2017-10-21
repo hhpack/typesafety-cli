@@ -1,3 +1,5 @@
+open Hhvm
+
 let print_diff f v =
   let expect, actual = v in
   Format.fprintf f "\n  actual: %s\n  expected: %s" actual expect

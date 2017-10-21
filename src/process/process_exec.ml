@@ -6,7 +6,6 @@
  *)
 
 open Lwt.Infix
-open Lwt_process
 
 module type S = sig
   val exec: ?ignore:bool -> Lwt_process.command -> (Process_result.t, Process_result.t) result Lwt.t
@@ -66,8 +65,8 @@ let exec ?(ignore=false) cmd =
           >>= return_result
       | Some _ -> wait_until_consumed cp in
     match cp#state with
-      | Running -> read_stdout ic ~f:writeln >>= on_consumed
-      | Exited status -> return_result status in
+      | Lwt_process.Running -> read_stdout ic ~f:writeln >>= on_consumed
+      | Lwt_process.Exited status -> return_result status in
 
   wait_until_consumed cp
 

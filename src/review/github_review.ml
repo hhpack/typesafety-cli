@@ -5,6 +5,10 @@
  * with this source code in the file LICENSE.
  *)
 
+open Env
+open Typechecker
+open Misc
+
 type skip_result =
   | NoError
   | NotPullRequest

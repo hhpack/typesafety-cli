@@ -6,7 +6,9 @@
  *)
 
 open Cmdliner
-open Log
+open Misc.Log
+open Cli
+open Typechecker
 
 let print_if_typecheck_passed json ~msg =
   let open Typechecker_check_t in

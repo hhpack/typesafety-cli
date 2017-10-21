@@ -5,7 +5,8 @@
  * with this source code in the file LICENSE.
  *)
 
-open Log
+open Misc.Log
+open Process
 
 module type S = sig
   val check_version: unit -> (string, string) result Lwt.t
@@ -13,7 +14,7 @@ module type S = sig
   val print_version: Hhvm_version.t -> unit
 end
 
-module Make(S: Process.S) : S  = struct
+module Make(S: Process_exec.S) : S  = struct
   open Lwt.Infix
 
   include Hhvm_version

@@ -5,9 +5,11 @@
  * with this source code in the file LICENSE.
  *)
 
-open Typechecker_check_t
-open Source_file
-open Log
+open Hack
+open Misc
+open Misc.Log
+open Typechecker
+open Typechecker.Typechecker_check_t
 
 let line_number_length = 5
 

@@ -16,7 +16,7 @@ end
 
 (** Travis CI *)
 module Travis: sig
-  module Make(Env_s: Env.S): S
+  module Make(Env_s: Sys_env.S): S
   val variables: string list
   val is_current: unit -> bool
   val is_pull_request: unit -> bool
@@ -27,7 +27,7 @@ end
 
 (** General CI *)
 module General: sig
-  module Make(Env_s: Env.S): S
+  module Make(Env_s: Sys_env.S): S
   val variables: string list
   val is_current: unit -> bool
   val is_pull_request: unit -> bool

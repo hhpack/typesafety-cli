@@ -1,4 +1,6 @@
-open Log
+open Review
+open Misc.Log
+open Env
 
 module Review = Github_review.Make(Ci_detector.Current_supports)(Http_client)
 

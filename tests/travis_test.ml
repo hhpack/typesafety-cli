@@ -1,5 +1,6 @@
 open OUnit2
 open Test_helper
+open Env
 
 let test_current_env ctxt =
   let module S = Ci_service_env.Travis.Make(struct
