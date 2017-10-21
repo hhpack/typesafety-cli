@@ -5,4 +5,6 @@
  * with this source code in the file LICENSE.
  *)
 
+open Typechecker
+
 val review_if: Typechecker_check_t.result -> review:bool -> (unit, string) result

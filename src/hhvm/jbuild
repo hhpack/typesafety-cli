@@ -1,0 +1,7 @@
+(jbuild_version 1)
+
+(library (
+  (public_name typesafety.hhvm)
+  (name hhvm)
+  (libraries (lwt typesafety.misc typesafety.process typesafety.typechecker))
+))

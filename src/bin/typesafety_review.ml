@@ -5,6 +5,9 @@
  * with this source code in the file LICENSE.
  *)
 
+open Misc
+open Cli
+open Typechecker
 open Cmdliner
 
 let json_file =

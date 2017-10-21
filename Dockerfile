@@ -1,11 +1,13 @@
 FROM holyshared/ocaml:latest
 ENV DEBIAN_FRONTEND noninteractive
 MAINTAINER Noritaka Horio <holy.shared.design@gmail.com>
-RUN sudo -u develop sh -c 'opam install -y oasis ssl lwt lwt_ssl ocamlfind atdgen cmdliner oUnit cohttp cohttp-lwt-unix'
+RUN sudo -u develop sh -c 'opam install -y jbuilder ssl lwt lwt_ssl ocamlfind atdgen cmdliner oUnit cohttp cohttp-lwt-unix'
 WORKDIR project
+COPY Makefile Makefile
 COPY src src
 COPY tests tests
 COPY examples examples
-COPY _oasis _oasis
 COPY .travis .travis
-RUN sudo chown -R develop:develop src tests examples _oasis .travis
+COPY typesafety.opam typesafety.opam
+COPY typesafety.descr typesafety.descr
+RUN sudo chown -R develop:develop src tests examples .travis typesafety.opam typesafety.descr

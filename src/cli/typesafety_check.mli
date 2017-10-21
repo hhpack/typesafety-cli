@@ -5,4 +5,6 @@
  * with this source code in the file LICENSE.
  *)
 
+open Typechecker
+
 val typecheck: ?no_hhconfig:bool -> unit -> (Typechecker_check_t.result, string) result

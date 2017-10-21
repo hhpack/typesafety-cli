@@ -5,7 +5,7 @@
  * with this source code in the file LICENSE.
  *)
 
-open Typechecker_check_t
+open Typechecker
 
 type t = {
   user: Github.User.t;

@@ -1,6 +1,6 @@
 open OUnit2
 open Test_helper
-open Hh_config
+open Hhvm.Hh_config
 
 let failed e ~prefix =
   Error (prefix ^ e)

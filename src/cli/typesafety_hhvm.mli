@@ -5,5 +5,7 @@
  * with this source code in the file LICENSE.
  *)
 
-module Hhvm : Hhvm.S
+open Hhvm
+
+module Hhvm : Runtime.S
 module Hh_client : Hh_client.S

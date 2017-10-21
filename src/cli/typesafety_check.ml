@@ -6,7 +6,8 @@
  *)
 
 open Lwt.Infix
-open Log
+open Misc.Log
+open Hhvm
 
 let next o ~f =
   match o with

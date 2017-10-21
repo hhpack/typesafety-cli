@@ -5,7 +5,8 @@
  * with this source code in the file LICENSE.
  *)
 
-open Typechecker_check_t
+open Hack
+open Typechecker.Typechecker_check_t
 
 module Comment_buffer = struct
   type t = Buffer.t

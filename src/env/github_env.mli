@@ -11,7 +11,7 @@ module type S = sig
   val github_token: unit -> (Github.Token.t, string) result
 end
 
-module Make (Env_s: Env.S) : S
+module Make (Env_s: Sys_env.S) : S
 
 val variables: string list
 val github_user: unit -> Github.User.t option

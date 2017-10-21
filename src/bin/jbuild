@@ -1,0 +1,14 @@
+(jbuild_version 1)
+
+(executables (
+  (public_names (typesafety typesafety_review))
+  (names (typesafety typesafety_review))
+  (libraries (
+    lwt
+    lwt_ssl
+    cmdliner
+    typesafety.cli
+    typesafety.review
+    typesafety.misc
+  ))
+))

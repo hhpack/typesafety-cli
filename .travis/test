@@ -2,8 +2,5 @@
 
 eval $(opam config env)
 
-oasis setup
-
-make distclean
-make configure CONFIGUREFLAGS=--enable-tests
+make clean
 make test

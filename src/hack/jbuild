@@ -1,0 +1,7 @@
+(jbuild_version 1)
+
+(library (
+  (public_name typesafety.hack)
+  (name hack)
+  (libraries (typesafety.misc))
+))

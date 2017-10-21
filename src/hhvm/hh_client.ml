@@ -6,13 +6,15 @@
  *)
 
 open Lwt.Infix
-open Log
+open Misc.Log
+open Typechecker
+open Process
 
 module type S = sig
   val typecheck_json: unit -> (Typechecker_check_t.result, string) result Lwt.t
 end
 
-module Make(S: Process.S): S = struct
+module Make(S: Process_exec.S): S = struct
   let with_redirect cmd =
     Printf.sprintf "hh_client %s 2>&1" cmd
 

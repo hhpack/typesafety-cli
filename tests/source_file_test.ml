@@ -1,7 +1,8 @@
 open OUnit2
 open Test_helper
+open Hack
 
-let example1 = "../tests/fixtures/example1.ml"
+let example1 = "fixtures/example1.ml"
 
 let read_all_test tcxt =
   let cache = Source_cache.create 1024 in
