@@ -7,13 +7,13 @@
 
 module type S = sig
   val get: string -> string option
-end
-
-module Sys_env: S = struct
-  let get key =
-    try
-      Some (Sys.getenv key)
-    with _ -> None
+  val get_map: string -> f:(string -> 'a) -> 'a option
+  val is_enabled: string -> bool
+  val require: ?failed:(string -> (string, string) result) ->
+    string -> (string, string) result
+  val require_map: string -> f:(string -> 'a) -> ('a, string) result
+  val print: ?secures:string list ->
+    f:(string * string -> unit) -> string list -> unit
 end
 
 module Index = struct
@@ -30,10 +30,10 @@ module Index = struct
     add_all names empty
 end
 
-module Make(S: S) = struct
+module Make(Adapter: Env_adapter.S): S = struct
   let require_failed key = Error (key ^ " is required")
 
-  include S
+  include Adapter
 
   (** Get environment variable, apply function f and return *)
   let get_map key ~f =
@@ -56,7 +56,7 @@ module Make(S: S) = struct
 
   (** Get the environment variable *)
   let require ?(failed=require_failed) key =
-    match S.get key with
+    match get key with
       | Some v -> Ok v
       | None -> failed key
 
@@ -79,7 +79,4 @@ module Make(S: S) = struct
         | None -> () in
     let print_env_v k = print_if_key_exists k ~f in
     ListLabels.iter ~f:print_env_v (List.concat [variables; secures])
-
 end
-
-include Make(Sys_env)

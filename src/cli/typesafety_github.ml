@@ -1,8 +1,8 @@
 open Review
 open Misc.Log
-open Env
+open Typesafety_ci_service
 
-module Review = Github_review.Make(Ci_detector.Current_supports)(Http_client)
+module Review = Github_review.Make (Current_supports) (Env_adapter) (Http_client)
 
 type review_result =
   | Skiped of string

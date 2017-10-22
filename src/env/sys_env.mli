@@ -6,43 +6,14 @@
  *)
 
 module type S = sig
-  val get : string -> string option
+  val get: string -> string option
+  val get_map: string -> f:(string -> 'a) -> 'a option
+  val is_enabled: string -> bool
+  val require: ?failed:(string -> (string, string) result) ->
+    string -> (string, string) result
+  val require_map: string -> f:(string -> 'a) -> ('a, string) result
+  val print: ?secures:string list ->
+    f:(string * string -> unit) -> string list -> unit
 end
 
-module Sys_env : S
-
-module Make :
-  functor (S : S) ->
-    sig
-      val get : string -> string option
-
-      val get_map : string -> f:(string -> 'a) -> 'a option
-
-      val is_enabled : string -> bool
-
-      val require :
-        ?failed:(string -> (string, string) result) ->
-        string -> (string, string) result
-
-      val require_map : string -> f:(string -> 'a) -> ('a, string) result
-
-      val print :
-        ?secures:string list ->
-        f:(string * string -> unit) -> string list -> unit
-    end
-
-val get : string -> string option
-
-val get_map : string -> f:(string -> 'a) -> 'a option
-
-val is_enabled : string -> bool
-
-val require :
-  ?failed:(string -> (string, string) result) ->
-  string -> (string, string) result
-
-val require_map : string -> f:(string -> 'a) -> ('a, string) result
-
-val print :
-  ?secures:string list ->
-  f:(string * string -> unit) -> string list -> unit
+module Make (Adapter: Env_adapter.S): S

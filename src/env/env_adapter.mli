@@ -6,9 +6,5 @@
  *)
 
 module type S = sig
-  val variables: string list
-  val github_user: unit -> Github.User.t option
-  val github_token: unit -> (Github.Token.t, string) result
+  val get: string -> string option
 end
-
-module Make (Adapter: Env_adapter.S) : S

@@ -7,5 +7,5 @@
 
 open Hhvm
 
-module Hhvm : Runtime.S
+module Hhvm : Hhvm_runtime.S
 module Hh_client : Hh_client.S

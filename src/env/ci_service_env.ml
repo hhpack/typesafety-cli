@@ -27,10 +27,25 @@ module type S = sig
   val branch: unit -> (Branch.t, string) result
 end
 
+module type Service = sig
+  val is_current: (module Env_adapter.S) -> bool
+  module Make(Adapter: Env_adapter.S): S
+end
+
+let is_current adapter name =
+  let module Adapter = (val adapter: Env_adapter.S) in
+  match Adapter.get name with
+    | Some v -> bool_of_string v
+    | None -> false
+
 (** Travis CI *)
-module Travis = struct
-  module Make(Env_s: Sys_env.S): S = struct
-    include Sys_env.Make(Env_s)
+module Travis: Service = struct
+  let is_current adapter =
+    let module Env_adapter = (val adapter: Env_adapter.S) in
+    is_current (module Env_adapter) "TRAVIS"
+
+  module Make(Adapter: Env_adapter.S): S = struct
+    include Sys_env.Make(Adapter)
 
     let variables = [
       "TRAVIS";
@@ -55,13 +70,16 @@ module Travis = struct
     let branch () =
       require_map "TRAVIS_PULL_REQUEST_BRANCH" ~f:Branch.of_string
   end
-  include Make(Sys_env.Sys_env)
 end
 
 (** General CI *)
-module General = struct
-  module Make(Env_s: Sys_env.S): S = struct
-    include Sys_env.Make(Env_s)
+module General: Service = struct
+  let is_current adapter =
+    let module Env_adapter = (val adapter: Env_adapter.S) in
+    is_current (module Env_adapter) "CI"
+
+  module Make(Adapter: Env_adapter.S): S = struct
+    include Sys_env.Make(Adapter)
 
     let variables = [
       "CI";
@@ -86,5 +104,4 @@ module General = struct
     let branch () =
       require_map "CI_PULL_REQUEST_BRANCH" ~f:Branch.of_string
   end
-  include Make(Sys_env.Sys_env)
 end
