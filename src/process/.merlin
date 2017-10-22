@@ -1,0 +1,5 @@
+B ../../_build/default/src/process
+FLG -open Process -w -40
+PKG bytes
+PKG lwt
+PKG result

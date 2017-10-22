@@ -1,0 +1,18 @@
+B ../../_build/default/src/hhvm
+B ../../_build/default/src/misc
+B ../../_build/default/src/process
+B ../../_build/default/src/typechecker
+FLG -open Hhvm -w -40
+PKG atd
+PKG atdgen
+PKG biniou
+PKG bytes
+PKG easy-format
+PKG lwt
+PKG result
+PKG str
+PKG unix
+PKG yojson
+S ../misc
+S ../process
+S ../typechecker

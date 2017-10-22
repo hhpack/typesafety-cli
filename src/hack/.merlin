@@ -1,0 +1,4 @@
+B ../../_build/default/src/hack
+B ../../_build/default/src/misc
+FLG -open Hack -w -40
+S ../misc
