@@ -21,4 +21,4 @@ module type S = sig
   val create: Typechecker_check_t.result -> (review_result, string) result
 end
 
-module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S): S
+module Make(Supports_ci: Ci_detector.Supports_ci.S) (Adapter: Env_adapter.S) (Http_client: Http_client.S): S

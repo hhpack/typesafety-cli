@@ -8,7 +8,7 @@
 (** Module interface of supoort ci environments *)
 module Supports_ci: sig
   module type S = sig
-    val supports: (module Ci_service_env.S) list
+    val supports: (module Ci_service_env.Service) list
   end
 end
 
@@ -18,6 +18,4 @@ module type S = sig
   val detect: unit -> ((module Ci_env.S), string) result
 end
 
-module Make (S: Supports_ci.S): S
-
-module Current_supports: Supports_ci.S
+module Make (S: Supports_ci.S) (Adapter: Env_adapter.S): S

@@ -21,8 +21,8 @@ module type S = sig
   val create: Typechecker_check_t.result -> (review_result, string) result
 end
 
-module Make(Supports_ci: Ci_detector.Supports_ci.S) (Http_client: Http_client.S): S = struct
-  module D = Ci_detector.Make(Supports_ci)
+module Make(Supports_ci: Ci_detector.Supports_ci.S) (Adapter: Env_adapter.S) (Http_client: Http_client.S): S = struct
+  module D = Ci_detector.Make(Supports_ci) (Adapter)
   module G = Github_client.Make(Http_client)
 
   let github_user ci ~f =

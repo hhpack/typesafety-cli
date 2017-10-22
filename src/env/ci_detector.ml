@@ -8,7 +8,7 @@
 (** Module interface of supoort ci environments *)
 module Supports_ci = struct
   module type S = sig
-    val supports: (module Ci_service_env.S) list
+    val supports: (module Ci_service_env.Service) list
   end
 end
 
@@ -18,8 +18,12 @@ module type S = sig
   val detect: unit -> ((module Ci_env.S), string) result
 end
 
-module Make(S: Supports_ci.S): S = struct
-  let supports = S.supports
+module Make(S: Supports_ci.S) (Adapter: Env_adapter.S): S = struct
+  let supports = ListLabels.map ~f:(fun service ->
+    let module Ci_service = (val service: Ci_service_env.Service) in
+    (module Ci_service.Make(Adapter): Ci_service_env.S)
+  ) S.supports
+
   let detect () =
     let detect_env env =
       let module E = (val env: Ci_service_env.S) in
@@ -27,16 +31,7 @@ module Make(S: Supports_ci.S): S = struct
     try
       let ci_service = ListLabels.find ~f:detect_env supports in
       let module Detected_CI = (val ci_service: Ci_service_env.S) in
-      let module CI = Ci_env.Make(Detected_CI) in
+      let module CI = Ci_env.Make(Detected_CI) (Adapter) in
       Ok (module CI: Ci_env.S)
     with Not_found -> Error "Sorry, this is an environment not support"
 end
-
-module Current_supports = Make(struct
-  open Ci_service_env
-
-  let supports = [
-    (module Travis: S);
-    (module General: S)
-  ]
-end)

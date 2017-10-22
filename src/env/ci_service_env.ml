@@ -27,10 +27,14 @@ module type S = sig
   val branch: unit -> (Branch.t, string) result
 end
 
+module type Service = sig
+  module Make(Adapter: Env_adapter.S): S
+end
+
 (** Travis CI *)
-module Travis = struct
-  module Make(Env_s: Sys_env.S): S = struct
-    include Sys_env.Make(Env_s)
+module Travis: Service = struct
+  module Make(Adapter: Env_adapter.S): S = struct
+    include Sys_env.Make(Adapter)
 
     let variables = [
       "TRAVIS";
@@ -55,13 +59,12 @@ module Travis = struct
     let branch () =
       require_map "TRAVIS_PULL_REQUEST_BRANCH" ~f:Branch.of_string
   end
-  include Make(Sys_env.Sys_env)
 end
 
 (** General CI *)
-module General = struct
-  module Make(Env_s: Sys_env.S): S = struct
-    include Sys_env.Make(Env_s)
+module General: Service = struct
+  module Make(Adapter: Env_adapter.S): S = struct
+    include Sys_env.Make(Adapter)
 
     let variables = [
       "CI";
@@ -86,5 +89,4 @@ module General = struct
     let branch () =
       require_map "CI_PULL_REQUEST_BRANCH" ~f:Branch.of_string
   end
-  include Make(Sys_env.Sys_env)
 end
