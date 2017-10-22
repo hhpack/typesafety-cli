@@ -32,8 +32,8 @@ module type S = sig
   val print_env_vals: f:((string * string) -> unit) -> unit
 end
 
-module Make (Ci_service: Ci_service_env.S) (Adapter: Env_adapter.S): S = struct
-  include Ci_service
+module Make (Ci_service: Ci_service_env.Service) (Adapter: Env_adapter.S): S = struct
+  include Ci_service.Make(Adapter)
   module E = Sys_env.Make(Adapter)
   module G = Github_env.Make(Adapter)
 
@@ -41,5 +41,5 @@ module Make (Ci_service: Ci_service_env.S) (Adapter: Env_adapter.S): S = struct
   let github_token = G.github_token
 
   let print_env_vals ~f =
-    E.print ~f ~secures:G.variables Ci_service.variables
+    E.print ~f ~secures:G.variables variables
 end

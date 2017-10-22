@@ -28,11 +28,22 @@ module type S = sig
 end
 
 module type Service = sig
+  val is_current: (module Env_adapter.S) -> bool
   module Make(Adapter: Env_adapter.S): S
 end
 
+let is_current adapter name =
+  let module Adapter = (val adapter: Env_adapter.S) in
+  match Adapter.get name with
+    | Some v -> bool_of_string v
+    | None -> false
+
 (** Travis CI *)
 module Travis: Service = struct
+  let is_current adapter =
+    let module Env_adapter = (val adapter: Env_adapter.S) in
+    is_current (module Env_adapter) "TRAVIS"
+
   module Make(Adapter: Env_adapter.S): S = struct
     include Sys_env.Make(Adapter)
 
@@ -63,6 +74,10 @@ end
 
 (** General CI *)
 module General: Service = struct
+  let is_current adapter =
+    let module Env_adapter = (val adapter: Env_adapter.S) in
+    is_current (module Env_adapter) "CI"
+
   module Make(Adapter: Env_adapter.S): S = struct
     include Sys_env.Make(Adapter)
 

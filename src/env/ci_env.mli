@@ -30,4 +30,4 @@ module type S = sig
   val print_env_vals: f:((string * string) -> unit) -> unit
 end
 
-module Make (Ci_service: Ci_service_env.S) (Adapter: Env_adapter.S): S
+module Make (Ci_service: Ci_service_env.Service) (Adapter: Env_adapter.S): S

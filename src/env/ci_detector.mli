@@ -14,7 +14,7 @@ end
 
 (** Module interface of CI environment detector *)
 module type S = sig
-  val supports: (module Ci_service_env.S) list
+  val supports: (module Ci_service_env.Service) list
   val detect: unit -> ((module Ci_env.S), string) result
 end
 

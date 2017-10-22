@@ -26,6 +26,7 @@ module type S = sig
 end
 
 module type Service = sig
+  val is_current: (module Env_adapter.S) -> bool
   module Make(Adapter: Env_adapter.S): S
 end
 
