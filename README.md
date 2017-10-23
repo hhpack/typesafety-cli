@@ -7,7 +7,6 @@
 Typesafety is a type checker wrapper for [Hack](http://hacklang.org/).  
 Detailed report at type check, automatic generation of .hhconfig, etc.
 
-
 ## Basis usage
 
 ### Typecheck
@@ -34,7 +33,7 @@ The access authority must be **repo** or **public_repo**.
 
 The following environment is necessary to build.
 
-* OCaml >= 4.04.2
+* OCaml >= 4.05.0
 * OPAM >= 1.2.2
 
 ## Install
@@ -56,7 +55,7 @@ If you use the **--review option**, you need to install openssl.
 
 ### Install typesafety
 
-	opam switch 4.04.2
+	opam switch 4.05.0
 	opam pin add typesafety https://github.com/hhpack/typesafety-cli.git
 
 ## Build
@@ -76,7 +75,7 @@ Openssl is mandatory to use the https protocol.
 
 Install dependent packages.
 
-	opam install -y oasis ssl lwt_ssl ocamlfind atdgen cmdliner oUnit cohttp lwt
+	opam install -y jbuilder ssl lwt lwt_ssl ocamlfind atdgen cmdliner oUnit cohttp cohttp-lwt-unix
 
 You can build with the following command.
 
@@ -86,7 +85,6 @@ You can build with the following command.
 
 You can unit test with the following command.
 
-	make configure CONFIGUREFLAGS=--enable-tests
 	make test
 
 ## Examples
