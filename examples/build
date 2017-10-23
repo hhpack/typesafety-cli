@@ -1,10 +1,26 @@
 #!/usr/bin/env bash
 
-source .profile
+if [ -d typesafefy_src ]; then
+  rm -rf typesafefy_src
+fi
 
-cd projects/typesafety-cli
-oasis setup-clean
-oasis setup
-make clean
-make build
-./typesafety.native --verbose
+if [ -f typesafety.descr ]; then
+  typesafety.descr
+fi
+
+if [ -f typesafety.opam ]; then
+  typesafety.opam
+fi
+
+if [ -f Makefile ]; then
+  Makefile
+fi
+
+# Copy resources
+cp -R ../src typesafefy_src
+cp ../typesafety.descr typesafety.descr
+cp ../typesafety.opam typesafety.opam
+cp ../Makefile Makefile
+
+# Build example docker container
+docker build -t typesafety/example:latest .
