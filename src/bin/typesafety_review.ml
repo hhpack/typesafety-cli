@@ -10,6 +10,9 @@ open Cli
 open Typechecker
 open Cmdliner
 
+let program_name = "typesafety_review"
+let program_version = "0.10.0"
+
 let json_file =
   let doc = "Report file for input. (try hh_client check --json > output.json)" in
   Arg.(required & pos 0 (some file) None & info [] ~docv:"JSON" ~doc)
@@ -33,7 +36,7 @@ let review_t = Term.ret (Term.(const review $ json_file $ verbose))
 let info =
   let doc = "Github review command" in
   let man = [ `S "BUGS"; `P "Email bug reports to <holy.shared.design@gmail.com>."; ] in
-  Term.info "typesafety_github_review" ~version:"0.8.0" ~exits:Term.default_exits ~doc ~man
+  Term.info program_name ~version:program_version ~exits:Term.default_exits ~doc ~man
 
 let () =
   Term.exit @@ (Term.eval (review_t, info))

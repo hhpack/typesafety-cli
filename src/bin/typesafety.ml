@@ -10,6 +10,9 @@ open Misc.Log
 open Cli
 open Typechecker
 
+let program_name = "typesafety"
+let program_version = "0.10.0"
+
 let print_if_typecheck_passed json ~msg =
   let open Typechecker_check_t in
   if json.passed then Ok (success msg) else Ok ()
@@ -65,7 +68,7 @@ let check_t = Term.(ret Term.(const check $ no_hhconfig $ review $ verbose))
 let info =
   let doc = "Typechecker wrapper for Hack" in
   let man = [ `S "BUGS"; `P "Email bug reports to <holy.shared.design@gmail.com>."; ] in
-  Term.info "typesafety" ~version:"0.8.0" ~exits:Term.default_exits ~doc ~man
+  Term.info program_name ~version:program_version ~exits:Term.default_exits ~doc ~man
 
 let () =
   Term.exit @@ (Term.eval (check_t, info))
