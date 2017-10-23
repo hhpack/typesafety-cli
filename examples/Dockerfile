@@ -17,9 +17,16 @@ RUN chown -R typesafety:typesafety /home/typesafety
 USER typesafety
 ENV HOME /home/typesafety
 WORKDIR /home/typesafety
-RUN mkdir projects
 RUN echo 'eval `opam config env`' >> ~/.profile
 RUN sudo -u typesafety sh -c "opam init -y"
-RUN sudo -u typesafety sh -c "opam switch 4.04.1"
+RUN sudo -u typesafety sh -c "opam switch 4.05.0"
 RUN sudo -u typesafety sh -c "opam depext conf-openssl.1"
-RUN sudo -u typesafety sh -c "opam install oasis ocamlfind camlp4 atdgen lwt lwt_ssl cohttp cmdliner oUnit"
+RUN sudo -u typesafety sh -c "opam install -y jbuilder ssl lwt lwt_ssl ocamlfind atdgen cmdliner oUnit cohttp cohttp-lwt-unix"
+COPY src src
+COPY typesafefy_src typesafefy_src
+COPY typesafety.descr typesafety.descr
+COPY typesafety.opam typesafety.opam
+COPY Makefile Makefile
+COPY typesafety-build typesafety-build
+RUN sudo chown -R typesafety:typesafety typesafefy_src src typesafety.opam typesafety.descr Makefile typesafety-build
+RUN sudo -u typesafety sh -c "./typesafety-build"

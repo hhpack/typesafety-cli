@@ -1,9 +1,0 @@
-version: "2"
-services:
-  typesafety:
-    volumes:
-      - typesafety-sync:/home/typesafety/projects:rw
-
-volumes:
-  typesafety-sync:
-    external: true

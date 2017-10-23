@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+source .profile
+
+make clean
+make build
+
+sudo cp _build/install/default/bin/typesafety /usr/local/bin/typesafety
+sudo cp _build/install/default/bin/typesafety_review /usr/local/bin/typesafety_review
+
+touch .hhconfig
+
+rm -rf _build typesafefy_src
+rm typesafety.opam typesafety.descr typesafety.install Makefile typesafety-build
