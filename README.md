@@ -94,10 +94,24 @@ You can unit test with the following command.
 Run the example you need to install the following.
 
 * docker
-* docker-sync
-* docker-compose
 
 ### Execute of examples
 
+1. Build docker image
+
+	```shell
 	cd examples
-	docker-sync-stack start
+	./build
+	```
+
+2. Start up the build container
+
+	```shell
+	docker build -t typesafety/example:latest .
+	```
+
+3. Run typesafety
+
+	```shell
+	typesafety --verbose
+	```
