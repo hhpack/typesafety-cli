@@ -5,6 +5,7 @@
   (name cli)
   (libraries (
     typesafety.hhvm
+    typesafety.env
     typesafety.hack
     typesafety.misc
     typesafety.review
