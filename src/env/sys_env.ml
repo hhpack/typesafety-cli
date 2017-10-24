@@ -3,7 +3,7 @@
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
- *)
+*)
 
 module type S = sig
   val get: string -> string option
@@ -18,9 +18,9 @@ end
 
 module Index = struct
   include Map.Make(struct
-    type t = string
-    let compare = compare
-  end)
+      type t = string
+      let compare = compare
+    end)
 
   let from names =
     let rec add_all names m =
@@ -42,11 +42,11 @@ module Make(Adapter: Env_adapter.S): S = struct
       | None -> None
 
   (**
-    Check whether the environment variable is valid
+     Check whether the environment variable is valid
 
-    if is_enabled "DEBUG" then
+     if is_enabled "DEBUG" then
       print_endline "debug mode"
-    else
+     else
       print_endline"not debug mode"
   *)
   let is_enabled name =

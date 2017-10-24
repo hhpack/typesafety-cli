@@ -3,7 +3,7 @@
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
- *)
+*)
 
 open Misc.Log
 
@@ -26,7 +26,7 @@ let parse_version output =
       repo_schema=(repo_schema output);
     }
   else
-    Error "hhvm not installed"
+  Error "hhvm not installed"
 
 let print_version v =
   info "Installed hhvm version: %s." v.version

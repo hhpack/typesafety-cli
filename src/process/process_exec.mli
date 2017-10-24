@@ -3,7 +3,7 @@
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
- *)
+*)
 
 module type S = sig
   val exec: ?ignore:bool -> Lwt_process.command -> (Process_result.t, Process_result.t) result Lwt.t

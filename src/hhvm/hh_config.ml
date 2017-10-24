@@ -3,7 +3,7 @@
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
- *)
+*)
 
 type absolute_path = string
 
@@ -38,6 +38,6 @@ let create_if ?(dir = Sys.getcwd ()) ~no_hhconfig () =
     if no_hhconfig then
       not_exists_error
     else
-      touch config_file
+    touch config_file
   else
-    Ok (already_exists config_file)
+  Ok (already_exists config_file)

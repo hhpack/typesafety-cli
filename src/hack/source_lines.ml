@@ -3,7 +3,7 @@
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
- *)
+*)
 
 type line = (int * string)
 type line_range = (int * int)
@@ -30,7 +30,7 @@ module Line_range = struct
       if first <= last then
         process ~first
       else
-        List.rev out in
+      List.rev out in
     inner_map ~first ~last ~out:[]
 end
 

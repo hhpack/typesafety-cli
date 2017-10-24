@@ -3,7 +3,7 @@
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
- *)
+*)
 
 open Lwt.Infix
 open Misc.Log
@@ -29,11 +29,11 @@ module Make(S: Process_exec.S): S = struct
 
   let restart () =
     S.shell_exec (with_redirect "restart")
-      >>= return_result ~msg:"Server restart failed"
+    >>= return_result ~msg:"Server restart failed"
 
   let check () =
     S.shell_exec ~ignore:true (with_redirect "check --json")
-      >>= return_result ~msg:"Did not return the expected json results"
+    >>= return_result ~msg:"Did not return the expected json results"
 
   let to_json result =
     match result with
@@ -47,8 +47,8 @@ module Make(S: Process_exec.S): S = struct
 
   let typecheck_json () =
     restart ()
-      >>= verbose
-      >>= next ~f:check
-      >>= verbose
-      >>= to_json
+    >>= verbose
+    >>= next ~f:check
+    >>= verbose
+    >>= to_json
 end

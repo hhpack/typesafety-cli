@@ -3,7 +3,7 @@
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
- *)
+*)
 
 type 'a read_result =
   | Cache of 'a
@@ -11,7 +11,7 @@ type 'a read_result =
 
 let read_from_cache ~cache file =
   try Some (Source_cache.find cache file)
-    with Not_found -> None
+  with Not_found -> None
 
 let read_from_file file =
   let ch = open_in file in

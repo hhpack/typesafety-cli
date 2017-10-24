@@ -3,7 +3,7 @@
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
- *)
+*)
 
 open Lwt.Infix
 
@@ -17,7 +17,7 @@ let read_line ic =
     if Lwt_io.is_busy ic then
       inner_read_line ic
     else
-      Lwt_io.read_line_opt ic in
+    Lwt_io.read_line_opt ic in
   inner_read_line ic
 
 let read_stdout ic ~f =
@@ -43,10 +43,10 @@ let exec ?(ignore=false) cmd =
     if ignore then
       Lwt.return_ok result
     else
-      if Process_result.is_ok result then
-        Lwt.return_ok result
-      else
-        Lwt.return_error result in
+    if Process_result.is_ok result then
+      Lwt.return_ok result
+    else
+    Lwt.return_error result in
 
   let return_result status =
     let open Unix in
@@ -61,8 +61,8 @@ let exec ?(ignore=false) cmd =
     let on_consumed = function
       | None ->
         Lwt_io.close ic
-          >>= (fun _ -> cp#status)
-          >>= return_result
+        >>= (fun _ -> cp#status)
+        >>= return_result
       | Some _ -> wait_until_consumed cp in
     match cp#state with
       | Lwt_process.Running -> read_stdout ic ~f:writeln >>= on_consumed

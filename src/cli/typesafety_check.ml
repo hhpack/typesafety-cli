@@ -3,7 +3,7 @@
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
- *)
+*)
 
 open Lwt.Infix
 open Misc.Log
@@ -28,9 +28,9 @@ let check_hhvm_installed () =
   let parse_version o = map_next o ~f:Hhvm.parse_version in
   let print_installed_version o = map_next o ~f:print_version in
   start ()
-    >>= check_version
-    >>= parse_version
-    >>= print_installed_version
+  >>= check_version
+  >>= parse_version
+  >>= print_installed_version
 
 let check_hhconfg ?(no_hhconfig=true) () =
   let auto_config_generate o =
@@ -50,6 +50,6 @@ let typecheck ?(no_hhconfig=false) () =
 
   Lwt_main.run (
     check_hhvm_installed ()
-      >>= check_hhconfg
-      >>= typecheck_json
-    )
+    >>= check_hhconfg
+    >>= typecheck_json
+  )
