@@ -7,4 +7,7 @@
 
 open Typechecker
 
-val review_if: Typechecker_check_t.result -> review:bool -> (unit, string) result
+val review_if: ?skip_passed:bool
+  -> review:bool
+  -> Typechecker_check_t.result
+  -> (unit, string) result
