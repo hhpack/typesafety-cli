@@ -21,11 +21,11 @@ let failed_if_typecheck_error json ~msg =
   let open Typechecker_check_t in
   if json.passed then Ok () else Error msg
 
-let report_typecheck_result json ~review =
+let report_typecheck_result json ~review ~skip_passed =
   let reporters = [
     print_if_typecheck_passed ~msg:"There was no typecheck error\n";
     Typesafety_report.print_json;
-    Typesafety_github.review_if ~review;
+    Typesafety_github.review_if ~review ~skip_passed;
     failed_if_typecheck_error ~msg:"There is an error of typecheck\n"
   ] in
 
@@ -39,13 +39,13 @@ let report_typecheck_result json ~review =
 
   report json ~reporters
 
-let check no_hhconfig review verbose =
+let check no_hhconfig review skip_passed verbose =
   set_verbose verbose;
   info "\nType check is started\n\n";
   match Typesafety_check.typecheck ~no_hhconfig () with
     | Ok json ->
       begin
-        match report_typecheck_result ~review json with
+        match report_typecheck_result ~review ~skip_passed json with
           | Ok _ -> `Ok ()
           | Error e -> `Error (true, e)
       end
@@ -56,14 +56,18 @@ let no_hhconfig =
   Arg.(value & flag & info ["no-hhconfig"] ~doc)
 
 let review =
-  let doc = "If specified, will leave a review comment by Github" in
+  let doc = "If specified, post the type check result as a review comment." in
   Arg.(value & flag & info ["review"] ~doc)
+
+let skip_passed =
+  let doc = "If specified, do not post review comments when passing the type check" in
+  Arg.(value & flag & info ["skip-passed"] ~doc)
 
 let verbose =
   let doc = "If specified, will display detailed logs" in
   Arg.(value & flag & info ["verbose"] ~doc)
 
-let check_t = Term.(ret Term.(const check $ no_hhconfig $ review $ verbose))
+let check_t = Term.(ret Term.(const check $ no_hhconfig $ review $ skip_passed $ verbose))
 
 let info =
   let doc = "Typechecker wrapper for Hack" in

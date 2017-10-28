@@ -33,10 +33,19 @@ let create_review json =
 
 let skip_review json = Skiped "Skiped github review"
 
-let review_if json ~review =
+let review_if_passed ~skip_passed json =
+  let open Typechecker.Typechecker_check_t in
+  if not skip_passed then
+    true
+  else
+    if json.passed then false (* skip review *)
+    else true
+
+let review_if ?(skip_passed=false) ~review json =
+  let open Typechecker.Typechecker_check_t in
   let try_review json =
-    if review then
+    if review && (review_if_passed ~skip_passed json) then
       create_review json
     else
-    skip_review json in
+      skip_review json in
   try_review json |> on_review
