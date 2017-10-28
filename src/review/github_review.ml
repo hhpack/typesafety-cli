@@ -60,6 +60,19 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Adapter: Env_adapter.S) (Ht
       | Ok bind_f -> f ci ~f:bind_f
       | Error e -> Error e
 
+  (*
+    val f: user:string ->
+      token:string ->
+      slug:string ->
+      branch:string ->
+      num:int ->
+      Typechecker_check_t.result ->
+      (review_result, string) result
+
+    to
+
+    Typechecker_check_t.result -> (review_result, string) result
+  *)
   let bind_ci_env_vars f ~ci =
     let bind f = bind_with ~f ~ci in
     f |>
