@@ -21,7 +21,6 @@ PKG bytes
 PKG cohttp
 PKG cohttp-lwt
 PKG cohttp-lwt-unix
-PKG cohttp.lwt
 PKG conduit
 PKG conduit-lwt
 PKG conduit-lwt-unix
