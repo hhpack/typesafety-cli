@@ -1,6 +1,6 @@
 opam-version: "1.2"
 name: "typesafety"
-version: "0.10.0"
+version: "0.11.0"
 maintainer: "Noritka Horio <holy.shared.design@gmail.com>"
 authors: [ "Noritka Horio <holy.shared.design@gmail.com>" ]
 license: "MIT"
@@ -26,4 +26,4 @@ depends: [
   "ocamlfind" {build}
   "ounit" {test & >= "2.0.0"}
 ]
-available: [ ocaml-version >= "4.05.0" ]
+available: [ ocaml-version >= "4.06.0" ]
