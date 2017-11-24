@@ -1,6 +1,6 @@
 opam-version: "1.2"
 name: "typesafety"
-version: "0.10.0"
+version: "0.11.0"
 maintainer: "Noritka Horio <holy.shared.design@gmail.com>"
 authors: [ "Noritka Horio <holy.shared.design@gmail.com>" ]
 license: "MIT"
@@ -18,12 +18,12 @@ depends: [
   "atdgen" {>= "1.12.0"}
   "base-threads"
   "cmdliner" {build & >= "1.0.0"}
-  "cohttp" {>= "0.99.0"}
-  "cohttp-lwt-unix" {>= "0.99.0"}
+  "cohttp" {>= "1.0.0"}
+  "cohttp-lwt-unix" {>= "1.0.0"}
   "lwt" {>= "3.1.0"}
   "lwt_ssl" {>= "1.1.0"}
   "ocamlbuild" {build}
   "ocamlfind" {build}
   "ounit" {test & >= "2.0.0"}
 ]
-available: [ ocaml-version >= "4.05.0" ]
+available: [ ocaml-version >= "4.06.0" ]

@@ -20,7 +20,7 @@ let status_code_of res = res |> Response.status |> Code.code_of_status
 let is_success res = status_code_of res |> Code.is_success
 let to_result (res, body) =
   let open Lwt in
-  let string_of_body body = body |> Cohttp_lwt_body.to_string in
+  let string_of_body body = body |> Cohttp_lwt.Body.to_string in
   let with_status_code res_body =
     let code = (status_code_of res) in
     if is_success res then
