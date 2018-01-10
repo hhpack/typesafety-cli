@@ -22,7 +22,6 @@ PKG bytes
 PKG cohttp
 PKG cohttp-lwt
 PKG cohttp-lwt-unix
-PKG cohttp.lwt
 PKG conduit
 PKG conduit-lwt
 PKG conduit-lwt-unix
@@ -49,6 +48,8 @@ PKG sexplib.0
 PKG ssl
 PKG str
 PKG stringext
+PKG threads
+PKG threads.posix
 PKG uchar
 PKG unix
 PKG uri

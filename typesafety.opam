@@ -20,7 +20,7 @@ depends: [
   "cmdliner" {build & >= "1.0.0"}
   "cohttp" {>= "1.0.0"}
   "cohttp-lwt-unix" {>= "1.0.0"}
-  "lwt" {>= "3.1.0"}
+  "lwt" {>= "3.2.0"}
   "lwt_ssl" {>= "1.1.0"}
   "ocamlbuild" {build}
   "ocamlfind" {build}
