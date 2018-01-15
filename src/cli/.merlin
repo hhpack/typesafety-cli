@@ -45,6 +45,8 @@ PKG sexplib.0
 PKG ssl
 PKG str
 PKG stringext
+PKG threads
+PKG threads.posix
 PKG uchar
 PKG unix
 PKG uri
