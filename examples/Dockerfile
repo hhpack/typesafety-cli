@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-MAINTAINER Noritaka Horio <holy.shared.design@gmail.com>
+LABEL maintainer "Noritaka Horio <holy.shared.design@gmail.com>"
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -y update
 RUN apt-get -y install software-properties-common
