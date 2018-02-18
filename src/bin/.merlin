@@ -54,6 +54,7 @@ PKG unix
 PKG uri
 PKG uri.services
 PKG yojson
+S .
 S ../cli
 S ../env
 S ../github

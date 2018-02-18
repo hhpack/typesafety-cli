@@ -7,3 +7,4 @@ PKG easy-format
 PKG str
 PKG unix
 PKG yojson
+S .

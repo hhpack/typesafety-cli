@@ -1,2 +1,3 @@
 B ../../_build/default/src/misc
 FLG -open Misc -w -40
+S .

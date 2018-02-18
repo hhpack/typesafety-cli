@@ -3,3 +3,4 @@ FLG -open Process -w -40
 PKG bytes
 PKG lwt
 PKG result
+S .

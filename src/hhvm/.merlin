@@ -13,6 +13,7 @@ PKG result
 PKG str
 PKG unix
 PKG yojson
+S .
 S ../misc
 S ../process
 S ../typechecker

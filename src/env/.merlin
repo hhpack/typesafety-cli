@@ -1,4 +1,5 @@
 B ../../_build/default/src/env
 B ../../_build/default/src/github
 FLG -open Env -w -40
+S .
 S ../github
