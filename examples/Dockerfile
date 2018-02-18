@@ -1,6 +1,7 @@
-FROM ubuntu:16.04
+FROM ubuntu:17.10
 LABEL maintainer "Noritaka Horio <holy.shared.design@gmail.com>"
 ENV DEBIAN_FRONTEND noninteractive
+ARG compiler_verion="4.06.1"
 RUN apt-get -y update
 RUN apt-get -y install software-properties-common
 RUN apt-get -y install sudo m4 opam pkg-config libssl-dev
@@ -19,7 +20,7 @@ ENV HOME /home/typesafety
 WORKDIR /home/typesafety
 RUN echo 'eval `opam config env`' >> ~/.profile
 RUN sudo -u typesafety sh -c "opam init -y"
-RUN sudo -u typesafety sh -c "opam switch 4.05.0"
+RUN sudo -u typesafety sh -c "opam switch ${compiler_verion}"
 RUN sudo -u typesafety sh -c "opam depext conf-openssl.1"
 RUN sudo -u typesafety sh -c "opam install -y jbuilder ssl lwt lwt_ssl ocamlfind atdgen cmdliner oUnit cohttp cohttp-lwt-unix"
 COPY src src
