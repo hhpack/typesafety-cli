@@ -1,10 +1,15 @@
-B ../../_build/default/src/typechecker
+B ../../_build/default/src/typechecker/.typechecker.objs
+B /Users/holyshared/.opam/4.06.1/lib/atd
+B /Users/holyshared/.opam/4.06.1/lib/atdgen
+B /Users/holyshared/.opam/4.06.1/lib/biniou
+B /Users/holyshared/.opam/4.06.1/lib/easy-format
+B /Users/holyshared/.opam/4.06.1/lib/ocaml
+B /Users/holyshared/.opam/4.06.1/lib/yojson
 FLG -open Typechecker -w -40
-PKG atd
-PKG atdgen
-PKG biniou
-PKG easy-format
-PKG str
-PKG unix
-PKG yojson
 S .
+S /Users/holyshared/.opam/4.06.1/lib/atd
+S /Users/holyshared/.opam/4.06.1/lib/atdgen
+S /Users/holyshared/.opam/4.06.1/lib/biniou
+S /Users/holyshared/.opam/4.06.1/lib/easy-format
+S /Users/holyshared/.opam/4.06.1/lib/ocaml
+S /Users/holyshared/.opam/4.06.1/lib/yojson

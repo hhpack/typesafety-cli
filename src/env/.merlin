@@ -1,5 +1,5 @@
-B ../../_build/default/src/env
-B ../../_build/default/src/github
+B ../../_build/default/src/env/.env.objs
+B ../../_build/default/src/github/.github.objs
 FLG -open Env -w -40
 S .
 S ../github

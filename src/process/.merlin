@@ -1,6 +1,9 @@
-B ../../_build/default/src/process
+B ../../_build/default/src/process/.process.objs
+B /Users/holyshared/.opam/4.06.1/lib/bytes
+B /Users/holyshared/.opam/4.06.1/lib/lwt
+B /Users/holyshared/.opam/4.06.1/lib/result
 FLG -open Process -w -40
-PKG bytes
-PKG lwt
-PKG result
 S .
+S /Users/holyshared/.opam/4.06.1/lib/bytes
+S /Users/holyshared/.opam/4.06.1/lib/lwt
+S /Users/holyshared/.opam/4.06.1/lib/result

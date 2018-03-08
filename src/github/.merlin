@@ -1,3 +1,3 @@
-B ../../_build/default/src/github
+B ../../_build/default/src/github/.github.objs
 FLG -w -40
 S .
