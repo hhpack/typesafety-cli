@@ -1,5 +1,5 @@
-B ../../_build/default/src/hack
-B ../../_build/default/src/misc
+B ../../_build/default/src/hack/.hack.objs
+B ../../_build/default/src/misc/.misc.objs
 FLG -open Hack -w -40
 S .
 S ../misc
