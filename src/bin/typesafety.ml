@@ -11,7 +11,7 @@ open Cli
 open Typechecker
 
 let program_name = "typesafety"
-let program_version = "0.11.3"
+let program_version = "0.11.4"
 
 let print_if_typecheck_passed json ~msg =
   let open Typechecker_check_t in
