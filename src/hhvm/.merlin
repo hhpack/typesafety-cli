@@ -2,8 +2,8 @@ B ../../_build/default/src/hhvm/.hhvm.objs
 B ../../_build/default/src/misc/.misc.objs
 B ../../_build/default/src/process/.process.objs
 B ../../_build/default/src/typechecker/.typechecker.objs
-B /Users/holyshared/.opam/4.06.1/lib/atd
 B /Users/holyshared/.opam/4.06.1/lib/atdgen
+B /Users/holyshared/.opam/4.06.1/lib/atdgen-runtime
 B /Users/holyshared/.opam/4.06.1/lib/biniou
 B /Users/holyshared/.opam/4.06.1/lib/bytes
 B /Users/holyshared/.opam/4.06.1/lib/easy-format
@@ -16,8 +16,8 @@ S .
 S ../misc
 S ../process
 S ../typechecker
-S /Users/holyshared/.opam/4.06.1/lib/atd
 S /Users/holyshared/.opam/4.06.1/lib/atdgen
+S /Users/holyshared/.opam/4.06.1/lib/atdgen-runtime
 S /Users/holyshared/.opam/4.06.1/lib/biniou
 S /Users/holyshared/.opam/4.06.1/lib/bytes
 S /Users/holyshared/.opam/4.06.1/lib/easy-format

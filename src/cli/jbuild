@@ -4,6 +4,7 @@
   (public_name typesafety.cli)
   (name cli)
   (libraries (
+    str
     typesafety.hhvm
     typesafety.env
     typesafety.hack

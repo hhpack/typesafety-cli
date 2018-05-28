@@ -4,6 +4,7 @@
   (public_name typesafety.review)
   (name review)
   (libraries (
+    str
     lwt
     lwt_ssl
     atdgen

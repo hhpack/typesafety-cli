@@ -3,5 +3,5 @@
 (library (
   (public_name typesafety.hack)
   (name hack)
-  (libraries (typesafety.misc))
+  (libraries (str typesafety.misc))
 ))

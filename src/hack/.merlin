@@ -1,5 +1,7 @@
 B ../../_build/default/src/hack/.hack.objs
 B ../../_build/default/src/misc/.misc.objs
+B /Users/holyshared/.opam/4.06.1/lib/ocaml
 FLG -open Hack -w -40
 S .
 S ../misc
+S /Users/holyshared/.opam/4.06.1/lib/ocaml
