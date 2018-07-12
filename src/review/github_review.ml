@@ -37,7 +37,7 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Adapter: Env_adapter.S) (Ht
       | Error e -> Error e
 
   let slug ci ~f =
-    let open Github in
+    (*  let open Github in *)
     let module Ci = (val ci: Ci_env.S) in
     match Ci.slug () with
       | Ok slug -> Ok (f ~slug:slug)
@@ -83,9 +83,9 @@ module Make(Supports_ci: Ci_detector.Supports_ci.S) (Adapter: Env_adapter.S) (Ht
     bind pull_request_number
 
   let post_review o =
-    let open Github_t in
+    (* let open Github_t in *)
     match Lwt_main.run o with
-      | Ok (code, body) -> Ok (Reviewed (Github_j.review_result_of_string body))
+      | Ok (_, body) -> Ok (Reviewed (Github_j.review_result_of_string body))
       | Error (code, body) -> Error ((string_of_int code) ^ ":" ^ body)
 
   let post_review_comment json ~ci =

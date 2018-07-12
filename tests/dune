@@ -1,24 +1,22 @@
-(jbuild_version 1)
-
-(executable (
+(executable
   (name test)
-  (libraries (
+  (libraries
     oUnit
     typesafety.cli
     typesafety.misc
     typesafety.env
     typesafety.hhvm
     typesafety.review
-  ))
-))
+  )
+)
 
-(alias (
+(alias
   (name runtest)
-  (deps (test.exe))
-  (action (
-    progn
+  (deps test.exe)
+  (action
+    (progn
       (run cp -R ../../../examples .)
       (run cp -R ../../../tests/fixtures .)
-      (run ${<})
-  ))
-))
+      (run %{deps}))
+  )
+)

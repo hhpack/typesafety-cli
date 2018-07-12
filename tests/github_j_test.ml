@@ -2,7 +2,7 @@ open OUnit2
 open Test_helper
 open Review
 
-let test_github_json ctx =
+let test_github_json _tctx =
   let open Github_t in
   let to_json = Github_j.review_result_of_string in
   let result_json = Template.json_from ~file:"fixtures/review.json" ~f:to_json () in

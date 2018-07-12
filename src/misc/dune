@@ -1,6 +1,4 @@
-(jbuild_version 1)
-
-(library (
+(library
   (public_name typesafety.misc)
   (name misc)
-))
+)

@@ -9,8 +9,6 @@ open Hack
 open Typechecker.Typechecker_check_t
 
 module Message = struct
-  type t = error_detail
-
   let path_from ?(root=Sys.getcwd ()) t =
     Str.replace_first (Str.regexp (root ^ "/")) "" t.source_path
 
@@ -49,7 +47,7 @@ module Passed_comment = struct
   let add_title buf ~s =
     Comment_buffer.writeln buf ~s
 
-  let create t ~json =
+  let create () =
     Comment_buffer.(
       create ()
       |> add_title ~s:":tada: There was no type error in your pull request."
@@ -111,11 +109,9 @@ module Failed_comment = struct
         write_if_error_line ~line:line in
       ListLabels.fold_left ~f:write_line_of ~init:buf lines in
 
-    Comment_buffer.(
-      hack_code_start buf |>
-      write_lines_of ~msg |>
-      hack_code_end
-    )
+    hack_code_start buf |>
+    write_lines_of ~msg |>
+    hack_code_end
 
   let comment_of_messages t ~buf ~messages =
     let write_message buf ~msg =
@@ -172,9 +168,9 @@ module Failed_comment = struct
 end
 
 let create ?(root=Sys.getcwd ()) ~slug ~branch json =
-  let comment_by =
+  let comment_by t =
     if json.passed then
-      Passed_comment.create ~json
+      Passed_comment.create ()
     else
-      Failed_comment.create ~json in
+      Failed_comment.create t ~json in
   comment_by (Context.create ~slug ~branch ~root ())

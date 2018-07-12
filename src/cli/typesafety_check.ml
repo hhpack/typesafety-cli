@@ -11,7 +11,7 @@ open Hhvm
 
 let next o ~f =
   match o with
-    | Ok v -> f ()
+    | Ok _ -> f ()
     | Error e -> Lwt.return_error e
 
 let map_next o ~f =

@@ -5,8 +5,6 @@
  * with this source code in the file LICENSE.
 *)
 
-open Printf
-
 type color = Magenta | Red | Green | Yellow | Cyan | White
 
 let start_with ~start ~fmt =

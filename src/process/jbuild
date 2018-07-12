@@ -1,7 +1,0 @@
-(jbuild_version 1)
-
-(library (
-  (public_name typesafety.process)
-  (name process)
-  (libraries (lwt))
-))

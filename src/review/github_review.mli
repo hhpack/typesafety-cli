@@ -7,7 +7,6 @@
 
 open Typechecker
 open Env
-open Github
 
 type skip_result =
   | NoError

@@ -14,7 +14,7 @@ let skiped_reason = function
   | Github_review.NotPullRequest -> Skiped "Skiped github review (reason: not pull request)"
 
 let review_success result =
-  let open Github_t in
+  (* let open Github_t in *)
   match result with
     | Github_review.Reviewed json -> Reviewed json
     | Github_review.Skiped v -> skiped_reason v
@@ -31,7 +31,7 @@ let create_review json =
     | Ok v -> review_success v
     | Error e -> ReviewFailed e
 
-let skip_review json = Skiped "Skiped github review"
+let skip_review _ = Skiped "Skiped github review"
 
 let review_if_passed ~skip_passed json =
   let open Typechecker.Typechecker_check_t in
@@ -42,7 +42,6 @@ let review_if_passed ~skip_passed json =
     else true
 
 let review_if ?(skip_passed=false) ~review json =
-  let open Typechecker.Typechecker_check_t in
   let try_review json =
     if review && (review_if_passed ~skip_passed json) then
       create_review json
