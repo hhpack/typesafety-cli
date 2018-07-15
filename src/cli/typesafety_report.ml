@@ -6,9 +6,7 @@
 *)
 
 open Hack
-open Misc
 open Misc.Log
-open Typechecker
 open Typechecker.Typechecker_check_t
 
 let line_number_length = 5
@@ -69,7 +67,3 @@ let print_error cache =
 
 let print_json json =
   Ok (List.iteri (print_error (Source_cache.create 1024)) json.errors)
-
-let print_result_file file =
-  let json_of s = Typechecker_check_j.result_of_string s in
-  print_json (json_of (File.read_all file))

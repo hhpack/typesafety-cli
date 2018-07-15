@@ -48,7 +48,7 @@ let range ?(width = 1) m ~line =
 
 let range_map ?(width = 1) m ~line ~f =
   let line_range = range m ~width ~line in
-  Line_range.map line_range f
+  Line_range.map line_range ~f
 
 let range_lines ?(width = 1) m ~line =
   let to_line line = match find_of_line m ~line with

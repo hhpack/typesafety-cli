@@ -1,9 +1,7 @@
-(jbuild_version 1)
-
-(library (
+(library
   (public_name typesafety.cli)
   (name cli)
-  (libraries (
+  (libraries
     str
     typesafety.hhvm
     typesafety.env
@@ -11,5 +9,5 @@
     typesafety.misc
     typesafety.review
     typesafety.typechecker
-  ))
-))
+  )
+)

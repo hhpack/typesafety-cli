@@ -4,7 +4,7 @@ open Hack
 
 let example1 = "fixtures/example1.ml"
 
-let read_all_test tcxt =
+let read_all_test _tctx =
   let cache = Source_cache.create 1024 in
   let readed_file1 = Source_file.read_all example1 ~cache in
   let readed_file2 = Source_file.read_all example1 ~cache in
@@ -18,7 +18,7 @@ let read_all_test tcxt =
   assert_bool "should be read from file" is_from_file;
   assert_bool "should be read from cache" is_from_cache
 
-let read_range_test tcxt =
+let read_range_test _tctx =
   let string_of_line line =
     let line_number, source_code = line in
     (string_of_int line_number) ^ ":" ^ source_code in

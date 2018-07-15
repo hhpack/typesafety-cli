@@ -2,7 +2,7 @@ open OUnit2
 open Test_helper
 open Env
 
-let test_current_env ctxt =
+let test_current_env _tctx =
   let module S = Ci_service_env.General.Make(struct
     let get key = match key with
       | "CI" -> Some "true"
@@ -10,7 +10,7 @@ let test_current_env ctxt =
   end) in
   assert_bool "current env is false" (S.is_current ())
 
-let test_not_current_env ctxt =
+let test_not_current_env _tctx =
   let module S = Ci_service_env.General.Make(struct
     let get key = match key with
       | "CI" -> Some "false"
@@ -18,7 +18,7 @@ let test_not_current_env ctxt =
   end) in
   assert_bool "current env is true" (not (S.is_current ()))
 
-let test_slug ctxt =
+let test_slug _tctx =
   let open Github in
   let module S = Ci_service_env.General.Make(struct
     let get key = match key with

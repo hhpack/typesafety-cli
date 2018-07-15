@@ -1,0 +1,5 @@
+(library
+  (public_name typesafety.hack)
+  (name hack)
+  (libraries str typesafety.misc)
+)

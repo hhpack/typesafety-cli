@@ -5,7 +5,6 @@
  * with this source code in the file LICENSE.
 *)
 
-open Misc.Log
 open Process
 
 module type S = sig

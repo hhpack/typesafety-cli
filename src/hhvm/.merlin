@@ -1,7 +1,3 @@
-B ../../_build/default/src/hhvm/.hhvm.objs
-B ../../_build/default/src/misc/.misc.objs
-B ../../_build/default/src/process/.process.objs
-B ../../_build/default/src/typechecker/.typechecker.objs
 B /Users/holyshared/.opam/4.06.1/lib/atdgen
 B /Users/holyshared/.opam/4.06.1/lib/atdgen-runtime
 B /Users/holyshared/.opam/4.06.1/lib/biniou
@@ -11,11 +7,10 @@ B /Users/holyshared/.opam/4.06.1/lib/lwt
 B /Users/holyshared/.opam/4.06.1/lib/ocaml
 B /Users/holyshared/.opam/4.06.1/lib/result
 B /Users/holyshared/.opam/4.06.1/lib/yojson
-FLG -open Hhvm -w -40
-S .
-S ../misc
-S ../process
-S ../typechecker
+B ../../_build/default/src/hhvm/.hhvm.objs
+B ../../_build/default/src/misc/.misc.objs
+B ../../_build/default/src/process/.process.objs
+B ../../_build/default/src/typechecker/.typechecker.objs
 S /Users/holyshared/.opam/4.06.1/lib/atdgen
 S /Users/holyshared/.opam/4.06.1/lib/atdgen-runtime
 S /Users/holyshared/.opam/4.06.1/lib/biniou
@@ -25,3 +20,8 @@ S /Users/holyshared/.opam/4.06.1/lib/lwt
 S /Users/holyshared/.opam/4.06.1/lib/ocaml
 S /Users/holyshared/.opam/4.06.1/lib/result
 S /Users/holyshared/.opam/4.06.1/lib/yojson
+S .
+S ../misc
+S ../process
+S ../typechecker
+FLG -open Hhvm -w @a-4-29-40-41-42-44-45-48-58-59-60-40 -strict-sequence -strict-formats -short-paths -keep-locs

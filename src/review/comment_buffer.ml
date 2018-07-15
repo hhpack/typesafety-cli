@@ -46,7 +46,7 @@ let write_with_indent ?(indent=1) ?(ln=0) ~s t =
     write_ln ~n:ln in
 
   let write_multiple_line buf ~lines =
-    ListLabels.fold_left ~f:write_line ~init:t lines |>
+    ListLabels.fold_left ~f:write_line ~init:buf lines |>
     write_ln ~n:(ln - 1) (* Consider the case of multiple lines *) in
 
   let lines = String.split_on_char '\n' s in
