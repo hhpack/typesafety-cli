@@ -4,7 +4,9 @@ B /Users/holyshared/.opam/4.07.0/lib/biniou
 B /Users/holyshared/.opam/4.07.0/lib/bytes
 B /Users/holyshared/.opam/4.07.0/lib/easy-format
 B /Users/holyshared/.opam/4.07.0/lib/lwt
+B /Users/holyshared/.opam/4.07.0/lib/lwt/unix
 B /Users/holyshared/.opam/4.07.0/lib/ocaml
+B /Users/holyshared/.opam/4.07.0/lib/ocaml/threads
 B /Users/holyshared/.opam/4.07.0/lib/result
 B /Users/holyshared/.opam/4.07.0/lib/yojson
 B ../../_build/default/src/hhvm/.hhvm.objs
@@ -17,7 +19,9 @@ S /Users/holyshared/.opam/4.07.0/lib/biniou
 S /Users/holyshared/.opam/4.07.0/lib/bytes
 S /Users/holyshared/.opam/4.07.0/lib/easy-format
 S /Users/holyshared/.opam/4.07.0/lib/lwt
+S /Users/holyshared/.opam/4.07.0/lib/lwt/unix
 S /Users/holyshared/.opam/4.07.0/lib/ocaml
+S /Users/holyshared/.opam/4.07.0/lib/ocaml/threads
 S /Users/holyshared/.opam/4.07.0/lib/result
 S /Users/holyshared/.opam/4.07.0/lib/yojson
 S .
