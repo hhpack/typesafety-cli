@@ -39,6 +39,7 @@ end
 module Slug : sig
   type t
   val of_string : string -> t
+  val of_pair : string -> string -> t
   val repo_owner : t -> User.t
   val repo_name : t -> Repository.t
   val to_string : t -> string

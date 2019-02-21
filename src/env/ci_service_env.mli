@@ -33,5 +33,8 @@ end
 (** Travis CI *)
 module Travis: Service
 
+(** Circle CI *)
+module Circle_ci: Service
+
 (** General CI *)
 module General: Service
