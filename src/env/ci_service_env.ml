@@ -99,10 +99,20 @@ module Circle_ci: Service = struct
         | Some _ -> true
         | None -> false
 
+
+    (* example: CIRCLE_PULL_REQUEST=https://github.com/hhpack/hacktest-example/pull/1 *)
+    let number_from_url s =
+      let pos = String.rindex s '/' in
+      if pos = 0 then None
+      else
+        let next_pos = pos + 1 in
+        let len = (String.length s) - next_pos in
+        Some (String.sub s next_pos len)
+
     (* example: CIRCLE_PULL_REQUEST=https://github.com/hhpack/hacktest-example/pull/1 *)
     let pull_request_number_from_url () =
       match get "CIRCLE_PULL_REQUEST" with
-        | Some url -> Some url (* number!! *)
+        | Some url -> number_from_url url
         | None -> None
 
     let to_pull_request v = Pull_request.of_string v
