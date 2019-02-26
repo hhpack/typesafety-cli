@@ -99,8 +99,21 @@ module Circle_ci: Service = struct
         | Some _ -> true
         | None -> false
 
+    (* example: CIRCLE_PULL_REQUEST=https://github.com/hhpack/hacktest-example/pull/1 *)
+    let pull_request_number_from_url () =
+      match get "CIRCLE_PULL_REQUEST" with
+        | Some url -> Some url (* number!! *)
+        | None -> None
+
+    let to_pull_request v = Pull_request.of_string v
+
     let pull_request_number () =
-      require_map "CIRCLE_PR_NUMBER" ~f:Pull_request.of_string
+      match get "CIRCLE_PULL_REQUEST" with
+        | Some v -> Ok (to_pull_request v)
+        | None ->
+          match pull_request_number_from_url () with
+            | Some v -> Ok (to_pull_request v)
+            | None -> Error "CIRCLE_PR_NUMBER or CIRCLE_PULL_REQUEST not found environment variables"
 
     (* owner_name/repo_name *)
     let slug () =
