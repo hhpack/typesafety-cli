@@ -1,6 +1,6 @@
 opam-version: "2.0"
 name: "typesafety"
-version: "0.13.0"
+version: "0.14.0"
 maintainer: "Noritka Horio <holy.shared.design@gmail.com>"
 authors: [ "Noritka Horio <holy.shared.design@gmail.com>" ]
 license: "MIT"
