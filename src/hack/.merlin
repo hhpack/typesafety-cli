@@ -1,7 +1,8 @@
-B /Users/holyshared/.opam/4.07.0/lib/ocaml
-B ../../_build/default/src/hack/.hack.objs
-B ../../_build/default/src/misc/.misc.objs
-S /Users/holyshared/.opam/4.07.0/lib/ocaml
+EXCLUDE_QUERY_DIR
+B /Users/holyshared/.opam/4.07.1/lib/ocaml
+B ../../_build/default/src/hack/.hack.objs/byte
+B ../../_build/default/src/misc/.misc.objs/byte
+S /Users/holyshared/.opam/4.07.1/lib/ocaml
 S .
 S ../misc
 FLG -open Hack -w @a-4-29-40-41-42-44-45-48-58-59-60-40 -strict-sequence -strict-formats -short-paths -keep-locs

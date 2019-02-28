@@ -10,5 +10,6 @@ let () =
     Review_comment_test.tests;
     Travis_test.tests;
     General_test.tests;
+    Circle_ci_test.tests;
     Github_j_test.tests
   ])

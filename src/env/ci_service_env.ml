@@ -72,6 +72,75 @@ module Travis: Service = struct
   end
 end
 
+
+(** Circle CI *)
+module Circle_ci: Service = struct
+  let is_current adapter =
+    let module Env_adapter = (val adapter: Env_adapter.S) in
+    is_current (module Env_adapter) "CIRCLECI"
+
+  module Make(Adapter: Env_adapter.S): S = struct
+    include Sys_env.Make(Adapter)
+
+    let variables = [
+      "CIRCLECI";
+      "CIRCLE_PULL_REQUEST";
+      "CIRCLE_PR_NUMBER";
+      "CIRCLE_PROJECT_USERNAME";
+      "CIRCLE_PROJECT_REPONAME";
+      "CIRCLE_SHA1";
+      "CIRCLE_BRANCH";
+    ]
+
+    let is_current () = is_enabled "CIRCLECI" (* replace to is_current *)
+
+    let is_pull_request () =
+      match get "CIRCLE_PULL_REQUEST" with
+        | Some _ -> true
+        | None -> false
+
+
+    (* example: CIRCLE_PULL_REQUEST=https://github.com/hhpack/hacktest-example/pull/1 *)
+    let number_from_url s =
+      let pos = String.rindex s '/' in
+      if pos = 0 then None
+      else
+        let next_pos = pos + 1 in
+        let len = (String.length s) - next_pos in
+        Some (String.sub s next_pos len)
+
+    (* example: CIRCLE_PULL_REQUEST=https://github.com/hhpack/hacktest-example/pull/1 *)
+    let pull_request_number_from_url () =
+      match get "CIRCLE_PULL_REQUEST" with
+        | Some url -> number_from_url url
+        | None -> None
+
+    let to_pull_request v = Pull_request.of_string v
+
+    let pull_request_number () =
+      match get "CIRCLE_PULL_REQUEST" with
+        | Some v -> Ok (to_pull_request v)
+        | None ->
+          match pull_request_number_from_url () with
+            | Some v -> Ok (to_pull_request v)
+            | None -> Error "CIRCLE_PR_NUMBER or CIRCLE_PULL_REQUEST not found environment variables"
+
+    (* owner_name/repo_name *)
+    let slug () =
+     let user = require "CIRCLE_PROJECT_USERNAME" in
+     let repo = require "CIRCLE_PROJECT_REPONAME" in
+     match (user, repo) with
+       | (Ok username, Ok repo) -> Ok (Slug.of_pair username repo)
+       | (Ok _, Error e) -> Error e
+       | (Error e, Ok _) -> Error e
+       | (Error ue, Error re) -> Error (ue ^ "\n" ^ re)
+
+    let branch () =
+      require_map "CIRCLE_BRANCH" ~f:Branch.of_string
+  end
+end
+
+
 (** General CI *)
 module General: Service = struct
   let is_current adapter =
