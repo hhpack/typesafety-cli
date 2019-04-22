@@ -3,7 +3,7 @@
   (names typesafety typesafety_review)
   (libraries
     lwt
-    lwt_ssl
+    tls
     cmdliner
     typesafety.cli
     typesafety.review

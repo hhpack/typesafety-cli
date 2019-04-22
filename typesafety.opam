@@ -1,6 +1,6 @@
 opam-version: "2.0"
 name: "typesafety"
-version: "0.14.0"
+version: "0.14.2"
 maintainer: "Noritka Horio <holy.shared.design@gmail.com>"
 authors: [ "Noritka Horio <holy.shared.design@gmail.com>" ]
 license: "MIT"
@@ -21,7 +21,7 @@ depends: [
   "cohttp" {>= "1.0.0"}
   "cohttp-lwt-unix" {>= "1.0.0"}
   "lwt" {>= "3.3.0"}
-  "lwt_ssl" {>= "1.1.0"}
+  "tls" {>= "0.10.0"}
   "ocamlbuild" {build}
   "ocamlfind" {build}
   "ounit" {test & >= "2.0.0"}
