@@ -11,7 +11,7 @@ open Typechecker
 open Cmdliner
 
 let program_name = "typesafety_review"
-let program_version = "0.14.0"
+let program_version = "0.14.1"
 
 let json_file =
   let doc = "Report file for input. (try hh_client check --json > output.json)" in
