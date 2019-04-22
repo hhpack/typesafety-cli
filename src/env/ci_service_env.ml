@@ -118,7 +118,7 @@ module Circle_ci: Service = struct
     let to_pull_request v = Pull_request.of_string v
 
     let pull_request_number () =
-      match get "CIRCLE_PULL_REQUEST" with
+      match get "CIRCLE_PR_NUMBER" with
         | Some v -> Ok (to_pull_request v)
         | None ->
           match pull_request_number_from_url () with
