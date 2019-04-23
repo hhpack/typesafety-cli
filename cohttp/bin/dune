@@ -1,0 +1,11 @@
+(executables
+  (public_names typesafety_cohttp)
+  (names typesafety_cohttp)
+  (libraries
+		lwt
+		tls
+		cohttp
+		cohttp-lwt
+		cohttp-lwt-unix
+  )
+)

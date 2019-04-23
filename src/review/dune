@@ -4,7 +4,7 @@
   (libraries
     str
     lwt
-    lwt_ssl
+    tls
     atdgen
     cohttp
     cohttp-lwt
