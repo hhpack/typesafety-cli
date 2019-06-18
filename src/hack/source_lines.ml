@@ -37,9 +37,7 @@ end
 include MoreLabels.Map.Make(Line_number)
 
 let find_of_line m ~line =
-  try
-    Some (find line m)
-  with Not_found -> None
+  find_opt line m
 
 let range ?(width = 1) m ~line =
   let sl = Line_number.prev ~n:width ~from:line ~min:1 in

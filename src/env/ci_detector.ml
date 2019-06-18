@@ -24,10 +24,12 @@ module Make(S: Supports_ci.S) (Adapter: Env_adapter.S): S = struct
     let detect_env env =
       let module E = (val env: Ci_service_env.Service) in
       E.is_current (module Adapter) in
-    try
-      let ci_service = ListLabels.find ~f:detect_env supports in
-      let module Detected_CI = (val ci_service: Ci_service_env.Service) in
-      let module CI = Ci_env.Make(Detected_CI) (Adapter) in
-      Ok (module CI: Ci_env.S)
-    with Not_found -> Error "Sorry, this is an environment not support"
+
+    match ListLabels.find_opt ~f:detect_env supports  with
+      | Some ci_service ->
+        let module Detected_CI = (val ci_service: Ci_service_env.Service) in
+        let module CI = Ci_env.Make(Detected_CI) (Adapter) in
+        Ok (module CI: Ci_env.S)
+      | None -> Error "Sorry, this is an environment not support"
+
 end
