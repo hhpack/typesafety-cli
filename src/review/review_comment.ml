@@ -89,7 +89,7 @@ module Failed_comment = struct
           | hd::tail ->
             let l, _ = hd in
             let line_number_length = StringLabels.length (string_of_int l) in
-            max_line_length ~max:(Pervasives.max line_number_length max) tail in
+            max_line_length ~max:(Stdlib.max line_number_length max) tail in
       let lines = Source_file.read_range ~line:msg.source_line msg.source_path in
       let line_length = max_line_length lines in
       let write_if_error_line ~line buf =
