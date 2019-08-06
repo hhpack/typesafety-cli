@@ -5,6 +5,11 @@
  * with this source code in the file LICENSE.
  *)
 
+type last_recheck = {
+  id: string;
+  time: float;
+}
+
 type error_detail = {
   descr: string;
   path: string;
@@ -18,8 +23,15 @@ type error = {
   messages <json name="message">: error_detail list;
 } <ocaml field_prefix="error_">
 
+type version = {
+  commit: string;
+  commit_time: int;
+  api_version: int;
+}
+
 type result = {
+  last_recheck: last_recheck;
   passed: bool;
   errors: error list;
-  version: string;
+  version: version;
 }
